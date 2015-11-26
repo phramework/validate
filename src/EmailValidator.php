@@ -20,7 +20,7 @@ use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
- * Username validator
+ * Email validator
  * @uses \Phramework\Validate\String As base implementation's rules to
  * validate that the value is a number and then applies additional rules
  * @property integer $minLength Minimum number of its characters, default is 0
@@ -30,26 +30,15 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
+ * @todo Set global email minLength and maxLength
  */
-class Username extends \Phramework\Validate\String
+class EmailValidator extends \Phramework\Validate\StringValidator
 {
     /**
      * Overwrite base class type
      * @var string
      */
-    protected static $type = 'username';
-
-    protected static $usernamePattern = '/^[A-Za-z0-9_\.]{3,32}$/';
-
-    public static function setUsernamePattern($pattern)
-    {
-        static::$usernamePattern = $pattern;
-    }
-
-    public static function getUsernamePattern()
-    {
-        return static::$usernamePattern;
-    }
+    protected static $type = 'email';
 
     public function __construct(
         $minLength = 0,
@@ -57,8 +46,39 @@ class Username extends \Phramework\Validate\String
     ) {
         parent::__construct(
             $minLength,
-            $maxLength,
-            static::getUsernamePattern()
+            $maxLength
         );
+    }
+
+    /**
+     * Validate value
+     * @see \Phramework\Validate\ValidateResult for ValidateResult object
+     * @param  mixed $value Value to validate
+     * @return ValidateResult
+     */
+    public function validate($value)
+    {
+        //Use string's validator
+        $return = parent::validate($value);
+
+        //Apply additional rules
+        if ($return->status == true) {
+            if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+                //error
+                $return->errorObject = new IncorrectParametersException([
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'format'
+                    ]
+                ]);
+                $return->status = false;
+            } else {
+                $return->errorObject = null;
+                //Set status to success
+                $return->status = true;
+            }
+        }
+
+        return $return;
     }
 }

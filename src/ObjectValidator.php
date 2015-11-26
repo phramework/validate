@@ -19,7 +19,6 @@ namespace Phramework\Validate;
 use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 use \Phramework\Exceptions\MissingParametersException;
-use \Phramework\Models\Filter;
 
 /**
  * Object validator
@@ -38,7 +37,7 @@ use \Phramework\Models\Filter;
  * @todo Implement dependencies
  * @todo Can it have default?
  */
-class Object extends \Phramework\Validate\BaseValidator
+class ObjectValidator extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type
@@ -143,7 +142,7 @@ class Object extends \Phramework\Validate\BaseValidator
         $overalPropertyStatus = true;
         $errorObjects = [];
         $missingObjects = [];
-        
+
         //Validate all validator's properties
         foreach ($this->properties as $key => $property) {
             //If this property key exists in given $value, validate it
@@ -153,7 +152,7 @@ class Object extends \Phramework\Validate\BaseValidator
 
                 //Determine $overalPropertyStatus
                 $overalPropertyStatus = $overalPropertyStatus && $propertyValidateResult->status;
-                
+
                 if (!$propertyValidateResult->status) {
                     if (!$propertyValidateResult->errorObject) {
                          $errorObjects[$key] = [];
@@ -169,9 +168,9 @@ class Object extends \Phramework\Validate\BaseValidator
                                 $errorObjects[$key] = [];
                         }
                     }
-                    
+
                 }
-                
+
                 //use type casted value
                 $value->{$key} = $propertyValidateResult->value;
 
@@ -183,10 +182,10 @@ class Object extends \Phramework\Validate\BaseValidator
 
         if (!$overalPropertyStatus) {
             $return->status = $overalPropertyStatus;
-            
+
             //error
             $errorObject = [];
-            
+
             if (!empty($errorObjects)) {
                 $errorObject[] = [
                  'type' => static::getType(),
@@ -194,7 +193,7 @@ class Object extends \Phramework\Validate\BaseValidator
                  'properties' => $errorObjects
                 ];
             }
-            
+
             if (!empty($missingObjects)) {
                 $errorObject[] = [
                  'type' => static::getType(),
@@ -202,22 +201,22 @@ class Object extends \Phramework\Validate\BaseValidator
                  'properties' => $missingObjects
                 ];
             }
-            
+
             $return->errorObject = new IncorrectParametersException($errorObject);
-            
+
             return $return;
         }
-        
+
         //Check if additionalProperties are set
         if ($this->additionalProperties === false) {
             $foundAdditionalProperties = [];
-        
+
             foreach ($valueProperties as $key => $property) {
                 if (!property_exists($this->properties, $key)) {
                     $foundAdditionalProperties[] = $key;
                 }
             }
-            
+
             if (!empty($foundAdditionalProperties)) {
                 $return->errorObject = new IncorrectParametersException([
                  'type' => static::getType(),
@@ -227,7 +226,7 @@ class Object extends \Phramework\Validate\BaseValidator
                 return $return;
             }
         }
-        
+
         //success
         $return->status = true;
 

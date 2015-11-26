@@ -20,34 +20,41 @@ use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
- * Email validator
- * @uses \Phramework\Validate\String As base implementation's rules to
- * validate that the value is a number and then applies additional rules
- * @property integer $minLength Minimum number of its characters, default is 0
- * @property integer|null $maxLength Maximum number of its characters
+ * Enum validator
+ * @property array values
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
- * @todo Set global email minLength and maxLength
  */
-class Email extends \Phramework\Validate\String
+class EnumValidator extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type
      * @var string
      */
-    protected static $type = 'email';
+    protected static $type = 'enum';
+
+    /**
+     * Overwrite base class attributes
+     * @var array
+     */
+    protected static $typeAttributes = [
+        'enum',
+        'validateType'
+    ];
 
     public function __construct(
-        $minLength = 0,
-        $maxLength = null
+        $enum = [],
+        $validateType = false,
+        $default = null
     ) {
-        parent::__construct(
-            $minLength,
-            $maxLength
-        );
+        parent::__construct();
+
+        $this->enum  = $enum;
+        $this->validateType = $validateType;
+        $this->default = $default;
     }
 
     /**
@@ -58,26 +65,33 @@ class Email extends \Phramework\Validate\String
      */
     public function validate($value)
     {
-        //Use string's validator
-        $return = parent::validate($value);
+        $return = new ValidateResult($value, false);
 
-        //Apply additional rules
-        if ($return->status == true) {
-            if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
-                //error
-                $return->errorObject = new IncorrectParametersException([
-                    [
-                        'type' => static::getType(),
-                        'failure' => 'format'
-                    ]
-                ]);
-                $return->status = false;
-            } else {
-                $return->errorObject = null;
-                //Set status to success
+        if (is_array($value) || is_object($value)) {
+            throw new \Exception('Arrays and objects are not allowed');
+        }
+
+        foreach ($this->enum as $v) {
+            if ($value == $v) {
+                if ($this->validateType && gettype($value) !== gettype($v)) {
+                    //ignore
+                    continue;
+                }
+                //Success
+                //Overwrite $return's value (get correct object type)
+                $return->value = $v;
+                //Set status to true
                 $return->status = true;
+
+                return $return;
             }
         }
+
+        //Error
+        $return->errorObject = new IncorrectParametersException([[
+            'type' => static::getType(),
+            'failure' => 'enum'
+        ]]);
 
         return $return;
     }

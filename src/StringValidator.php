@@ -29,7 +29,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @since 1.0.0
  * @see ECMA 262 regular expression dialect for regular expression pattern
  */
-class String extends \Phramework\Validate\BaseValidator
+class StringValidator extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type

@@ -20,7 +20,7 @@ use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
- * Datetime validator
+ * URL validator
  * @uses \Phramework\Validate\String As base implementation's rules to
  * validate that the value is a number and then applies additional rules
  * @property integer $minLength Minimum number of its characters, default is 0
@@ -31,29 +31,30 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
  */
-class Datetime extends \Phramework\Validate\String
+class URLValidator extends \Phramework\Validate\StringValidator
 {
     /**
      * Overwrite base class type
      * @var string
      */
-    protected static $type = 'datetime';
+    protected static $type = 'url';
 
-    /**
-     * @todo add options for only date, or only time
-     */
-    public function __construct()
-    {
-        parent::__construct();
+    public function __construct(
+        $minLength = 0,
+        $maxLength = null
+    ) {
+        parent::__construct(
+            $minLength,
+            $maxLength
+        );
     }
 
     /**
-     * Validate value, validates as SQL date or SQL datetime
+     * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @see https://dev.mysql.com/doc/refman/5.1/en/datetime.html
+     * @see https://secure.php.net/manual/en/filter.filters.validate.php
      * @param  mixed $value Value to validate
      * @return ValidateResult
-     * @todo set errorObject
      */
     public function validate($value)
     {
@@ -61,31 +62,23 @@ class Datetime extends \Phramework\Validate\String
         $return = parent::validate($value);
 
         //Apply additional rules
-        if ($return->status == true && (preg_match(
-            '/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/',
-            $value,
-            $matches
-        )) ) {
-            if (checkdate($matches[2], $matches[3], $matches[1])) {
+        if ($return->status == true) {
+            if (filter_var($value, FILTER_VALIDATE_URL) === false) {
+                //error
+                $return->status = false;
+                $return->errorObject = new IncorrectParametersException([
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'format'
+                    ]
+                ]);
+            } else {
                 $return->errorObject = null;
                 //Set status to success
                 $return->status = true;
-            } else {
-                goto err;
             }
-        } else {
-            goto err;
         }
 
-        return $return;
-
-        err:
-        $return->errorObject = new IncorrectParametersException([
-            [
-                'type' => static::getType(),
-                'failure' => 'format'
-            ]
-        ]);
         return $return;
     }
 }

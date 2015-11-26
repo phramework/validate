@@ -26,7 +26,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
  */
-class Boolean extends \Phramework\Validate\BaseValidator
+class BooleanValidator extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type

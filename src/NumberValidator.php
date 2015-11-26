@@ -32,7 +32,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
  */
-class Number extends \Phramework\Validate\BaseValidator
+class NumberValidator extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class attributes

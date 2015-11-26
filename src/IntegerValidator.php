@@ -35,7 +35,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
  */
-class Integer extends \Phramework\Validate\Number
+class IntegerValidator extends \Phramework\Validate\NumberValidator
 {
     /**
      * Overwrite base class type

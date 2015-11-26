@@ -20,41 +20,46 @@ use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
- * Enum validator
- * @property array values
+ * UnsignedInteger validator
+ * @uses \Phramework\Validate\Integer As base implementation's rules to
+ * validate that the value is a number and then applies additional rules
+ * @property integer|null minimun
+ * @property integer|null maximum
+ * @property boolean|null exclusiveMinimum
+ * @property boolean|null exclusiveMaximum
+ * @property integer multipleOf
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
  */
-class Enum extends \Phramework\Validate\BaseValidator
+class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
 {
     /**
      * Overwrite base class type
      * @var string
      */
-    protected static $type = 'enum';
-
-    /**
-     * Overwrite base class attributes
-     * @var array
-     */
-    protected static $typeAttributes = [
-        'enum',
-        'validateType'
-    ];
+    protected static $type = 'unsignedinteger';
 
     public function __construct(
-        $enum = [],
-        $validateType = false,
-        $default = null
+        $minimum = 0,
+        $maximum = null,
+        $exclusiveMinimum = null,
+        $exclusiveMaximum = null,
+        $multipleOf = null
     ) {
-        parent::__construct();
+        if ($minimum < 0) {
+            throw new \Exception('Minimum cannot be negative');
+        }
 
-        $this->enum  = $enum;
-        $this->validateType = $validateType;
-        $this->default = $default;
+        parent::__construct(
+            $minimum,
+            $maximum,
+            $exclusiveMinimum,
+            $exclusiveMaximum,
+            $multipleOf
+        );
     }
 
     /**
@@ -65,33 +70,20 @@ class Enum extends \Phramework\Validate\BaseValidator
      */
     public function validate($value)
     {
-        $return = new ValidateResult($value, false);
+        $return = parent::validate($value);
 
-        if (is_array($value) || is_object($value)) {
-            throw new \Exception('Arrays and objects are not allowed');
-        }
-
-        foreach ($this->enum as $v) {
-            if ($value == $v) {
-                if ($this->validateType && gettype($value) !== gettype($v)) {
-                    //ignore
-                    continue;
-                }
-                //Success
-                //Overwrite $return's value (get correct object type)
-                $return->value = $v;
-                //Set status to true
-                $return->status = true;
-
-                return $return;
+        //Apply additional rules
+        if ($return->status == true) {
+            if ($return->value < 0) {
+                $return->status = false;
+                $return->errorObject = new IncorrectParametersException([
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'type'
+                    ]
+                ]);
             }
         }
-
-        //Error
-        $return->errorObject = new IncorrectParametersException([[
-            'type' => static::getType(),
-            'failure' => 'enum'
-        ]]);
 
         return $return;
     }

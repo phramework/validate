@@ -236,16 +236,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers Phramework\Validate\ObjectValidator::addProperty
-      * @expectedException PHPUnit_Framework_Error
-     */
-    public function testAddPropertyFailureInvalidType()
-    {
-        $property = new ObjectValidator();
-        $this->object->addProperty('new', ['hello' => 'world']);
-    }
-
-    /**
      * @covers Phramework\Validate\ObjectValidator::getType
      */
     public function testGetType()

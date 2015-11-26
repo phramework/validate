@@ -213,18 +213,16 @@ abstract class BaseValidator
             } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type . 'Validator')) {
                 $className = __NAMESPACE__ . '\\' . $object->type . 'Validator';
                 $class = new $className();
-            /*} elseif ($object->type == 'array') {
-                $class = new ArrayValidator();*/
-            } elseif ($object->type == 'url') {
-                $class = new URValidatorL();
-            } elseif ($object->type == 'unsignedinteger') {
-                $class = new UnsignedIntegerValidator();
             } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
                 $className = __NAMESPACE__ . '\\' . ucfirst($object->type);
                 $class = new $className();
             } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . 'Validator.php')) {
                 $className = __NAMESPACE__ . '\\' . ucfirst($object->type) . 'Validator';
                 $class = new $className();
+            } elseif ($object->type == 'url') {
+                $class = new URVLalidator();
+            } elseif ($object->type == 'unsignedinteger') {
+                $class = new UnsignedIntegerValidator();
             } else {
                 $className = $object->type . 'Validator';
 

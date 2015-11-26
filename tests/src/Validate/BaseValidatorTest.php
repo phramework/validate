@@ -22,10 +22,10 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->bool = new Boolean;
-        $this->int = new Integer;
-        $this->str = new String;
-        //$this->uint = new UnsignedInteger;
+        $this->bool = new BooleanValidator();
+        $this->int = new IntegerValidator();
+        $this->str = new StringValidator();
+        //$this->uint = new new UnsignedIntegerValidator(;
     }
 
     /**
@@ -44,16 +44,16 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             5,
-            Integer::parseStatic('5'),
+            IntegerValidator::parseStatic('5'),
             'Expect to convert 5 to integer'
         );
 
         $this->assertSame(
             5.5,
-            Number::parseStatic('5.5')
+            NumberValidator::parseStatic('5.5')
         );
 
-        $o = Object::parseStatic(['ok' => true]);
+        $o = ObjectValidator::parseStatic(['ok' => true]);
 
         $this->assertInternalType('object', $o);
         $this->assertObjectHasAttribute('ok', $o);
@@ -71,7 +71,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             "maximum" : 1000
         }';
 
-        $validationObject = Integer::createFromJSON($json);
+        $validationObject = IntegerValidator::createFromJSON($json);
 
         $this->assertInstanceOf(BaseValidator::class, $validationObject);
 
@@ -87,7 +87,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     public function testCreateFromJSON2()
     {
         $json = '{
-            "type": "unsignedinteger",
+            "type": "new UnsignedIntegerValidator(",
             "minimum" : -1000,
             "maximum" : 1000
         }';
@@ -114,7 +114,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             "maximum" : 1000
         }';
 
-        $validationObject = Integer::createFromJSON($json);
+        $validationObject = IntegerValidator::createFromJSON($json);
     }
 
     /**
@@ -134,7 +134,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
                   "enum": ["user"]
                 },
                 "order": {
-                  "type": "unsignedinteger",
+                  "type": "new UnsignedIntegerValidator(",
                   "default" : 0
                 }
               },
@@ -143,23 +143,23 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
           }
         }';
 
-        $validationObject = Object::createFromJSON($json);
+        $validationObject = ObjectValidator::createFromJSON($json);
 
-        $this->assertInstanceOf(Object::class, $validationObject);
+        $this->assertInstanceOf(ObjectValidator::class, $validationObject);
         $this->assertInternalType(
             'object',
             $validationObject->properties
         );
-        $this->assertInstanceOf(Object::class, $validationObject->properties->data);
+        $this->assertInstanceOf(ObjectValidator::class, $validationObject->properties->data);
 
         $data = $validationObject->properties->data;
 
         $this->assertInstanceOf(
-            Enum::class,
+            EnumValidator::class,
             $data->properties->type
         );
         $this->assertInstanceOf(
-            UnsignedInteger::class,
+            UnsignedIntegerValidator::class,
             $data->properties->order
         );
         $this->assertInternalType(
@@ -186,14 +186,14 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $validationObject = new Object(
+        $validationObject = new ObjectValidator(
             [ //properties
-                'weight' => new Integer(-10, 10, true),
-                'obj' => new Object(
+                'weight' => new IntegerValidator(-10, 10, true),
+                'obj' => new ObjectValidator(
                     [ //properties
-                        'valid' => new Boolean(),
-                        'number' => new Number(0, 100),
-                        'not_required' => (new Number(0, 100))->setDefault(5.5),
+                        'valid' => new BooleanValidator(),
+                        'number' => new NumberValidator(0, 100),
+                        'not_required' => (new NumberValidator(0, 100))->setDefault(5.5),
                     ],
                     ['valid'] //required
                 )
@@ -217,7 +217,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $input = '5';
 
-        $validationModel = new Integer(0, 6);
+        $validationModel = new IntegerValidator(0, 6);
 
         $cleanInput = $validationModel->parse($input);
 
@@ -240,14 +240,14 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $validationObject = new Object(
+        $validationObject = new ObjectValidator(
             [ //properties
-                'weight' => new Integer(-10, 10, true),
-                'obj' => new Object(
+                'weight' => new IntegerValidator(-10, 10, true),
+                'obj' => new ObjectValidator(
                     [ //properties
-                        'valid' => new Boolean(),
-                        'number' => new Number(0, 100),
-                        'not_required' => (new Number(0, 100))->setDefault(5.5),
+                        'valid' => new BooleanValidator(),
+                        'number' => new NumberValidator(0, 100),
+                        'not_required' => (new NumberValidator(0, 100))->setDefault(5.5),
                     ],
                     ['valid'] //required
                 )
@@ -273,14 +273,15 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $validationObject = new Object(
+        $validationObject = new ObjectValidator(
             [ //properties
-                'weight' => new Integer(-10, 10, true),
-                'obj' => new Object(
+                'weight' => new IntegerValidator(-10, 10, true),
+                'obj' => new ObjectValidator(
                     [ //properties
-                        'valid' => new Boolean(),
-                        'number' => new Number(0, 100),
-                        'not_required' => (new Number(0, 100))->setDefault(5),
+                        'valid' => new BooleanValidator(),
+                        'number' => new NumberValidator(0, 100),
+                        'not_required' => (new NumberValidator(0, 100))
+                            ->setDefault(5),
                     ],
                     ['valid'] //required
                 )
@@ -300,7 +301,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $input = '87';
 
-        $validationModel = new Integer(0, 6);
+        $validationModel = new IntegerValidator(0, 6);
 
         $cleanInput = $validationModel->parse($input);
     }

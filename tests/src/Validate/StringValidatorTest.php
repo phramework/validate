@@ -19,7 +19,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new String(4, 10, '/^[a-z][a-z0-9]{3,8}[0-9]$/');
+        $this->object = new StringValidator(4, 10, '/^[a-z][a-z0-9]{3,8}[0-9]$/');
     }
 
     /**

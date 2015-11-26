@@ -220,7 +220,7 @@ abstract class BaseValidator
                 $className = __NAMESPACE__ . '\\' . ucfirst($object->type) . 'Validator';
                 $class = new $className();
             } elseif ($object->type == 'url') {
-                $class = new URVLalidator();
+                $class = new URLValidator();
             } elseif ($object->type == 'unsignedinteger') {
                 $class = new UnsignedIntegerValidator();
             } else {

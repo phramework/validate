@@ -16,7 +16,6 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Models\Filter;
 use \Phramework\Exceptions\MissingParametersException;
 use \Phramework\Exceptions\IncorrectParametersException;
 
@@ -284,7 +283,7 @@ class Validate
                         break;
                     case self::TYPE_BOOLEAN:
                         //try to filter as boolean
-                        $parameters[$key] = \Phramework\Models\Filter::boolean($parameters[$key]);
+                        $parameters[$key] = (boolean)($parameters[$key]);
                         break;
                     case self::TYPE_DOUBLE:
                         //Replace comma with dot
@@ -549,7 +548,9 @@ class Validate
                             }
                             //Ignore sting filtering only if raw flag is set
                             if (!in_array('raw', $value)) {
-                                $parameters[$key] = strip_tags(Filter::string($parameters[$key]));
+                                $parameters[$key] = strip_tags(
+                                    filter_var($parameters[$key], FILTER_SANITIZE_STRING)
+                                );
                             }
                         }
                 }

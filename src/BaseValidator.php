@@ -186,12 +186,6 @@ abstract class BaseValidator
         $validateResult = $this->validate($value);
 
         if (!$validateResult->status) {
-            //temp hack
-            /*if ($validateResult->errorObject == 'required properties') {
-                throw new \Phramework\Exceptions\MissingParametersException([]);
-            }
-            throw new \Phramework\Exceptions\IncorrectParametersException([]);
-            */
             throw $validateResult->errorObject;
         }
 
@@ -204,6 +198,7 @@ abstract class BaseValidator
      * Create validator from validation object
      * @param  \stdClass $object Validation object
      * @return BaseValidator
+     * @todo cleanup class loading
      */
     public static function createFromObject($object)
     {
@@ -215,17 +210,23 @@ abstract class BaseValidator
                 //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type;
                 $class = new $className();
-            } elseif ($object->type == 'array') {
-                $class = new ArrayValidator();
+            } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type . 'Validator')) {
+                $className = __NAMESPACE__ . '\\' . $object->type . 'Validator';
+                $class = new $className();
+            /*} elseif ($object->type == 'array') {
+                $class = new ArrayValidator();*/
             } elseif ($object->type == 'url') {
-                $class = new URL();
+                $class = new URValidatorL();
             } elseif ($object->type == 'unsignedinteger') {
-                $class = new UnsignedInteger();
+                $class = new UnsignedIntegerValidator();
             } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
                 $className = __NAMESPACE__ . '\\' . ucfirst($object->type);
                 $class = new $className();
+            } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . 'Validator.php')) {
+                $className = __NAMESPACE__ . '\\' . ucfirst($object->type) . 'Validator';
+                $class = new $className();
             } else {
-                $className = $object->type;
+                $className = $object->type . 'Validator';
 
                 try {
                     $ref = new \ReflectionClass($className);

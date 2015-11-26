@@ -97,9 +97,13 @@ class StringValidator extends \Phramework\Validate\BaseValidator
                 ]
             ]);
         } elseif ($this->pattern !== null
-            && filter_var($value, FILTER_VALIDATE_REGEXP, [
-                'options' => ['regexp' => $this->pattern]
-            ]) === false
+            && filter_var(
+                $value,
+                FILTER_VALIDATE_REGEXP,
+                [
+                    'options' => ['regexp' => $this->pattern]
+                ]
+            ) === false
         ) {
             //error
             $return->errorObject = new IncorrectParametersException([
@@ -118,7 +122,9 @@ class StringValidator extends \Phramework\Validate\BaseValidator
                 $return->value  = $value;
             } else {
                 //or filter
-                $return->value = strip_tags(Filter::string($value));
+                $return->value = strip_tags(
+                    filter_var($value, FILTER_SANITIZE_STRING)
+                );
             }
         }
 

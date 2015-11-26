@@ -68,7 +68,7 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
             "type": "integer",
             "minimum" : -1000,
             "maximum" : 1000,
-            "title": "int",
+            "title": "my int",
             "default": 10,
             "x-extra": "not existing"
         }';
@@ -76,7 +76,7 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
         $validatorObject = IntegerValidator::createFromJSON($json);
 
         $this->assertSame(
-            'int',
+            'my int',
             $validatorObject->title,
             'Title must be passed'
         );

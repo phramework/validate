@@ -20,11 +20,11 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $properties = [
-            'str' => new \Phramework\Validate\StringValidator(2,4),
+            'str' => new \Phramework\Validate\StringValidator(2, 4),
             'ok' => new \Phramework\Validate\BooleanValidator(),
         ];
 
-        $this->object = new ObjectValidatorValidator($properties, ['ok']);
+        $this->object = new ObjectValidator($properties, ['ok']);
     }
 
     /**
@@ -66,7 +66,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertTrue( $return->status);
+        $this->assertTrue($return->status);
         $this->assertInternalType('object', $return->value);
 
     }
@@ -78,10 +78,13 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validationObject = new ObjectValidator(
             [
-                'order' => (new UnsignedIntegerValidator())->setDefault(0),
-                'request' => (new ObjectValidator([
-                        'url' => new StringValidator(3,256),
-                        'method' => (new StringValidator(3,10))->setDefault('GET'),
+                'order' => (new UnsignedIntegerValidator())
+                    ->setDefault(0),
+                'request' => (new ObjectValidator(
+                    [
+                        'url' => new StringValidator(3, 256),
+                        'method' => (new StringValidator(3, 10))
+                            ->setDefault('GET'),
                         'response' => new ObjectValidator(
                             [
                                 'statusCode' => (new UnsignedIntegerValidator(100, 999))
@@ -100,7 +103,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(BaseValidator::class, $validationObject);
-        $this->assertInstanceOf(ObjecValidatort::class, $validationObject);
+        $this->assertInstanceOf(ObjectValidator::class, $validationObject);
         $this->assertInstanceOf(
             UnsignedIntegerValidator::class,
             $validationObject->properties->order

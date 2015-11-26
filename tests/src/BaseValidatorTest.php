@@ -87,7 +87,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     public function testCreateFromJSON2()
     {
         $json = '{
-            "type": "new UnsignedIntegerValidator(",
+            "type": "unsignedinteger",
             "minimum" : -1000,
             "maximum" : 1000
         }';
@@ -95,26 +95,12 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $validationObject = BaseValidator::createFromJSON($json);
 
         $this->assertInstanceOf(BaseValidator::class, $validationObject);
+        $this->assertInstanceOf(UnsignedIntegerValidator::class, $validationObject);
 
         $this->assertSame(
             -1000,
             $validationObject->minimum
         );
-    }
-
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromJSON
-     * @expectedException Exception
-     */
-    public function testCreateFromJSONFailure()
-    {
-        $json = '{
-            "type": "xyz",
-            "minimum" : -1000,
-            "maximum" : 1000
-        }';
-
-        $validationObject = IntegerValidator::createFromJSON($json);
     }
 
     /**
@@ -134,7 +120,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
                   "enum": ["user"]
                 },
                 "order": {
-                  "type": "new UnsignedIntegerValidator(",
+                  "type": "unsignedinteger",
                   "default" : 0
                 }
               },
@@ -172,6 +158,22 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             $data->properties->order->default
         );
     }
+
+
+        /**
+         * @covers Phramework\Validate\BaseValidator::createFromJSON
+         * @expectedException Exception
+         */
+        public function testCreateFromJSONFailure()
+        {
+            $json = '{
+                "type": "xyz",
+                "minimum" : -1000,
+                "maximum" : 1000
+            }';
+
+            $validationObject = IntegerValidator::createFromJSON($json);
+        }
 
     /**
      * @covers Phramework\Validate\BaseValidator::parse

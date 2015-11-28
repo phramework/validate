@@ -28,7 +28,7 @@ use \Phramework\Exceptions\MissingParametersException;
  * @property object properties, Default is empty object
  * @property object|boolean additionalProperties
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor53
  * 5.4.  Validation keywords for objects
  * @since 1.0.0

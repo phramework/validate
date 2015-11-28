@@ -23,7 +23,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * Provides various methods for validating data for varius datatypes.
  *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @deprecated since 1.0.0
  */
 class Validate

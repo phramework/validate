@@ -26,7 +26,7 @@ use \Phramework\Models\Filter;
  * this object MUST be a valid JSON Schema. If it is an array, items of this
  * array MUST be objects, and each of these objects MUST be a valid JSON Schema.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor36 Validation keywords for arrays
  * @since 1.0.0
  * @todo Cannot be named Array

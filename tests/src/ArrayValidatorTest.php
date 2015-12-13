@@ -70,6 +70,33 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\ArrayValidator::validate
+     */
+    public function testValidateItems()
+    {
+        $validator = new ArrayValidator(
+            1,
+            2,
+            new EnumValidator(['one', 'two', 'three', 'four'], true),
+            true,
+            false
+        );
+
+        $return = $validator->validate(['one', 'two']);
+
+        $this->assertTrue($return->status);
+
+        $return = $validator->validate(['four']);
+        $this->assertTrue($return->status);
+
+        $return = $validator->validate(['one', 'two', 'four']);
+        $this->assertFalse($return->status, 'Since we have maxItems "2"');
+
+        $return = $validator->validate(['one', 'not a valid value']);
+        $this->assertFalse($return->status);
+    }
+
+    /**
      * @covers Phramework\Validate\ArrayValidator::getType
      */
     public function testGetType()

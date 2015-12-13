@@ -309,7 +309,15 @@ abstract class BaseValidator
      */
     public function toJSON($JSON_PRETTY_PRINT = false)
     {
-        $object = $this->toArray();
+        $object = $this->toObject();
+
+        foreach ($object as &$attribute) {
+            //Check if any of attributes is an instance of BaseValidator
+            if (is_object($attribute) && is_a($attribute, BaseValidator::class)) {
+                $attribute = $attribute->toObject();
+            }
+        }
+
         return json_encode(
             $object,
             ($JSON_PRETTY_PRINT ? JSON_PRETTY_PRINT : 0)
@@ -338,9 +346,11 @@ abstract class BaseValidator
             static::$commonAttributes
         ) as $attribute) {
             $value = $this->{$attribute};
+
             if ($value !== null) {
                 $object[$attribute] = $value;
             }
+
             if (static::$type == 'object' && $attribute == 'properties') {
                 foreach ($object[$attribute] as $key => $property) {
                     $object[$attribute]->{$key} = $property->toArray();

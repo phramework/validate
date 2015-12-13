@@ -28,8 +28,7 @@ use \Phramework\Models\Filter;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor36 Validation keywords for arrays
- * @since 1.0.0
- * @todo Cannot be named Array
+ * @since 0.0.0
  */
 class ArrayValidator extends \Phramework\Validate\BaseValidator
 {
@@ -61,7 +60,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         $this->items = $items;
         $this->uniqueItems = $uniqueItems;
         $this->additionalItems = $additionalItems;
-        
+
     }
 
     /**
@@ -110,20 +109,20 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                 return $return;
             }
         }
-        
+
         if ($this->items !== null) {
             $errorItems = [];
             //Currently we support only a signle type
             foreach ($value as $k => $v) {
                 $validateItems = $this->items->validate($v);
-                
+
                 if (!$validateItems->status) {
                     $errorItems[$k] = $validateItems->errorObject->getParameters()[0];
                 } else {
                     $value[$k] = $validateItems->value;
                 }
             }
-            
+
             if (!empty($errorItems)) {
                 $return->errorObject = new IncorrectParametersException(
                     [
@@ -137,7 +136,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                 return $return;
             }
         }
-        
+
         //Check if contains duplicate items
         if ($this->uniqueItems && count($value) !== count(array_unique($value))) {
             $return->errorObject = new IncorrectParametersException(
@@ -154,7 +153,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         $return->status = true;
         //typecasted
         $return->value = $value;
-        
+
         return $return;
     }
 }

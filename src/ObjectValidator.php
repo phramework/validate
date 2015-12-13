@@ -31,7 +31,7 @@ use \Phramework\Exceptions\MissingParametersException;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor53
  * 5.4.  Validation keywords for objects
- * @since 1.0.0
+ * @since 0.0.0
  * @todo Implement patternProperties
  * @todo Implement additionalProperties "additionalProperties": { "type": "string" }
  * @todo Implement dependencies

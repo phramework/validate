@@ -6,7 +6,7 @@
 ## Usage
 Require package using composer
 
-```
+```bash
 composer require phramework/validate
 ```
 

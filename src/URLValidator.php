@@ -29,7 +29,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * *5.1.  Validation keywords for numeric instances (number and integer)*
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 1.0.0
+ * @since 0.0.0
  */
 class URLValidator extends \Phramework\Validate\StringValidator
 {

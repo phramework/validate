@@ -26,7 +26,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @property string|null $pattern Regular expresion pattern for validating
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 1.0.0
+ * @since 0.0.0
  * @see ECMA 262 regular expression dialect for regular expression pattern
  */
 class StringValidator extends \Phramework\Validate\BaseValidator

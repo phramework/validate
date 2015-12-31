@@ -82,6 +82,9 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
             false
         );
 
+        $this->assertInstanceOf(BaseValidator::class, $validator->items);
+        $this->assertInstanceOf(EnumValidator::class, $validator->items);
+
         $return = $validator->validate(['one', 'two']);
 
         $this->assertTrue($return->status);
@@ -93,6 +96,57 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($return->status, 'Since we have maxItems "2"');
 
         $return = $validator->validate(['one', 'not a valid value']);
+        $this->assertFalse($return->status);
+    }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "title": "demo array",
+          "description": "Pick 1 or 2 options",
+          "additionalItems": false,
+          "items": {
+            "type": "enum",
+            "enum": [
+              "one",
+              "two",
+              "three",
+              "four"
+            ],
+            "validateType": true
+          },
+          "uniqueItems": true
+        }';
+
+        $validator = BaseValidator::createFromJSON($json);
+        
+        $this->assertInstanceOf(ArrayValidator::class, $validator);
+
+        $this->assertSame(
+            1,
+            $validator->minItems
+        );
+        $this->assertSame(
+            2,
+            $validator->maxItems
+        );
+
+        $this->assertInstanceOf(BaseValidator::class, $validator->items);
+        $this->assertInstanceOf(EnumValidator::class, $validator->items);
+
+        $return = $validator->validate(['one', 'four']);
+        $this->assertTrue($return->status);
+
+        $return = $validator->validate(['one', 'two', 'three']);
+        $this->assertFalse($return->status);
+
+        $return = $validator->validate(['one', 'bad value']);
         $this->assertFalse($return->status);
     }
 

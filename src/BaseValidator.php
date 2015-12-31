@@ -123,7 +123,10 @@ abstract class BaseValidator
         }
 
         if (!array_key_exists($key, $this->attributes)) {
-            throw new \Exception('Unknown key "' . $key . '" to get');
+            throw new \Exception(sprintf(
+                'Unknown key "%s" to get',
+                $key
+            ));
         }
 
         return $this->attributes[$key];
@@ -144,10 +147,6 @@ abstract class BaseValidator
                 $key
             ));
         }
-
-        /*if ($key == 'properties' && is_array($value)) {
-            $value = (object)$value;
-        }*/
 
         $this->attributes[$key] = $value;
 
@@ -270,6 +269,10 @@ abstract class BaseValidator
                     }
                     //push to class
                     $class->{$attribute} = $createdProperties;
+                } elseif ($attribute == 'items') {
+                    $class->{$attribute} = BaseValidator::createFromObject(
+                        $object->{$attribute}
+                    );
                 } else {
                     //Use attributes value in Validator object
                     $class->{$attribute} = $object->{$attribute};

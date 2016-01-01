@@ -17,16 +17,33 @@
 namespace Phramework\Validate;
 
 /**
-* @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
-* @author Xenofon Spafaridis <nohponex@gmail.com>
-* @since 0.0.0
+ * Helper class, contains the result of validator's validation
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @since 0.0.0
  */
 class ValidateResult
 {
+    /**
+     * @var mixed
+     */
     public $value;
+
+    /**
+     * @var boolean
+     */
     public $status;
+
+    /**
+     * @var Exception|null
+     */
     public $errorObject;
 
+    /**
+     * @param mixed          $value       [description]
+     * @param boolean        $status      [description]
+     * @param Exception|null $errorObject [description]
+     */
     public function __construct($value, $status = false, $errorObject = null)
     {
         $this->value  = $value;

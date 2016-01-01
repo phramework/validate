@@ -154,6 +154,6 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         //typecasted
         $return->value = $value;
 
-        return $return;
+        return $this->validateCommon($value, $return);
     }
 }

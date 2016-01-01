@@ -54,7 +54,9 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
             [-1000], //should fail becaus of exclusiveMinimum
             [-10000000],
             [10000000],
-            ['-1000000000']
+            ['-1000000000'],
+            [1.4],
+            [-13.5]
         ];
     }
 
@@ -130,6 +132,29 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->markTestIncomplete(
             'Test Exclusive and multipleOf'
+        );
+    }
+
+    /**
+     * Validate against common enum keyword
+     * @covers Phramework\Validate\IntegerValidator::validateEnum
+     */
+    public function testValidateCommon()
+    {
+        $validator = (new IntegerValidator(0, 10));
+
+        $validator->enum = [1, 3, 5];
+
+        $return = $validator->validate(1);
+        $this->assertTrue(
+            $return->status,
+            'Expect true since "1" is in enum array'
+        );
+
+        $return = $validator->validate(2);
+        $this->assertFalse(
+            $return->status,
+            'Expect false since "2" is not in enum array'
         );
     }
 

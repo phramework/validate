@@ -41,8 +41,7 @@ class EnumValidator extends \Phramework\Validate\BaseValidator
      * @var array
      */
     protected static $typeAttributes = [
-        'enum',
-        'validateType'
+        'validateType' //custom
     ];
 
     public function __construct(
@@ -71,18 +70,22 @@ class EnumValidator extends \Phramework\Validate\BaseValidator
      */
     public function validate($value)
     {
-        $return = new ValidateResult($value, false);
+        $return = new ValidateResult($value, true);
 
+        //Use validateCommon
+        /*
         if (is_array($value) || is_object($value)) {
             throw new \Exception('Arrays and objects are not allowed');
         }
 
+        //Search current $value in enum
         foreach ($this->enum as $v) {
             if ($value == $v) {
                 if ($this->validateType && gettype($value) !== gettype($v)) {
                     //ignore
                     continue;
                 }
+
                 //Success
                 //Overwrite $return's value (get correct object type)
                 $return->value = $v;
@@ -98,7 +101,8 @@ class EnumValidator extends \Phramework\Validate\BaseValidator
             'type' => static::getType(),
             'failure' => 'enum'
         ]]);
+        */
 
-        return $return;
+        return $this->validateCommon($value, $return);
     }
 }

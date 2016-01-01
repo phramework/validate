@@ -92,6 +92,29 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Validate against common enum keyword
+     * @covers Phramework\Validate\IntegerValidator::validateEnum
+     */
+    public function testValidateCommon()
+    {
+        $validator = (new BooleanValidator());
+
+        $validator->enum = [true];
+
+        $return = $validator->validate(true);
+        $this->assertTrue(
+            $return->status,
+            'Expect true since true is in enum array'
+        );
+
+        $return = $validator->validate(false);
+        $this->assertFalse(
+            $return->status,
+            'Expect false since false is not in enum array'
+        );
+    }
+
+    /**
      * @covers Phramework\Validate\BooleanValidator::getType
      */
     public function testGetType()

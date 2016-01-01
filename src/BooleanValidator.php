@@ -74,6 +74,6 @@ class BooleanValidator extends \Phramework\Validate\BaseValidator
             $return->value  = $filterValue;
         }
 
-        return $return;
+        return $this->validateCommon($value, $return);
     }
 }

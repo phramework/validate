@@ -87,6 +87,29 @@ class StringTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Validate against common enum keyword
+     * @covers Phramework\Validate\IntegerValidator::validateEnum
+     */
+    public function testValidateCommon()
+    {
+        $validator = (new StringValidator(0, 10));
+
+        $validator->enum = ['aa', 'bb'];
+
+        $return = $validator->validate('aa');
+        $this->assertTrue(
+            $return->status,
+            'Expect true since "aa" is in enum array'
+        );
+
+        $return = $validator->validate('cc');
+        $this->assertFalse(
+            $return->status,
+            'Expect false since "cc" is not in enum array'
+        );
+    }
+
+    /**
      * @covers Phramework\Validate\StringValidator::getType
      */
     public function testGetType()

@@ -134,6 +134,6 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             $return->value  = (float)($value);
         }
 
-        return $return;
+        return $this->validateCommon($value, $return);
     }
 }

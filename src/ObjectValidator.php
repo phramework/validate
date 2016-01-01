@@ -240,7 +240,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             'type' => static::getType(),
             'failure' => $failure
         ]);
-        return $return;
+        return $this->validateCommon($value, $return);
     }
 
     /**

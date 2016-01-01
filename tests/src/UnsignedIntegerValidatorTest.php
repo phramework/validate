@@ -49,7 +49,9 @@ class UnsignedIntegerValidatorTest extends \PHPUnit_Framework_TestCase
             ['+xyz']
             [-1000],
             ['-4'],
-            [4] //because of min
+            [4], //because of min,
+            [1.4],
+            [-13.5]
         ];
     }
 

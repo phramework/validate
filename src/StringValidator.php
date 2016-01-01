@@ -128,6 +128,6 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             }
         }
 
-        return $return;
+        return $this->validateCommon($value, $return);
     }
 }

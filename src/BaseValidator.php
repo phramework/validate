@@ -16,6 +16,9 @@
  */
 namespace Phramework\Validate;
 
+use \Phramework\Exceptions\IncorrectParametersException;
+use \Phramework\Exceptions\MissingParametersException;
+
 /**
  * BaseValidator, every validator **MUST** extend this class
  *
@@ -53,6 +56,82 @@ abstract class BaseValidator
     abstract public function validate($value);
 
     /**
+     * Common helper method to validate against all common keywords
+     * @uses validateEnum
+     * @param  mixed $value Value to validate
+     * @param  ValidateResult $return Current ValidateResult status
+     * @return ValidateResult
+     */
+    protected function validateCommon($value, $validateResult)
+    {
+        //While current status of validation is true,
+        //keep validating against common keywords
+
+        //validate against enum using validateEnum
+        if ($validateResult->status === true) {
+            $validateEnum = $this->validateEnum($value);
+
+            if ($validateEnum->status !== true) {
+                return $validateEnum;
+            }
+        }
+
+        return $validateResult;
+    }
+
+    /**
+     * Common helper method to validate against "enum" keyword
+     * @see 5.5.1. enum http://json-schema.org/latest/json-schema-validation.html#anchor75
+     * @param  mixed $value Value to validate
+     * @return ValidateResult
+     * @todo provide support for objects and arrays
+     */
+    protected function validateEnum($value)
+    {
+        $return = new ValidateResult($value, false);
+
+        //Check if $this->enum is set and it's not null since its optional
+        if ($this->enum && $this->enum !== null) {
+            if (is_array($value) || is_object($value)) {
+                throw new \Exception('Arrays and objects are not supported');
+            }
+
+            //Search current $value in enum
+            foreach ($this->enum as $v) {
+                if ($value == $v) {
+                    if ($this->validateType && $this->validateType
+                        && gettype($value) !== gettype($v)) {
+                        //ignore that the value is found
+                        continue;
+                    }
+
+                    //Success value is found
+
+                    //Overwrite $return's value (get correct object type)
+                    $return->value = $v;
+
+                    //Set status to true
+                    $return->status = true;
+
+                    return $return;
+                }
+            }
+
+            $return->status = false;
+            //Error
+            $return->errorObject = new IncorrectParametersException([[
+                'type' => static::getType(),
+                'failure' => 'enum'
+            ]]);
+        } else {
+            //Ignored validation, set status to true
+            $return->status = true;
+        }
+
+        return $return;
+    }
+
+    /**
      * Get validator's type
      * @return string
      */
@@ -77,7 +156,9 @@ abstract class BaseValidator
         'title',
         'description',
         'default',
-        'format'
+        'format',
+        'enum',
+        'validateType' //non standard attribute, can be used in combination with enum
     ];
 
     public $default;

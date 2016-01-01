@@ -23,10 +23,10 @@ class ValidateResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ValidateResultTest::__construct
+     * @covers Phramework\Validate\ValidateResult::__construct
      */
     public function testConstruct()
     {
-        $validator = new ValidateResultTest();
+        $validator = new ValidateResult(true, true);
     }
 }

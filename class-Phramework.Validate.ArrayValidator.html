@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Phramework\Validate\ArrayValidator | phramework/validate doc</title>
+	<title>Class Phramework\Validate\ArrayValidator | phramework/validate</title>
 
 	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
 	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
@@ -14,7 +14,7 @@
 	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a href="index.html" class="navbar-brand">phramework/validate doc</a>
+				<a href="index.html" class="navbar-brand">phramework/validate</a>
 			</div>
 			<div class="collapse navbar-collapse">
 
@@ -153,6 +153,8 @@
 				0.0.0<br>
 				<b>See:</b>
 				http://json-schema.org/latest/json-schema-validation.html#anchor36 Validation keywords for arrays<br>
+				<b>Todo:</b>
+				support array for attribute items<br>
 			<b>Located at</b> ArrayValidator.php		<br>
 	</div>
 
@@ -172,7 +174,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code>__construct( <span> <var>$minItems</var> = <span class="php-num">0</span></span>, <span> <var>$maxItems</var> = <span class="php-keyword1">null</span></span>, <span> <var>$items</var> = <span class="php-keyword1">null</span></span>, <span> <var>$uniqueItems</var> = <span class="php-keyword1">false</span></span>, <span> <var>$additionalItems</var> = <span class="php-keyword1">null</span> </span> )</code>
+			<code>__construct( <span>integer <var>$minItems</var> = <span class="php-num">0</span></span>, <span>integer|null <var>$maxItems</var> = <span class="php-keyword1">null</span></span>, <span><code><a href="class-Phramework.Validate.BaseValidator.html">Phramework\Validate\BaseValidator</a></code>|<code><a href="class-Phramework.Validate.BaseValidator.html">Phramework\Validate\BaseValidator</a>[]</code>|null <var>$items</var> = <span class="php-keyword1">null</span></span>, <span>Boolean <var>$uniqueItems</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 			<div class="description short">
 				
@@ -182,6 +184,17 @@
 				
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$minItems</var></dt>
+						<dd><em>[Optional]</em> Default is 0</dd>
+						<dt><var>$maxItems</var></dt>
+						<dd><em>[Optional]</em></dd>
+						<dt><var>$items</var></dt>
+						<dd><em>[Optional]</em> Default is null</dd>
+						<dt><var>$uniqueItems</var></dt>
+						<dd><em>[Optional]</em></dd>
+					</dl></div>
 
 
 
@@ -255,10 +268,13 @@
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_parseStatic">parseStatic()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setDefault">setDefault()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setDescription">setDescription()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_setEnum">setEnum()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setTitle">setTitle()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_toArray">toArray()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_toJSON">toJSON()</a></code>, 
-				<code><a href="class-Phramework.Validate.BaseValidator.html#_toObject">toObject()</a></code>
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_toObject">toObject()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_validateCommon">validateCommon()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_validateEnum">validateEnum()</a></code>
 			</p>
 		</div>
 
@@ -323,9 +339,9 @@ Can be overwriten</p>
 					<code>[
     <span class="php-quote">'minItems'</span>,
     <span class="php-quote">'maxItems'</span>,
-    <span class="php-quote">'additionalItems'</span>,
     <span class="php-quote">'items'</span>,
-    <span class="php-quote">'uniqueItems'</span>
+    <span class="php-quote">'uniqueItems'</span>,
+    <span class="php-quote">'additionalItems'</span>
 ]</code>
 				</div>
 			</td>
@@ -346,16 +362,52 @@ Can be overwriten</p>
 		<div class="panel panel-default">
             <div class="panel-heading"><h3>Magic properties</h3></div>
 			<table class="summary table table-bordered table-striped properties" id="magicProperties">
-		<tr data-order="items" id="m$items">
+		<tr data-order="minItems" id="m$minItems">
 			<td class="attributes"><code>
 				public  
-				object|array
+				integer
 			</code></td>
 
 			<td class="name">
-<var>$items</var>
+<var>$minItems</var>
 				<div class="description short">
-					<p>If it is an object, this object MUST be a valid JSON Schema. If it is an array, items of this array MUST be objects, and each of these objects MUST be a valid JSON Schema.</p>
+					<p>Minimum number of items</p>
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+		</tr>
+		<tr data-order="maxItems" id="m$maxItems">
+			<td class="attributes"><code>
+				public  
+				integer
+			</code></td>
+
+			<td class="name">
+<var>$maxItems</var>
+				<div class="description short">
+					<p>Maximum number of items</p>
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+		</tr>
+		<tr data-order="uniqueItems" id="m$uniqueItems">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
+
+			<td class="name">
+<var>$uniqueItems</var>
+				<div class="description short">
+					<p>If true, only unique array items are allowed</p>
 				</div>
 
 				<div class="description detailed hidden">
@@ -373,7 +425,7 @@ Can be overwriten</p>
 	</div>
 
 	<div id="footer">
-		phramework/validate doc API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		phramework/validate API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 <script src="resources/combined.js"></script>

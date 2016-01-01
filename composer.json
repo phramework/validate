@@ -23,7 +23,7 @@
     "phpunit/phpunit": "5.*",
     "squizlabs/php_codesniffer": "*",
     "apigen/apigen": "^4.1",
-    "codacy/coverage": "^1.0"
+    "satooshi/php-coveralls": "dev-master"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

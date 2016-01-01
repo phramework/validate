@@ -72,10 +72,6 @@ class URLValidator extends \Phramework\Validate\StringValidator
                         'failure' => 'format'
                     ]
                 ]);
-            } else {
-                $return->errorObject = null;
-                //Set status to success
-                $return->status = true;
             }
         }
 

@@ -82,6 +82,7 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
         //Apply additional rules
         if ($return->status == true) {
             if ($return->value < 0) {
+                //error
                 $return->status = false;
                 $return->errorObject = new IncorrectParametersException([
                     [

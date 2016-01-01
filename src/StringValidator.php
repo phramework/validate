@@ -135,7 +135,7 @@ class StringValidator extends \Phramework\Validate\BaseValidator
 
             if ($this->raw) {
                 //use raw
-                $return->value  = $value;
+                $return->value = $value;
             } else {
                 //or filter
                 $return->value = strip_tags(

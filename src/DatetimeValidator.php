@@ -67,19 +67,13 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
             $matches
         )) ) {
             if (checkdate($matches[2], $matches[3], $matches[1])) {
-                $return->errorObject = null;
                 //Set status to success
                 $return->status = true;
-            } else {
-                goto err;
+
+                return $return;
             }
-        } else {
-            goto err;
         }
 
-        return $return;
-
-        err:
         $return->status = false;
         $return->errorObject = new IncorrectParametersException([
             [
@@ -87,6 +81,7 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
                 'failure' => 'format'
             ]
         ]);
+        
         return $return;
     }
 }

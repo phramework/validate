@@ -1,6 +1,8 @@
 # phramework/validate
 > phramework's validation library [https://phramework.github.io/validate/](https://phramework.github.io/validate/)
 
+[![Coverage Status](https://coveralls.io/repos/phramework/validate/badge.svg?branch=master&service=github)](https://coveralls.io/github/phramework/validate?branch=master)
+
 [![Build Status](https://travis-ci.org/phramework/validate.svg?branch=master)](https://travis-ci.org/phramework/validate)
 
 ## Usage

@@ -290,6 +290,7 @@ abstract class BaseValidator
      * @param  \stdClass $object Validation object
      * @return BaseValidator
      * @todo cleanup class loading
+     * @throws \Exception When validator class cannot be found for object's type
      */
     public static function createFromObject($object)
     {
@@ -318,7 +319,9 @@ abstract class BaseValidator
                 $className = $object->type . 'Validator';
 
                 try {
-                    $ref = new \ReflectionClass($className);
+                    //prevent fatal error
+                    new \ReflectionClass($className);
+                    //attempt to create class
                     $class = new $className();
                 } catch (\Exception $e) {
                     //Wont catch the fatal error
@@ -339,7 +342,10 @@ abstract class BaseValidator
         }
 
         //For each Validator's attribute
-        foreach (array_merge($class::getTypeAttributes(), $class::$commonAttributes) as $attribute) {
+        foreach (array_merge(
+            $class::getTypeAttributes(),
+            $class::$commonAttributes
+        ) as $attribute) {
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
                 if ($attribute == 'properties') {
@@ -351,7 +357,7 @@ abstract class BaseValidator
                     foreach ($properties as $key => $property) {
                         if (!is_object($property)) {
                             throw new \Exception(sprintf(
-                                'Expected object for property value %',
+                                'Expected object for property value "%"',
                                 $key
                             ));
                         }

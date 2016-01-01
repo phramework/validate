@@ -92,13 +92,11 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
                     ]
                 ]);
                 $return->status = false;
-            } else {
-                $return->errorObject = null;
-                //Set status to success
-                $return->status = true;
-                //Type cast
-                $return->value  = (int)($value);
+
+                return $return;
             }
+
+            $return->value  = (int)($value);
         }
 
         return $return;

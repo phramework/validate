@@ -22,9 +22,9 @@ use \Phramework\Exceptions\MissingParametersException;
 
 /**
  * Object validator
- * @property integer $minProperties Minimum number of properties
- * @property integer|null $maxProperties Minimum number of properties
- * @property string[] $required Required properties keys
+ * @property integer        $minProperties Minimum number of properties
+ * @property integer|null   $maxProperties Minimum number of properties
+ * @property string[]       $required Required properties keys
  * @property object $properties Properties
  * @property object|boolean|null $additionalProperties
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
@@ -76,8 +76,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $maxProperties = null
     ) {
         parent::__construct();
-
-
 
         //Work with objects
         if (is_array($properties)) {
@@ -269,6 +267,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             'type' => static::getType(),
             'failure' => $failure
         ]);
+
         return $this->validateCommon($value, $return);
     }
 

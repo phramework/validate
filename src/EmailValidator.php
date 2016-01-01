@@ -72,10 +72,6 @@ class EmailValidator extends \Phramework\Validate\StringValidator
                     ]
                 ]);
                 $return->status = false;
-            } else {
-                $return->errorObject = null;
-                //Set status to success
-                $return->status = true;
             }
         }
 

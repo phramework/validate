@@ -478,7 +478,9 @@ abstract class BaseValidator
 
             if (static::$type == 'object' && $attribute == 'properties') {
                 foreach ($object[$attribute] as $key => $property) {
-                    $object[$attribute]->{$key} = $property->toArray();
+                    if ($property instanceof BaseValidator) {
+                        $object[$attribute]->{$key} = $property->toArray();
+                    }
                 }
             }
         }

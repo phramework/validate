@@ -98,6 +98,10 @@ abstract class BaseValidator
 
             //Search current $value in enum
             foreach ($this->enum as $v) {
+                if (is_array($v) || is_object($v)) {
+                    throw new \Exception('Arrays and objects are not supported');
+                }
+
                 if ($value == $v) {
                     if ($this->validateType && $this->validateType
                         && gettype($value) !== gettype($v)) {
@@ -237,6 +241,13 @@ abstract class BaseValidator
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function setEnum($enum)
+    {
+        $this->enum = $enum;
 
         return $this;
     }

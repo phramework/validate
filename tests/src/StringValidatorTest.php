@@ -88,7 +88,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\IntegerValidator::validateEnum
+     * @covers Phramework\Validate\StringValidator::validateEnum
      */
     public function testValidateCommon()
     {

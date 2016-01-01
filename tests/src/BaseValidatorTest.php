@@ -136,7 +136,10 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             'object',
             $validationObject->properties
         );
-        $this->assertInstanceOf(ObjectValidator::class, $validationObject->properties->data);
+        $this->assertInstanceOf(
+            ObjectValidator::class,
+            $validationObject->properties->data
+        );
 
         $data = $validationObject->properties->data;
 
@@ -144,6 +147,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             EnumValidator::class,
             $data->properties->type
         );
+
         $this->assertInstanceOf(
             UnsignedIntegerValidator::class,
             $data->properties->order
@@ -160,20 +164,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
 
-        /**
-         * @covers Phramework\Validate\BaseValidator::createFromJSON
-         * @expectedException Exception
-         */
-        public function testCreateFromJSONFailure()
-        {
-            $json = '{
-                "type": "xyz",
-                "minimum" : -1000,
-                "maximum" : 1000
-            }';
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromJSON
+     * @expectedException Exception
+     */
+    public function testCreateFromJSONFailure()
+    {
+        $json = '{
+            "type": "xyz",
+            "minimum" : -1000,
+            "maximum" : 1000
+        }';
 
-            $validationObject = IntegerValidator::createFromJSON($json);
-        }
+        $validationObject = IntegerValidator::createFromJSON($json);
+    }
 
     /**
      * @covers Phramework\Validate\BaseValidator::parse
@@ -296,6 +300,84 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Validate against common enum keyword
+     * @covers Phramework\Validate\BaseValidator::validateCommon
+     * @covers Phramework\Validate\BaseValidator::validateEnum
+     */
+    public function testValidateCommon()
+    {
+        $validator = (new IntegerValidator(0, 10));
+
+        $validator->enum = [1, 3, 5];
+
+        $return = $validator->validate(1);
+        $this->assertTrue(
+            $return->status,
+            'Expect true since "1" is in enum array'
+        );
+
+        $return = $validator->validate(2);
+        $this->assertFalse(
+            $return->status,
+            'Expect false since "2" is not in enum array'
+        );
+    }
+
+    /**
+     * Validate against common enum keyword
+     * @covers Phramework\Validate\BaseValidator::validateEnum
+     */
+    public function testValidateEnum()
+    {
+        $validator = (new IntegerValidator(0, 10));
+
+        $validator->enum = [1, 3, 5];
+
+        $return = $validator->validate(1);
+
+        $this->assertTrue(
+            $return->status,
+            'Expect true since "1" is in enum array'
+        );
+
+        $return = $validator->validate(2);
+        $this->assertFalse(
+            $return->status,
+            'Expect false since "2" is not in enum array'
+        );
+    }
+
+    /**
+     * Validate against common enum keyword,
+     * expect exception sice objects and arrays are not yet supported for enum keyword
+     * @expectedException Exception
+     * @covers Phramework\Validate\BaseValidator::validateEnum
+     */
+    public function testValidateEnumException()
+    {
+        $validator = (new ArrayValidator());
+
+        $validator->enum = [[1], [1,2]];
+
+        $validator->validate([1]);
+    }
+
+    /**
+     * Validate against common enum keyword,
+     * expect exception sice objects and arrays are not yet supported for enum keyword
+     * @expectedException Exception
+     * @covers Phramework\Validate\BaseValidator::validateEnum
+     */
+    public function testValidateEnumException2()
+    {
+        $validator = (new IntegerValidator(0, 10));
+
+        $validator->enum = [[1], new \stdClass(), 5];
+
+        $validator->validate(2);
+    }
+
+    /**
      * @covers Phramework\Validate\BaseValidator::parse
      * @expectedException Exception
      */
@@ -306,5 +388,93 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $validationModel = new IntegerValidator(0, 6);
 
         $cleanInput = $validationModel->parse($input);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::__get
+     */
+    public function testGetType()
+    {
+        $validator = new IntegerValidator();
+        $this->assertEquals('integer', $validator->type);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::getType
+     */
+    public function testGetType2()
+    {
+        $validator = new IntegerValidator();
+        $this->assertEquals('integer', $validator->getType());
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::__get
+     * @expectedException Exception
+     */
+    public function testGet()
+    {
+        $validator = new IntegerValidator();
+        $validator->IM_SURE_THIS_CANT_BE_FOUND;
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::__set
+     * @expectedException Exception
+     */
+    public function testSetFailure()
+    {
+        $validator = new IntegerValidator();
+        $validator->IM_SURE_THIS_CANT_BE_FOUND = 'value';
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::__set
+     */
+    public function testSetSuccess()
+    {
+        $validator = new IntegerValidator();
+        $validator->title = 'my title';
+
+        $this->assertSame(
+            $validator->title,
+            'my title'
+        );
+
+        $returnValue = $validator->__set('title', 'my title');
+
+        $this->assertInstanceOf(
+            IntegerValidator::class,
+            $returnValue
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::setEnum
+     */
+    public function testSetEnum()
+    {
+        $validator = new IntegerValidator();
+
+        $enum = [1, 2, 3];
+
+        $returnValue = $validator->setEnum($enum);
+
+        $this->assertSame(
+            $validator->enum,
+            $enum
+        );
+
+        $this->assertInstanceOf(
+            IntegerValidator::class,
+            $returnValue
+        );
+
+        $return = $validator->validate(4);
+
+        $this->assertFalse(
+            $return->status,
+            'Expect true since "4" is not in enum array'
+        );
     }
 }

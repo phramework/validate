@@ -93,7 +93,7 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\IntegerValidator::validateEnum
+     * @covers Phramework\Validate\BooleanValidator::validateEnum
      */
     public function testValidateCommon()
     {

@@ -23,7 +23,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->bool = new BooleanValidator();
-        $this->int = new IntegerValidator();
+        $this->int = new IntegerValidator(-100000, 100000);
         $this->str = new StringValidator();
         //$this->uint = new new UnsignedIntegerValidator(;
     }
@@ -300,9 +300,18 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\BaseValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new ArrayValidator(
+            1,
+            3
+        );
+    }
+    /**
      * Validate against common enum keyword
      * @covers Phramework\Validate\BaseValidator::validateCommon
-     * @covers Phramework\Validate\BaseValidator::validateEnum
      */
     public function testValidateCommon()
     {
@@ -332,6 +341,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = (new IntegerValidator(0, 10));
 
         $validator->enum = [1, 3, 5];
+        $validator->validateType = true;
 
         $return = $validator->validate(1);
 
@@ -340,12 +350,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             'Expect true since "1" is in enum array'
         );
 
+        $return = $validator->validate("1");
+
+        $this->assertFalse(
+            $return->status,
+            'Expect false since "1" is not correct type'
+        );
+
         $return = $validator->validate(2);
         $this->assertFalse(
             $return->status,
             'Expect false since "2" is not in enum array'
         );
     }
+
 
     /**
      * Validate against common enum keyword,
@@ -393,26 +411,23 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\BaseValidator::__get
      */
-    public function testGetType()
+    public function testGet()
     {
         $validator = new IntegerValidator();
-        $this->assertEquals('integer', $validator->type);
-    }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::getType
-     */
-    public function testGetType2()
-    {
-        $validator = new IntegerValidator();
-        $this->assertEquals('integer', $validator->getType());
+        $validator->setDefault(0);
+
+        $this->assertEquals('integer', $validator->type);
+
+        $this->assertEquals(0, $validator->__get('default'));
+
     }
 
     /**
      * @covers Phramework\Validate\BaseValidator::__get
      * @expectedException Exception
      */
-    public function testGet()
+    public function testGet2()
     {
         $validator = new IntegerValidator();
         $validator->IM_SURE_THIS_CANT_BE_FOUND;
@@ -426,6 +441,15 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new IntegerValidator();
         $validator->IM_SURE_THIS_CANT_BE_FOUND = 'value';
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::getType
+     */
+    public function testGetType()
+    {
+        $validator = new IntegerValidator();
+        $this->assertEquals('integer', $validator->getType());
     }
 
     /**
@@ -446,6 +470,46 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
             IntegerValidator::class,
             $returnValue
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::setTitle
+     */
+    public function testSetTitle()
+    {
+        $validator = new IntegerValidator();
+        $validator->setTitle('my title');
+        $this->assertSame(
+            $validator->title,
+            'my title'
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::setDescription
+     */
+    public function testSetDescription()
+    {
+        $validator = new IntegerValidator();
+        $validator->setDescription('my description');
+        $this->assertSame(
+            $validator->description,
+            'my description'
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::setDefault
+     */
+    public function testSetDefault()
+    {
+        $validator = new IntegerValidator();
+        $validator->setDefault(222);
+
+        $this->assertSame(
+            $validator->default,
+            222
         );
     }
 
@@ -476,5 +540,91 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             $return->status,
             'Expect true since "4" is not in enum array'
         );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromArray
+     */
+    public function testCreateFromArray()
+    {
+        $schema = [
+            'type' => 'integer',
+            'minimum' =>  1,
+            'maximum' =>  2,
+        ];
+
+        $validator = BaseValidator::createFromArray($schema);
+
+        $this->assertInstanceOf(IntegerValidator::class, $validator);
+
+        $this->assertSame(1, $validator->minimum);
+        $this->assertSame(2, $validator->maximum);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromObject
+     */
+    public function testCreateFromObject()
+    {
+        $schema = (object)[
+            'type' => 'integer',
+            'minimum' =>  1,
+            'maximum' =>  2,
+        ];
+
+        $validator = BaseValidator::createFromObject($schema);
+
+        $this->assertInstanceOf(IntegerValidator::class, $validator);
+
+        $this->assertSame(1, $validator->minimum);
+        $this->assertSame(2, $validator->maximum);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::toObject
+     */
+    public function testToObject()
+    {
+        $return = $this->int->toObject();
+
+        $this->assertInternalType('object', $return);
+
+        $this->assertObjectHasAttribute('type', $return);
+        $this->assertObjectHasAttribute('minimum', $return);
+        $this->assertObjectHasAttribute('maximum', $return);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::toArray
+     */
+    public function testToArray()
+    {
+        $return = $this->int->toArray();
+
+        $this->assertInternalType('array', $return);
+
+        $this->assertArrayHasKey('type', $return);
+        $this->assertArrayHasKey('minimum', $return);
+        $this->assertArrayHasKey('maximum', $return);
+
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::toJSON
+     */
+    public function testToJSON()
+    {
+        $return = $this->int->toJSON();
+
+        $this->assertInternalType('string', $return);
+
+        $jsonObject = json_decode($return);
+
+        //assert no errors
+        $this->assertSame(JSON_ERROR_NONE, json_last_error());
+
+        $this->assertObjectHasAttribute('type', $jsonObject);
+        $this->assertObjectHasAttribute('minimum', $jsonObject);
+        $this->assertObjectHasAttribute('maximum', $jsonObject);
     }
 }

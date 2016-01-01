@@ -55,6 +55,14 @@ class EmailValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\EmailValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new EmailValidator();
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\EmailValidator::validate
      */

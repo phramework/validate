@@ -50,6 +50,14 @@ class DateValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\DateValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new DateValidator();
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\DateValidator::validate
      */

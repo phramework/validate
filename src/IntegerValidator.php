@@ -24,7 +24,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @uses \Phramework\Validate\Number As base implementation's rules to
  * validate that the value is a number and then applies additional rules
  * to validate that this is a interger
- * @property integer|null minimun
+ * @property integer|null minimum
  * @property integer|null maximum
  * @property boolean|null exclusiveMinimum
  * @property boolean|null exclusiveMaximum

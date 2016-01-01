@@ -56,6 +56,28 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\EnumValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new EnumValidator(
+            ['1', '2', 'ok', 5],
+            true
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\EnumValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure()
+    {
+        $validator = new EnumValidator(
+            5
+        );
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\EnumValidator::validate
      */

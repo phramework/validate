@@ -56,8 +56,16 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\DatetimeValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new DatetimeValidator();
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\DateValidator::validate
+     * @covers Phramework\Validate\DatetimeValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -69,7 +77,7 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\DateValidator::validate
+     * @covers Phramework\Validate\DatetimeValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -79,7 +87,7 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DateValidator::getType
+     * @covers Phramework\Validate\DatetimeValidator::getType
      */
     public function testGetType()
     {

@@ -68,6 +68,14 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\BooleanValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new BooleanValidator();
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\BooleanValidator::validate
      */

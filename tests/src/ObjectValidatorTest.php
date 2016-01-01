@@ -59,6 +59,14 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\ObjectValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new ObjectValidator();
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\ObjectValidator::validate
      */

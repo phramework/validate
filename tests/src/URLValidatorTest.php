@@ -54,6 +54,14 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\URLValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new URLValidator();
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\URLValidator::validate
      */

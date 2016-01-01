@@ -21,7 +21,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * Number validator
- * @property float|null minimun
+ * @property float|null minimum
  * @property float|null maximum
  * @property boolean|null exclusiveMinimum
  * @property boolean|null exclusiveMaximum

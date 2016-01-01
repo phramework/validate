@@ -420,7 +420,7 @@ abstract class BaseValidator
     }
 
     /**
-     * Export validator to json encoded string
+     * Export validator to object
      * @return \stdClass
      */
     public function toObject()
@@ -430,7 +430,7 @@ abstract class BaseValidator
     }
 
     /**
-     * Export validator to json encoded string
+     * Export validator to array
      * @return array
      */
     public function toArray()

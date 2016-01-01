@@ -55,6 +55,14 @@ class UsernameValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\UsernameValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new UsernameValidator();
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\UsernameValidator::validate
      */

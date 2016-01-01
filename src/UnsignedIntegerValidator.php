@@ -23,7 +23,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * UnsignedInteger validator
  * @uses \Phramework\Validate\Integer As base implementation's rules to
  * validate that the value is a number and then applies additional rules
- * @property integer|null minimun
+ * @property integer|null minimum
  * @property integer|null maximum
  * @property boolean|null exclusiveMinimum
  * @property boolean|null exclusiveMaximum

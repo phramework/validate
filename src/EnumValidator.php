@@ -70,39 +70,6 @@ class EnumValidator extends \Phramework\Validate\BaseValidator
      */
     public function validate($value)
     {
-        $return = new ValidateResult($value, true);
-
-        //Use validateCommon
-        /*
-        if (is_array($value) || is_object($value)) {
-            throw new \Exception('Arrays and objects are not allowed');
-        }
-
-        //Search current $value in enum
-        foreach ($this->enum as $v) {
-            if ($value == $v) {
-                if ($this->validateType && gettype($value) !== gettype($v)) {
-                    //ignore
-                    continue;
-                }
-
-                //Success
-                //Overwrite $return's value (get correct object type)
-                $return->value = $v;
-                //Set status to true
-                $return->status = true;
-
-                return $return;
-            }
-        }
-
-        //Error
-        $return->errorObject = new IncorrectParametersException([[
-            'type' => static::getType(),
-            'failure' => 'enum'
-        ]]);
-        */
-
-        return $this->validateCommon($value, $return);
+        return $this->validateCommon($value, new ValidateResult($value, true));
     }
 }

@@ -28,7 +28,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\ArrayValidator::__construct
      */
     public function testConstruct()
@@ -86,6 +85,27 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
             \Phramework\Exceptions\IncorrectParametersException::class,
             $return->errorObject
         );
+    }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::validate
+     */
+    public function testValidateUnique()
+    {
+        $validator = new ArrayValidator(
+            1,
+            2,
+            new EnumValidator(['one', 'two', 'three', 'four'], true),
+            true
+        );
+
+        $return = $validator->validate(['one', 'one']);
+
+        $this->assertFalse($return->status);
+
+        $return = $validator->validate('one');
+
+        $this->assertFalse($return->status);
     }
 
     /**

@@ -63,6 +63,14 @@ class StringTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\StringValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new StringValidator();
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\StringValidator::validate
      */

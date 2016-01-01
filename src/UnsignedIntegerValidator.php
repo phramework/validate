@@ -42,6 +42,13 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
      */
     protected static $type = 'unsignedinteger';
 
+    /**
+    * @param integer|null minimum
+    * @param integer|null maximum
+    * @param boolean|null exclusiveMinimum
+    * @param boolean|null exclusiveMaximum
+    * @param integer multipleOf
+     */
     public function __construct(
         $minimum = 0,
         $maximum = null,
@@ -79,7 +86,7 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
                 $return->errorObject = new IncorrectParametersException([
                     [
                         'type' => static::getType(),
-                        'failure' => 'type'
+                        'failure' => 'minimum'
                     ]
                 ]);
             }

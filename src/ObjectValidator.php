@@ -77,12 +77,19 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     ) {
         parent::__construct();
 
-        $this->minProperties = $minProperties;
-        $this->maxProperties = $maxProperties;
+
 
         //Work with objects
         if (is_array($properties)) {
             $properties = (object)$properties;
+        }
+
+        if (!is_int($minProperties) || $minProperties < 0) {
+            throw new \Exception('minProperties must be positive integer');
+        }
+
+        if (($maxProperties !== null && !is_int($maxProperties)) || $maxProperties < $minProperties) {
+            throw new \Exception('maxProperties must be positive integer');
         }
 
         if ($additionalProperties !== null && !is_bool($additionalProperties)) {
@@ -90,6 +97,9 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 'For now only boolean values supported for "additionalProperties"'
             );
         }
+
+        $this->minProperties = $minProperties;
+        $this->maxProperties = $maxProperties;
 
         $this->properties = $properties;
         $this->required = $required;

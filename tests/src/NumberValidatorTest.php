@@ -73,6 +73,72 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\NumberValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure1()
+    {
+        $validator = new NumberValidator(
+            'a',
+            1
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\NumberValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure2()
+    {
+        $validator = new NumberValidator(
+            1,
+            'a'
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\NumberValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure3()
+    {
+        $validator = new NumberValidator(
+            1,
+            2,
+            'a'
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\NumberValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure4()
+    {
+        $validator = new NumberValidator(
+            1,
+            2,
+            true,
+            'a'
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\NumberValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure5()
+    {
+        $validator = new NumberValidator(
+            1,
+            2,
+            true,
+            true,
+            'a'
+        );
+    }
+
+    /**
      * @covers Phramework\Validate\NumberValidator::createFromJSON
      * @dataProvider validateSuccessProvider
      */

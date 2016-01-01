@@ -50,6 +50,18 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
         $exclusiveMaximum = null,
         $multipleOf = null
     ) {
+        if ($minimum !== null && !is_int($minimum)) {
+            throw new \Exception('Minimum must be integer');
+        }
+
+        if ($maximum !== null && !is_int($maximum)) {
+            throw new \Exception('Maximum must be integer');
+        }
+
+        if ($multipleOf !== null && !is_int($multipleOf)) {
+            throw new \Exception('multipleOf must be integer');
+        }
+
         parent::__construct(
             $minimum,
             $maximum,

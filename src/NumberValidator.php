@@ -61,6 +61,30 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
     ) {
         parent::__construct();
 
+        if ($minimum !== null && !is_numeric($minimum)) {
+            throw new \Exception('Minimum must be numeric');
+        }
+
+        if ($maximum !== null && !is_numeric($maximum)) {
+            throw new \Exception('Maximum must be numeric');
+        }
+
+        if ($maximum < $minimum) {
+            throw new \Exception('maximum cant be less than minimum');
+        }
+
+        if ($exclusiveMinimum !== null && !is_bool($exclusiveMinimum)) {
+            throw new \Exception('exclusiveMinimum must be boolean');
+        }
+
+        if ($exclusiveMaximum !== null && !is_bool($exclusiveMaximum)) {
+            throw new \Exception('exclusiveMaximum must be boolean');
+        }
+
+        if ($multipleOf !== null && !is_numeric($multipleOf)) {
+            throw new \Exception('multipleOf must be numeric');
+        }
+
         $this->minimum = $minimum;
         $this->maximum = $maximum;
         $this->exclusiveMinimum = $exclusiveMinimum;
@@ -94,7 +118,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             ]);
         } elseif ($this->maximum !== null
             && ($value > $this->maximum
-                || $this->exclusiveMaximum === true && $value >= $this->maximum
+                || ($this->exclusiveMaximum === true && $value >= $this->maximum)
             )
         ) {
             //error
@@ -106,7 +130,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             ]);
         } elseif ($this->minimum !== null
             && ($value < $this->minimum
-                || $this->exclusiveMinimum === true && $value <= $this->minimum
+                || ($this->exclusiveMinimum === true && $value <= $this->minimum)
             )
         ) {
             //error

@@ -72,6 +72,14 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
             throw new \Exception('Array for attribute "items" are not supported yet');
         }
 
+        if (!is_int($minItems) || $minItems < 0) {
+            throw new \Exception('minItems must be positive integer');
+        }
+
+        if (($maxItems !== null && !is_int($maxItems)) || $maxItems < $minItems) {
+            throw new \Exception('maxItems must be positive integer');
+        }
+
         $this->minItems = $minItems;
         $this->maxItems = $maxItems;
         $this->items = $items;

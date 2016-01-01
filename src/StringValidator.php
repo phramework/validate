@@ -60,6 +60,14 @@ class StringValidator extends \Phramework\Validate\BaseValidator
     ) {
         parent::__construct();
 
+        if (!is_int($minLength) || $minLength < 0) {
+            throw new \Exception('minLength must be positive integer');
+        }
+
+        if ($maxLength !== null && !is_int($maxLength) || $maxLength < $minLength) {
+            throw new \Exception('maxLength must be positive integer');
+        }
+
         $this->minLength = $minLength;
         $this->maxLength = $maxLength;
         $this->pattern = $pattern;

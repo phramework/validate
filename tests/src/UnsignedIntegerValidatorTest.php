@@ -67,6 +67,17 @@ class UnsignedIntegerValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\UnsignedIntegerValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure()
+    {
+        $validator = new UnsignedIntegerValidator(
+            -1
+        );
+    }
+
+    /**
      * Helper method
      */
     private function validateSuccess(UnsignedIntegerValidator $object, $input, $expected)

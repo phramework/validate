@@ -184,11 +184,11 @@
 			<code>__construct( <span>object <var>$properties</var> = []</span>, <span>string[] <var>$required</var> = []</span>, <span>object|boolean|null <var>$additionalProperties</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$minProperties</var> = <span class="php-num">0</span></span>, <span>integer <var>$maxProperties</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 			<div class="description short">
-				<p>[__construct description]</p>
+				
 			</div>
 
 			<div class="description detailed hidden">
-				<p>[__construct description]</p>
+				
 
 
 					<h4>Parameters</h4>
@@ -264,14 +264,14 @@
 
 			<td class="attributes"><code>
 				 public 
-				stdClass
+				object
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_parse">#</a>
-			<code>parse( <span>array|stdClass <var>$value</var></span> )</code>
+			<code>parse( <span>array|object <var>$value</var></span> )</code>
 
 			<div class="description short">
 				<p>This method use this validator to parse data from $value argument
@@ -291,7 +291,7 @@ and return a clean object</p>
 
 					<h4>Returns</h4>
 					<div class="list">
-						stdClass<br>[description]
+						object
 					</div>
 
 					<h4>Throws</h4>
@@ -480,9 +480,7 @@ Can be overwriten</p>
     <span class="php-quote">'maxProperties'</span>,
     <span class="php-quote">'required'</span>,
     <span class="php-quote">'properties'</span>,
-    <span class="php-quote">'additionalProperties'</span>,
-    <span class="php-quote">'patternProperties'</span>,
-    <span class="php-quote">'dependencies'</span>
+    <span class="php-quote">'additionalProperties'</span>
 ]</code>
 				</div>
 			</td>

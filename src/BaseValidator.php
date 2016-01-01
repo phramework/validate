@@ -238,6 +238,9 @@ abstract class BaseValidator
         return $this;
     }
 
+    /**
+     * @param string $title
+     */
     public function setTitle($title)
     {
         $this->title = $title;
@@ -245,6 +248,9 @@ abstract class BaseValidator
         return $this;
     }
 
+    /**
+     * @param array|null $enum
+     */
     public function setEnum($enum)
     {
         $this->enum = $enum;
@@ -252,11 +258,19 @@ abstract class BaseValidator
         return $this;
     }
 
+    /**
+     * @param string $description
+     */
     public function setDescription($description)
     {
-        return $this->__set('description', $description);
+        $this->description = $description;
+
+        return $this;
     }
 
+    /**
+     * @param mixed $default
+     */
     public function setDefault($default)
     {
         $this->default = $default;
@@ -442,14 +456,24 @@ abstract class BaseValidator
     public function toArray()
     {
         $object = ['type' => static::$type];
-        foreach (array_merge(
+
+        $attributes = array_merge(
             static::getTypeAttributes(),
             static::$commonAttributes
-        ) as $attribute) {
+        );
+
+        foreach ($attributes as $attribute) {
             $value = $this->{$attribute};
 
             if ($value !== null) {
-                $object[$attribute] = $value;
+                $toCopy = $value;
+
+                //Clone object to prevent original object to be changed
+                if (is_object($value)) {
+                    $toCopy = clone $value;
+                }
+
+                $object[$attribute] = $toCopy;
             }
 
             if (static::$type == 'object' && $attribute == 'properties') {
@@ -458,6 +482,7 @@ abstract class BaseValidator
                 }
             }
         }
+
         return $object;
     }
 }

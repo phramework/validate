@@ -50,13 +50,10 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         'maxProperties',
         'required',
         'properties',
-        'additionalProperties',
-        'patternProperties',
-        'dependencies'
+        'additionalProperties'
     ];
 
     /**
-     * [__construct description]
      * @param object                $properties
      * *[Optional]* Properties
      * @param string[]              $required
@@ -274,10 +271,10 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     /**
      * This method use this validator to parse data from $value argument
      * and return a clean object
-     * @param  array|stdClass $value Input value to validate
+     * @param  array|object $value Input value to validate
      * @throws \Phramework\Exceptions\MissingParametersException
      * @throws \Phramework\Exceptions\IncorrectParametersException
-     * @return \stdClass        [description]
+     * @return object
      * @todo find out if MissingParameters
      * @todo add errors
      * @todo additionalProperties

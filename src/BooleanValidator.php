@@ -71,7 +71,7 @@ class BooleanValidator extends \Phramework\Validate\BaseValidator
             //Set status to success
             $return->status = true;
             //Type cast
-            $return->value  = $filterValue;
+            $return->value = $filterValue;
         }
 
         return $this->validateCommon($value, $return);

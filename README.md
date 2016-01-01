@@ -15,6 +15,10 @@ composer require phramework/validate
 ### Parse an integer value
 
 ```php
+require './vendor/autoload.php';
+
+use \Phramework\Validate\IntegerValidator;
+
 $validationModel = new IntegerValidator(-1, 1);
 
 $value = $validationModel->parse('0');
@@ -57,6 +61,8 @@ stdClass Object
     [city] => Thessaloniki
 )
 ```
+
+See out [wiki](https://github.com/phramework/validate/wiki) for more examples.
 
 ## Development
 ### Install dependencies

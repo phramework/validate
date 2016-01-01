@@ -110,6 +110,9 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             ['request']
         );
 
+        //prevent bug when contents of attributes are changed
+        $validationObject->toArray();
+
         $this->assertInstanceOf(BaseValidator::class, $validationObject);
         $this->assertInstanceOf(ObjectValidator::class, $validationObject);
         $this->assertInstanceOf(

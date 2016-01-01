@@ -47,10 +47,14 @@ class StringValidator extends \Phramework\Validate\BaseValidator
 
     /**
      * [__construct description]
-     * @param integer       $minLength *[Optional]* Minimum number of its characters, default is 0
-     * @param integer|null  $maxLength *[Optional]* Maximum number of its characters, default is null
-     * @param string|null   $pattern   *[Optional]* Regular expresion pattern for validating, default is null
-     * @param boolean       $raw       *[Optional]* Keep raw value, dont sanitize value after validation, default is false
+     * @param integer       $minLength *[Optional]*
+     *     Minimum number of its characters, default is 0
+     * @param integer|null  $maxLength *[Optional]*
+     *     Maximum number of its characters, default is null
+     * @param string|null   $pattern   *[Optional]*
+     *     Regular expresion pattern for validating, default is null
+     * @param boolean       $raw       *[Optional]*
+     *     Keep raw value, dont sanitize value after validation, default is false
      */
     public function __construct(
         $minLength = 0,

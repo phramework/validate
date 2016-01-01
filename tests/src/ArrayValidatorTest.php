@@ -27,6 +27,21 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * @dataProvider validateSuccessProvider
+     * @covers Phramework\Validate\ArrayValidator::__construct
+     */
+    public function testConstruct()
+    {
+        $validator = new ArrayValidator(
+            1,
+            3,
+            new IntegerValidator(),
+            true,
+            false
+        );
+    }
+
     public function validateSuccessProvider()
     {
         //input
@@ -67,6 +82,10 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $return = $this->object->validate($input);
 
         $this->assertFalse($return->status);
+        $this->assertInstanceOf(
+            \Phramework\Exceptions\IncorrectParametersException::class,
+            $return->errorObject
+        );
     }
 
     /**
@@ -125,7 +144,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         }';
 
         $validator = BaseValidator::createFromJSON($json);
-        
+
         $this->assertInstanceOf(ArrayValidator::class, $validator);
 
         $this->assertSame(

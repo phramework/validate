@@ -22,11 +22,11 @@ use \Phramework\Exceptions\MissingParametersException;
 
 /**
  * Object validator
- * @property integer minProperties Default is 0
- * @property integer|null maxProperties
- * @property array required, Default is []
- * @property object properties, Default is empty object
- * @property object|boolean additionalProperties
+ * @property integer $minProperties Minimum number of properties
+ * @property integer|null $maxProperties Minimum number of properties
+ * @property string[] $required Required properties keys
+ * @property object $properties Properties
+ * @property object|boolean|null $additionalProperties
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor53
@@ -55,21 +55,40 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         'dependencies'
     ];
 
+    /**
+     * [__construct description]
+     * @param object                $properties
+     * *[Optional]* Properties
+     * @param string[]              $required
+     * *[Optional]* Required properties keys
+     * @param object|boolean|null   $additionalProperties
+     * *[Optional]* Default is null
+     * @param integer               $minProperties
+     * *[Optional]* Default is 0
+     * @param integer               $maxProperties
+     * *[Optional]* Default is null
+     */
     public function __construct(
         $properties = [],
         $required = [],
         $additionalProperties = null,
         $minProperties = 0,
-        $maxProperties = null,
-        $patternProperties = null
+        $maxProperties = null
     ) {
         parent::__construct();
 
         $this->minProperties = $minProperties;
         $this->maxProperties = $maxProperties;
 
+        //Work with objects
         if (is_array($properties)) {
             $properties = (object)$properties;
+        }
+
+        if ($additionalProperties !== null && !is_bool($additionalProperties)) {
+            throw new \Exception(
+                'For now only boolean values supported for "additionalProperties"'
+            );
         }
 
         $this->properties = $properties;

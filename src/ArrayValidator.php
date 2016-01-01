@@ -22,13 +22,17 @@ use \Phramework\Models\Filter;
 
 /**
  * Array validator
- * @property object|array $items If it is an object,
+ * @property BaseValidator|BaseValidator[]|null $items If it is an object,
  * this object MUST be a valid JSON Schema. If it is an array, items of this
  * array MUST be objects, and each of these objects MUST be a valid JSON Schema.
+ * @property integer $minItems Minimum number of items
+ * @property integer $maxItems Maximum number of items
+ * @property boolean $uniqueItems If true, only unique array items are allowed
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor36 Validation keywords for arrays
  * @since 0.0.0
+ * @todo support array for attribute items
  */
 class ArrayValidator extends \Phramework\Validate\BaseValidator
 {
@@ -41,25 +45,37 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
     protected static $typeAttributes = [
         'minItems',
         'maxItems',
-        'additionalItems',
         'items',
-        'uniqueItems'
+        'uniqueItems',
+        'additionalItems'
     ];
 
+    /**
+     * @param integer                                $minItems
+     *     *[Optional]* Default is 0
+     * @param integer|null                           $maxItems
+     *     *[Optional]*
+     * @param BaseValidator|BaseValidator[]|null     $items
+     *     *[Optional]* Default is null
+     * @param Boolean                                $uniqueItems
+     *     *[Optional]*
+     */
     public function __construct(
         $minItems = 0,
         $maxItems = null,
         $items = null,
-        $uniqueItems = false,
-        $additionalItems = null
+        $uniqueItems = false
     ) {
         parent::__construct();
+
+        if (is_array($this->items)) {
+            throw new \Exception('Array for attribute "items" are not supported yet');
+        }
 
         $this->minItems = $minItems;
         $this->maxItems = $maxItems;
         $this->items = $items;
         $this->uniqueItems = $uniqueItems;
-        $this->additionalItems = $additionalItems;
 
     }
 
@@ -151,6 +167,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         //Success
         $return->errorObject = null;
         $return->status = true;
+
         //typecasted
         $return->value = $value;
 

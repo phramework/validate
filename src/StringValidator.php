@@ -21,9 +21,10 @@ use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * String validator
- * @property integer $minLength Minimum number of its characters, default is 0
+ * @property integer $minLength Minimum number of its characters
  * @property integer|null $maxLength Maximum number of its characters
  * @property string|null $pattern Regular expresion pattern for validating
+ * @property boolean $raw Keep raw value, dont sanitize value after validation
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
@@ -41,9 +42,16 @@ class StringValidator extends \Phramework\Validate\BaseValidator
         'minLength',
         'maxLength',
         'pattern',
-        'raw'
+        'raw' //non standard
     ];
 
+    /**
+     * [__construct description]
+     * @param integer       $minLength *[Optional]* Minimum number of its characters, default is 0
+     * @param integer|null  $maxLength *[Optional]* Maximum number of its characters, default is null
+     * @param string|null   $pattern   *[Optional]* Regular expresion pattern for validating, default is null
+     * @param boolean       $raw       *[Optional]* Keep raw value, dont sanitize value after validation, default is false
+     */
     public function __construct(
         $minLength = 0,
         $maxLength = null,

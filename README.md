@@ -1,9 +1,7 @@
 # phramework/validate
 > phramework's validation library [https://phramework.github.io/validate/](https://phramework.github.io/validate/)
 
-[![Coverage Status](https://coveralls.io/repos/phramework/validate/badge.svg?branch=master&service=github)](https://coveralls.io/github/phramework/validate?branch=master)
-
-[![Build Status](https://travis-ci.org/phramework/validate.svg?branch=master)](https://travis-ci.org/phramework/validate)
+[![Coverage Status](https://coveralls.io/repos/phramework/validate/badge.svg?branch=master&service=github)](https://coveralls.io/github/phramework/validate?branch=master) [![Build Status](https://travis-ci.org/phramework/validate.svg?branch=master)](https://travis-ci.org/phramework/validate)
 
 ## Usage
 Require package using composer
@@ -32,7 +30,7 @@ The above example will output:
 int(0)
 ```
 
-### Parse an object for strings
+### Parse an object of strings
 
 ```php
 $validationModel = new ObjectValidator(
@@ -41,7 +39,7 @@ $validationModel = new ObjectValidator(
         'city' => new StringValidator(2, 30)
     ],
     ['name', 'city'], //required properties
-    false //no additional properties
+    false //no additional properties allowed
 );
 
 $value = $validationModel->parse(
@@ -62,7 +60,7 @@ stdClass Object
 )
 ```
 
-See out [wiki](https://github.com/phramework/validate/wiki) for more examples.
+Check [wiki](https://github.com/phramework/validate/wiki) for more examples.
 
 ## Development
 ### Install dependencies
@@ -74,8 +72,13 @@ composer update
 ### Test and lint code
 
 ```bash
-composer lint
 composer test
+composer lint
+```
+### Generate documentation
+
+```bash
+composer doc
 ```
 
 ## License

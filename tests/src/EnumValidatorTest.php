@@ -101,6 +101,20 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\EnumValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+            "type": "enum"
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(EnumValidator::class, $validationObject);
+    }
+
+    /**
      * @covers Phramework\Validate\EnumValidator::getType
      */
     public function testGetType()

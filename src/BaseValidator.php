@@ -300,6 +300,55 @@ abstract class BaseValidator
     }
 
     /**
+     * Validator classes registry
+     * @var string[]
+     */
+    private static $validatorRegistry = [
+        'string'            => StringValidator::class,
+        'url'               => URLValidator::class,
+        'int'               => IntegerValidator::class, //alias
+        'unsignedinteger'   => UnsignedIntegerValidator::class,
+        'uinteger'          => UnsignedIntegerValidator::class, //alias
+        'uint'              => UnsignedIntegerValidator::class, //alias
+        'date-time'         => DatetimeValidator::class
+    ];
+
+    /**
+     * Register a custom validator for a type
+     * @param  string $type      Type's name, `x-` SHOULD be used for custom types
+     * @param  string $className Validator's full classname.
+     * All validators MUST extend `BaseValidator` class
+     * @example
+     * ```php
+     * BaseValidator::registerValidator('x-address', 'My\APP\AddressValidator');
+     * ```
+     * @throws Exception
+     */
+    public static function registerValidator($type, $className)
+    {
+        if (!is_string($type)) {
+            throw new \Exception('"type" MUST be string');
+        }
+
+        if (!is_string($className)) {
+            throw new \Exception('"className" MUST be string');
+        }
+
+        if (!is_subclass_of(
+            $className,
+            BaseValidator::class,
+            true
+        )) {
+            throw new \Exception(sprintf(
+                '"className" MUST extend "%s"',
+                BaseValidator::class
+            ));
+        }
+
+        $validatorRegistry[$type] = $className;
+    }
+
+    /**
      * Create validator from validation object
      * @param  \stdClass $object Validation object
      * @return BaseValidator
@@ -312,7 +361,10 @@ abstract class BaseValidator
 
         //Test type if it's set
         if (property_exists($object, 'type')) {// && $object->type !== static::$type) {
-            if (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
+            if (array_key_exists($object->type, self::$validatorRegistry)) {
+                $className = self::$validatorRegistry[$object->type];
+                $class = new $className();
+            } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
                 //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type;
                 $class = new $className();
@@ -325,10 +377,10 @@ abstract class BaseValidator
             } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . 'Validator.php')) {
                 $className = __NAMESPACE__ . '\\' . ucfirst($object->type) . 'Validator';
                 $class = new $className();
-            } elseif ($object->type == 'url') {
+            /*} elseif ($object->type == 'url') {
                 $class = new URLValidator();
             } elseif ($object->type == 'unsignedinteger') {
-                $class = new UnsignedIntegerValidator();
+                $class = new UnsignedIntegerValidator();*/
             } else {
                 $className = $object->type . 'Validator';
 

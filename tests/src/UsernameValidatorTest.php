@@ -86,6 +86,20 @@ class UsernameValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\UsernameValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+            "type": "username"
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(UsernameValidator::class, $validationObject);
+    }
+
+    /**
      * @covers Phramework\Validate\UsernameValidator::getType
      */
     public function testGetType()

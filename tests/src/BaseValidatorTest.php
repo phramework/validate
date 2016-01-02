@@ -25,7 +25,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->bool = new BooleanValidator();
         $this->int = new IntegerValidator(-100000, 100000);
         $this->str = new StringValidator();
-        //$this->uint = new new UnsignedIntegerValidator(;
     }
 
     /**
@@ -626,5 +625,40 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('type', $jsonObject);
         $this->assertObjectHasAttribute('minimum', $jsonObject);
         $this->assertObjectHasAttribute('maximum', $jsonObject);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::registerValidator
+     */
+    public function testRegisterValidator()
+    {
+        BaseValidator::registerValidator(
+            \Phramework\Validate\APP\AddressValidator::getType(),
+            \Phramework\Validate\APP\AddressValidator::class
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::registerValidator
+     * @expectedException Exception
+     */
+    public function testRegisterValidatorFailure()
+    {
+        BaseValidator::registerValidator(
+            \Phramework\Validate\APP\AddressValidator::getType(),
+            \stdClass::class
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::registerValidator
+     * @expectedException Exception
+     */
+    public function testRegisterValidatorFailure2()
+    {
+        BaseValidator::registerValidator(
+            5,
+            \Phramework\Validate\APP\AddressValidator::class
+        );
     }
 }

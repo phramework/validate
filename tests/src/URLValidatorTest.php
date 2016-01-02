@@ -85,6 +85,32 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\URLValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+            "type": "url",
+            "minLength" : 10,
+            "maxLength" : 100
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(URLValidator::class, $validationObject);
+
+        $this->assertSame(
+            10,
+            $validationObject->minLength
+        );
+
+        $this->assertSame(
+            100,
+            $validationObject->maxLength
+        );
+    }
+
+    /**
      * @covers Phramework\Validate\URLValidator::getType
      */
     public function testGetType()

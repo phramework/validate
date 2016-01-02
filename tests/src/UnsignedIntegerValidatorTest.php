@@ -99,6 +99,34 @@ class UnsignedIntegerValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\UnsignedIntegerValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+            "type": "unsignedinteger"
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(UnsignedIntegerValidator::class, $validationObject);
+    }
+
+    /**
+     * @covers Phramework\Validate\UnsignedIntegerValidator::createFromJSON
+     */
+    public function testCreateFromJSONAlias()
+    {
+        $json = '{
+            "type": "uint"
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(UnsignedIntegerValidator::class, $validationObject);
+    }
+
+    /**
      * @covers Phramework\Validate\UnsignedIntegerValidator::getType
      */
     public function testGetType()

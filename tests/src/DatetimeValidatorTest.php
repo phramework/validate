@@ -87,10 +87,24 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\DatetimeValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+            "type": "date-time"
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(DatetimeValidator::class, $validationObject);
+    }
+
+    /**
      * @covers Phramework\Validate\DatetimeValidator::getType
      */
     public function testGetType()
     {
-        $this->assertEquals('datetime', $this->object->getType());
+        $this->assertEquals('date-time', $this->object->getType());
     }
 }

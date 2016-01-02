@@ -37,7 +37,7 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
      * Overwrite base class type
      * @var string
      */
-    protected static $type = 'datetime';
+    protected static $type = 'date-time';
 
     /**
      * @todo add options for only date, or only time
@@ -81,7 +81,7 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
                 'failure' => 'format'
             ]
         ]);
-        
+
         return $return;
     }
 }

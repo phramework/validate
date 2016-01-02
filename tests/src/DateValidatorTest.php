@@ -81,6 +81,20 @@ class DateValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\DateValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+            "type": "date"
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(DateValidator::class, $validationObject);
+    }
+
+    /**
      * @covers Phramework\Validate\DateValidator::getType
      */
     public function testGetType()

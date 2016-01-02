@@ -86,6 +86,20 @@ class EmailValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\EmailValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+            "type": "email"
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(EmailValidator::class, $validationObject);
+    }
+
+    /**
      * @covers Phramework\Validate\EmailValidator::getType
      */
     public function testGetType()

@@ -179,6 +179,22 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\BaseValidator::createFromJSON
+     * @expectedException Exception
+     */
+    public function testCreateFromJSONFailure2()
+    {
+        //Add an unexpected comma at the end of JSON string
+        $json = '{
+            "type": "interger",
+            "minimum" : -1000,
+            "maximum" : 1000,
+        }';
+
+        $validationObject = IntegerValidator::createFromJSON($json);
+    }
+
+    /**
      * @covers Phramework\Validate\BaseValidator::parse
      */
     public function testParseSuccess()
@@ -635,6 +651,27 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         BaseValidator::registerValidator(
             \Phramework\Validate\APP\AddressValidator::getType(),
             \Phramework\Validate\APP\AddressValidator::class
+        );
+
+        $json = sprintf(
+            '{
+                "type": "%s",
+                "minLength" : 4,
+                "maxLength" : 20
+            }',
+            \Phramework\Validate\APP\AddressValidator::getType()
+        );
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(
+            \Phramework\Validate\APP\AddressValidator::class,
+            $validationObject
+        );
+
+        $this->assertSame(
+            $validationObject->minLength,
+            4
         );
     }
 

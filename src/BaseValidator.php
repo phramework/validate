@@ -345,7 +345,7 @@ abstract class BaseValidator
             ));
         }
 
-        $validatorRegistry[$type] = $className;
+        self::$validatorRegistry[$type] = $className;
     }
 
     /**
@@ -463,10 +463,18 @@ abstract class BaseValidator
      * Create validator from validation object encoded as json object
      * @param  string $object Validation json encoded object
      * @return BaseValidator
+     * @throws Exception when JSON sting is not well formed
      */
     public static function createFromJSON($json)
     {
         $object = json_decode($json);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception(
+                'JSON parse had errors - ' . json_last_error_msg()
+            );
+        }
+        
         return static::createFromObject($object);
     }
 

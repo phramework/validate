@@ -47,7 +47,8 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         return [
             [[2, '3']],
             [['2', '3']],
-            [[1, 2, 3]]
+            [[1, 2, 3]],
+            [[1,2]]
         ];
     }
 
@@ -55,6 +56,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     {
         //input
         return [
+            [1],
             ['0 items' => []],
             ['>3 items' => [1,2,3,4,5,6]]
         ];

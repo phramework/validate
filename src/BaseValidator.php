@@ -118,8 +118,7 @@ abstract class BaseValidator
                     $return->status = true;
 
                     return $return;
-                } elseif (
-                    is_array($value)
+                } elseif (is_array($value)
                     && is_array($v)
                     && ArrayValidator::equals($value, $v)
                 ) {

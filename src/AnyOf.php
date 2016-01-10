@@ -54,12 +54,19 @@ class AnyOf extends \Phramework\Validate\BaseValidator
     }
 
     /**
+     * When not null, a specific count of passed anyOf validations will be used in
+     * validate method.
+     * This internal parameter is useful for oneOf, and allOf classes
+     * @var integer|null
+     */
+    protected $requiredCountOfAnyOf = null;
+
+    /**
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
      * @return ValidateResult
-     * @uses https://secure.php.net/manual/en/function.is-string.php
-     * @uses filter_var with FILTER_VALIDATE_REGEXP for pattern
+     * @uses $requiredCountOfAnyOf
      */
     public function validate($value)
     {
@@ -80,13 +87,38 @@ class AnyOf extends \Phramework\Validate\BaseValidator
             }
         }
 
-        if (count($successValidated) > 0) {
+        if ((
+                $this->requiredCountOfAnyOf === null
+                && count($successValidated) > 0
+            )
+            ||
+            (
+                $this->requiredCountOfAnyOf !== null
+                && count($successValidated) === $this->requiredCountOfAnyOf
+             )
+        ) {
             //Use first in list
             $return = $successValidated[0]->return;
+            return $this->validateCommon($value, $return);
         }
+
+        //error
+
+        $failure = 'anyOf';
+
+        if ($this->requiredCountOfAnyOf !== null) {
+            $failure = ($this->requiredCountOfAnyOf === 1 ? 'oneOf' : 'allOf');
+        }
+
+        $return->errorObject = new IncorrectParametersException([
+            [
+                'type' => static::getType(),
+                'failure' => $failure
+            ]
+        ]);
 
         unset($successValidated);
 
-        return $this->validateCommon($value, $return);
+        return $return;
     }
 }

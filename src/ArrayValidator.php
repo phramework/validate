@@ -181,4 +181,19 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
 
         return $this->validateCommon($value, $return);
     }
+
+    /**
+     * @param  array $a
+     * @param  array $b
+     * @return boolean
+     * @since 0.4.0
+     */
+    public static function equals($a, $b)
+    {
+        return (
+            is_array($a)
+            && is_array($b)
+            && array_diff($a, $b) === array_diff($b, $a)
+        );
+    }
 }

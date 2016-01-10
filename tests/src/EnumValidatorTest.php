@@ -19,7 +19,7 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new EnumValidator(['1', '2', 'ok', 5], true);
+        $this->object = new EnumValidator(['1', '2', [1, 2, 3], 'ok', 5], true);
     }
 
     /**
@@ -38,7 +38,8 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
             ['1', '1'],
             ['2', '2'],
             ['ok', 'ok'],
-            [5, 5]
+            [5, 5],
+            [[1,2,3], [1, 2, 3]]
         ];
     }
 
@@ -63,17 +64,6 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new EnumValidator(
             ['1', '2', 'ok', 5],
             true
-        );
-    }
-
-    /**
-     * @covers Phramework\Validate\EnumValidator::__construct
-     * @expectedException Exception
-     */
-    public function testConstructFailure()
-    {
-        $validator = new EnumValidator(
-            5
         );
     }
 

@@ -196,4 +196,53 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('array', $this->object->getType());
     }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::equals
+     */
+    public function testEquals()
+    {
+        $this->assertTrue(
+            ArrayValidator::equals(
+                [0, 1],
+                [0, 1]
+            )
+        );
+
+        $this->assertTrue(
+            ArrayValidator::equals(
+                [0, 1],
+                [1, 0]
+            )
+        );
+
+
+        $this->assertFalse(
+            ArrayValidator::equals(
+                [0, 1],
+                [0, 4]
+            )
+        );
+
+        $this->assertFalse(
+            ArrayValidator::equals(
+                [0, 1],
+                [0, 1, 3]
+            )
+        );
+
+        $this->assertFalse(
+            ArrayValidator::equals(
+                [0, 1],
+                []
+            )
+        );
+
+        $this->assertFalse(
+            ArrayValidator::equals(
+                [0, 1],
+                [0]
+            )
+        );
+    }
 }

@@ -379,22 +379,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-    /**
-     * Validate against common enum keyword,
-     * expect exception sice objects and arrays are not yet supported for enum keyword
-     * @expectedException Exception
-     * @covers Phramework\Validate\BaseValidator::validateEnum
-     */
-    public function testValidateEnumException()
-    {
-        $validator = (new ArrayValidator());
-
-        $validator->enum = [[1], [1,2]];
-
-        $validator->validate([1]);
-    }
-
     /**
      * Validate against common enum keyword,
      * expect exception sice objects and arrays are not yet supported for enum keyword

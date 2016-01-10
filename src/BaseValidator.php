@@ -31,9 +31,9 @@ abstract class BaseValidator
     /**
      * Validator's type
      * Must be overwriten, default is 'string'
-     * @var string
+     * @var string|null
      */
-    protected static $type = 'string';
+    protected static $type = null;
 
     /**
      * This static method will instanciate a new object as validation model
@@ -92,14 +92,14 @@ abstract class BaseValidator
 
         //Check if $this->enum is set and it's not null since its optional
         if ($this->enum && $this->enum !== null) {
-            if (is_array($value) || is_object($value)) {
-                throw new \Exception('Arrays and objects are not supported');
+            if (is_object($value)) {
+                throw new \Exception('Objects are not supported');
             }
 
             //Search current $value in enum
             foreach ($this->enum as $v) {
-                if (is_array($v) || is_object($v)) {
-                    throw new \Exception('Arrays and objects are not supported');
+                if (is_object($v)) {
+                    throw new \Exception('Objects are not supported');
                 }
 
                 if ($value == $v) {
@@ -108,6 +108,22 @@ abstract class BaseValidator
                         //ignore that the value is found
                         continue;
                     }
+
+                    //Success value is found
+
+                    //Overwrite $return's value (get correct object type)
+                    $return->value = $v;
+
+                    //Set status to true
+                    $return->status = true;
+
+                    return $return;
+                } elseif (
+                    is_array($value)
+                    && is_array($v)
+                    && ArrayValidator::equals($value, $v)
+                ) {
+                    //Type is same (arrays)
 
                     //Success value is found
 
@@ -137,7 +153,7 @@ abstract class BaseValidator
 
     /**
      * Get validator's type
-     * @return string
+     * @return string|null
      */
     public static function getType()
     {

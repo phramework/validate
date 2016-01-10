@@ -45,17 +45,11 @@ class EnumValidator extends \Phramework\Validate\BaseValidator
     ];
 
     public function __construct(
-        $enum = [],
+        array $enum = [],
         $validateType = false,
         $default = null
     ) {
         parent::__construct();
-
-        if (!is_array($enum)) {
-            throw new \Exception(
-                'Invalid value for argument "enum" array required'
-            );
-        }
 
         $this->enum  = $enum;
         $this->validateType = $validateType;

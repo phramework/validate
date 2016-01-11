@@ -521,6 +521,12 @@ abstract class BaseValidator
     public function toObject()
     {
         $object = $this->toArray();
+
+        //fix type to object
+        if (isset($object['properties'])) {
+            $object['properties'] = (object)$object['properties'];
+        }
+
         return (object)$object;
     }
 
@@ -557,6 +563,8 @@ abstract class BaseValidator
                         $object[$attribute]->{$key} = $property->toArray();
                     }
                 }
+                //fix type to array
+                $object[$attribute] = (array)$object[$attribute];
             }
         }
 

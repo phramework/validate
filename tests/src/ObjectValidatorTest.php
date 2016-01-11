@@ -24,7 +24,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             'ok' => new \Phramework\Validate\BooleanValidator(),
         ];
 
-        $this->object = new ObjectValidator($properties, ['ok']);
+        $this->object = new ObjectValidator($properties, ['ok'], true, 2, 2);
     }
 
     /**
@@ -40,7 +40,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         //input
         return [
-            [['ok' => true]],
+            [(object)['ok' => true, 'str2' => 'my str']],
             [(object)['ok' => 'true', 'okk' => '123']],
             [(object)['ok' => false, 'okk' => 'xyz' ]]
         ];
@@ -53,8 +53,11 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             [1], //not an array or object
             [['ok']], //`ok` is not an object key
             [['abc']],
+            [(object)['str' => 'my str', 'okk' => false]],
             [(object)(['okk' => 'hello'])], //because missing ok
-            [['ok'=> 'omg', 'okk' => '2', 'xyz' => true]], //because of ok is not boolean
+            [['ok'=> 'omg', 'okk' => '2']], //because of ok is not boolean
+            [(object)['ok' => 'true', 'str' => 'my str', 'okk' => '123']], //maxProperties
+            [(object)['ok' => 'true']] //minProperties
         ];
     }
 
@@ -64,6 +67,50 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $validator = new ObjectValidator();
+    }
+
+    /**
+     * @covers Phramework\Validate\ObjectValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure()
+    {
+        $validator = new ObjectValidator(
+            [],
+            [],
+            null,
+            -1
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\ObjectValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure1()
+    {
+        $validator = new ObjectValidator(
+            [],
+            [],
+            null,
+            2,
+            1
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\ObjectValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure2()
+    {
+        $validator = new ObjectValidator(
+            [],
+            [],
+            [],
+            1,
+            2
+        );
     }
 
     /**
@@ -181,6 +228,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             $parsed->request->response->ruleObjects
         );
     }
+
     /**
      * @dataProvider validateFailureProvider
      * @covers Phramework\Validate\ObjectValidator::validate
@@ -190,6 +238,87 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         $return = $this->object->validate($input);
 
         $this->assertFalse($return->status);
+    }
+
+    /**
+     * @covers Phramework\Validate\ObjectValidator::validate
+     */
+    public function testValidateFailureMissing()
+    {
+        $validationObject = new ObjectValidator(
+            [
+                'key' => new StringValidator()
+            ],
+            ['key'],
+            false
+        );
+
+        $return = $validationObject->validate(['ok' => 'true']);
+
+        $this->assertFalse($return->status);
+
+        $this->assertInstanceOf(
+            'Phramework\\Exceptions\\MissingParametersException',
+            $return->errorObject
+        );
+
+        $parameters = $return->errorObject->getParameters();
+
+        $this->assertContains('key', $parameters);
+
+        $validationObject = new ObjectValidator(
+            [
+                'key' => new StringValidator(),
+                'obj' => new ObjectValidator(
+                    [
+                        'o' => new StringValidator()
+                    ],
+                    ['o'],
+                    true
+                )
+            ],
+            ['obj']
+        );
+
+        $return = $validationObject->validate([
+            'ok' => 'true',
+            'obj' => [
+                'ok' => false
+            ]
+        ]);
+
+        $this->assertFalse($return->status);
+
+        $this->assertInstanceOf(
+            \Phramework\Exceptions\MissingParametersException::class,
+            $return->errorObject
+        );
+    }
+    /**
+     * @covers Phramework\Validate\ObjectValidator::validate
+     */
+    public function testValidateFailureAdditionalProperties()
+    {
+        $validationObject = new ObjectValidator(
+            [
+                'key' => new StringValidator()
+            ],
+            ['key'],
+            false
+        );
+
+        $return = $validationObject->validate(['key' => '1', 'additiona' => 'true']);
+
+        $this->assertFalse($return->status);
+
+        $this->assertInstanceOf(
+            'Phramework\\Exceptions\\IncorrectParametersException',
+            $return->errorObject
+        );
+
+        $parameters = $return->errorObject->getParameters();
+
+        $this->assertEquals('additionalProperties', $parameters[0]['failure']);
     }
 
     /**
@@ -218,6 +347,15 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $properties = 104;
         $this->object->addProperties($properties); //Not an array
+    }
+
+    /**
+     * @covers Phramework\Validate\ObjectValidator::addProperties
+     * @expectedException Exception
+     */
+    public function testAddPropertiesFailure2()
+    {
+        $this->object->addProperties([]);
     }
 
     /**

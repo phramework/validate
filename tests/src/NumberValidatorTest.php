@@ -50,6 +50,8 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     {
         //input
         return [
+            ['a'],
+            ['abc'],
             ['-0x'],
             ['abc'],
             ['+xyz'],
@@ -139,6 +141,18 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\NumberValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure6()
+    {
+        $validator = new NumberValidator(
+            2,
+            1
+        );
+    }
+
+    /**
      * @covers Phramework\Validate\NumberValidator::createFromJSON
      * @dataProvider validateSuccessProvider
      */
@@ -205,12 +219,21 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidateFailure($input)
     {
         $return = $this->object->validate($input);
-        
-        $this->assertFalse($return->status);
 
-        $this->markTestIncomplete(
-            'Test Exclusive and multipleOf'
-        );
+        $this->assertFalse($return->status);
+    }
+
+    /**
+     * @covers Phramework\Validate\NumberValidator::validate
+     */
+    public function testValidateFailureMultipleOf()
+    {
+        $validator = new NumberValidator(null, null, null, null, 2);
+        $return = $validator->validate(5);
+
+        $parameters = $return->errorObject->getParameters();
+
+        $this->assertEquals('multipleOf', $parameters[0]['failure']);
     }
 
     /**

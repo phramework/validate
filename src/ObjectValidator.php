@@ -107,6 +107,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @param  mixed $value Value to validate
      * @return ValidateResult
      * @todo if array, remove elements without keys
+     * @todo clean up failure of recurvice objects
      */
     public function validate($value)
     {
@@ -226,7 +227,11 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 ];
             }
 
-            $return->errorObject = new IncorrectParametersException($errorObject);
+            if (!empty($missingObjects)) {
+                $return->errorObject = new MissingParametersException($missingObjects);
+            } else {
+                $return->errorObject = new IncorrectParametersException($errorObject);
+            }
 
             return $return;
         }
@@ -242,11 +247,11 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
 
             if (!empty($foundAdditionalProperties)) {
-                $return->errorObject = new IncorrectParametersException([
+                $return->errorObject = new IncorrectParametersException([[
                  'type' => static::getType(),
                  'failure' => 'additionalProperties',
                  'properties' => $foundAdditionalProperties
-                ]);
+                ]]);
                 return $return;
             }
         }
@@ -290,7 +295,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
     /**
      * Add properties to this object validator
-     * @param array||stdClass $properties [description]
+     * @param array||object $properties [description]
      * @throws \Exception If properties is not an array
      */
     public function addProperties($properties)

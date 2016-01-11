@@ -452,6 +452,19 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\BaseValidator::getTypeAttributes
+     */
+    public function testGetTypeAttributes()
+    {
+        $validator = new IntegerValidator();
+        $this->assertInternalType('array', $validator->getTypeAttributes());
+
+        foreach ($validator->getTypeAttributes() as $attribute) {
+            $this->assertInternalType('string', $attribute);
+        }
+    }
+
+    /**
      * @covers Phramework\Validate\BaseValidator::__set
      */
     public function testSetSuccess()
@@ -594,6 +607,28 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\BaseValidator::toObject
+     */
+    public function testToObjec2()
+    {
+        $return = (new ObjectValidator(
+            [
+                'int' => new IntegerValidator()
+            ],
+            ['int']
+        ))->toObject();
+
+        $this->assertInternalType('object', $return);
+
+        $this->assertObjectHasAttribute('type', $return);
+        $this->assertObjectHasAttribute('properties', $return);
+        $this->assertObjectHasAttribute('required', $return);
+
+        $this->assertInternalType('object', $return->properties);
+
+    }
+
+    /**
      * @covers Phramework\Validate\BaseValidator::toArray
      */
     public function testToArray()
@@ -605,6 +640,28 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('type', $return);
         $this->assertArrayHasKey('minimum', $return);
         $this->assertArrayHasKey('maximum', $return);
+
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::toArray
+     */
+    public function testToArray2()
+    {
+        $return = (new ObjectValidator(
+            [
+                'int' => new IntegerValidator()
+            ],
+            ['int']
+        ))->toArray();
+
+        $this->assertInternalType('array', $return);
+
+        $this->assertArrayHasKey('type', $return);
+        $this->assertArrayHasKey('properties', $return);
+        $this->assertArrayHasKey('required', $return);
+
+        $this->assertInternalType('array', $return['properties']);
 
     }
 
@@ -680,6 +737,18 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         BaseValidator::registerValidator(
             5,
             \Phramework\Validate\APP\AddressValidator::class
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::registerValidator
+     * @expectedException Exception
+     */
+    public function testRegisterValidatorFailure3()
+    {
+        BaseValidator::registerValidator(
+            \Phramework\Validate\APP\AddressValidator::getType(),
+            34
         );
     }
 }

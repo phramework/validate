@@ -180,8 +180,23 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($return->status);
 
         $this->markTestIncomplete(
-            'Test Exclusive and multipleOf'
+            'Test Exclusive'
         );
+    }
+
+    /**
+     * @covers Phramework\Validate\NumberValidator::validate
+     */
+    public function testValidateFailureMultipleOf()
+    {
+        $validator = new IntegerValidator(null, null, null, null, 2);
+        $return = $validator->validate(5);
+
+        $this->assertFalse($return->status);
+
+        $parameters = $return->errorObject->getParameters();
+
+        $this->assertEquals('multipleOf', $parameters[0]['failure']);
     }
 
     /**

@@ -112,6 +112,51 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\AnyOf::validate
+     */
+    public function testValidateSuccessFailureTypes()
+    {
+        //any
+
+        $validator = new AnyOf([
+            new StringValidator(),
+            new IntegerValidator()
+        ]);
+
+        $return = $validator->validate([1]);
+
+        $parameters = $return->errorObject->getParameters();
+
+        $this->assertEquals('anyOf', $parameters[0]['failure']);
+
+        //all
+
+        $validator = new AllOf([
+            new StringValidator(),
+            new IntegerValidator()
+        ]);
+
+        $return = $validator->validate([1]);
+
+        $parameters = $return->errorObject->getParameters();
+
+        $this->assertEquals('allOf', $parameters[0]['failure']);
+
+        //one
+
+        $validator = new OneOf([
+            new StringValidator(),
+            new IntegerValidator()
+        ]);
+
+        $return = $validator->validate([1]);
+
+        $parameters = $return->errorObject->getParameters();
+
+        $this->assertEquals('oneOf', $parameters[0]['failure']);
+    }
+
+    /**
      * @dataProvider validateFailureProvider
      * @covers Phramework\Validate\AnyOf::validate
      */

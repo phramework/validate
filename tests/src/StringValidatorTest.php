@@ -71,6 +71,24 @@ class StringTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\StringValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure()
+    {
+        $validator = new StringValidator(-1);
+    }
+
+    /**
+     * @covers Phramework\Validate\StringValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure2()
+    {
+        $validator = new StringValidator(3, 2);
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\StringValidator::validate
      */
@@ -80,6 +98,19 @@ class StringTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('string', $return->value);
         $this->assertEquals($expected, $return->value);
+        $this->assertTrue($return->status);
+    }
+
+    /**
+     * @covers Phramework\Validate\StringValidator::validate
+     */
+    public function testValidateSuccessRaw()
+    {
+        $this->object->raw = true;
+        $return = $this->object->validate('abx34scd3');
+
+        $this->assertInternalType('string', $return->value);
+        $this->assertEquals('abx34scd3', $return->value);
         $this->assertTrue($return->status);
     }
 

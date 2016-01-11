@@ -90,12 +90,10 @@ class AnyOf extends \Phramework\Validate\BaseValidator
         if ((
                 $this->requiredCountOfAnyOf === null
                 && count($successValidated) > 0
-            )
-            ||
-            (
+            ) || (
                 $this->requiredCountOfAnyOf !== null
                 && count($successValidated) === $this->requiredCountOfAnyOf
-             )
+            )
         ) {
             //Use first in list
             $return = $successValidated[0]->return;

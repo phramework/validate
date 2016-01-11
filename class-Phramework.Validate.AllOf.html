@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Phramework\Validate\StringValidator | phramework/validate</title>
+	<title>Class Phramework\Validate\AllOf | phramework/validate</title>
 
 	<link rel="stylesheet" href="resources/bootstrap.min.css?2013d626fae2f30e94006064eace0e5727ce5e7a">
 	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
@@ -79,7 +79,7 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Phramework.Validate.AllOf.html">AllOf</a></li>
+				<li class="active"><a href="class-Phramework.Validate.AllOf.html">AllOf</a></li>
 				<li><a href="class-Phramework.Validate.AnyOf.html">AnyOf</a></li>
 				<li><a href="class-Phramework.Validate.ArrayValidator.html">ArrayValidator</a></li>
 				<li><a href="class-Phramework.Validate.BaseValidator.html">BaseValidator</a></li>
@@ -92,7 +92,7 @@
 				<li><a href="class-Phramework.Validate.NumberValidator.html">NumberValidator</a></li>
 				<li><a href="class-Phramework.Validate.ObjectValidator.html">ObjectValidator</a></li>
 				<li><a href="class-Phramework.Validate.OneOf.html">OneOf</a></li>
-				<li class="active"><a href="class-Phramework.Validate.StringValidator.html">StringValidator</a></li>
+				<li><a href="class-Phramework.Validate.StringValidator.html">StringValidator</a></li>
 				<li><a href="class-Phramework.Validate.UnsignedIntegerValidator.html">UnsignedIntegerValidator</a></li>
 				<li><a href="class-Phramework.Validate.URLValidator.html">URLValidator</a></li>
 				<li><a href="class-Phramework.Validate.UsernameValidator.html">UsernameValidator</a></li>
@@ -113,11 +113,11 @@
 <div id="right">
 	<div id="rightInner">
 <div id="content" class="class">
-	<h1>Class StringValidator</h1>
+	<h1>Class AllOf</h1>
 
 
 	<div class="description">
-	<p>String validator</p>
+	<p>Validates successfully if it validates successfully against all schema defined in allOf attribute</p>
 	</div>
 
 	<dl class="tree well">
@@ -129,23 +129,20 @@
 		</dd>
 		<dd style="padding-left:30px">
 			<img src="resources/inherit.png" alt="Extended by">
-<b><span>Phramework\Validate\StringValidator</span></b>			
+			<a href="class-Phramework.Validate.AnyOf.html"><span>Phramework\Validate\AnyOf</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:60px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Phramework\Validate\AllOf</span></b>			
 			
 			
 		</dd>
 	</dl>
 
 
-	<div>
-		<h3>Direct known subclasses</h3>
-		<p class="elementList">
-			<code><a href="class-Phramework.Validate.DatetimeValidator.html">Phramework\Validate\DatetimeValidator</a></code>, 
-			<code><a href="class-Phramework.Validate.DateValidator.html">Phramework\Validate\DateValidator</a></code>, 
-			<code><a href="class-Phramework.Validate.EmailValidator.html">Phramework\Validate\EmailValidator</a></code>, 
-			<code><a href="class-Phramework.Validate.URLValidator.html">Phramework\Validate\URLValidator</a></code>, 
-			<code><a href="class-Phramework.Validate.UsernameValidator.html">Phramework\Validate\UsernameValidator</a></code>
-		</p>
-	</div>
 
 
 
@@ -163,10 +160,10 @@
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Since:</b>
-				0.0.0<br>
+				0.4.0<br>
 				<b>See:</b>
-				ECMA 262 regular expression dialect for regular expression pattern<br>
-			<b>Located at</b> StringValidator.php		<br>
+				http://json-schema.org/latest/json-schema-validation.html#anchor82<br>
+			<b>Located at</b> AllOf.php		<br>
 	</div>
 
 
@@ -185,37 +182,40 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code>__construct( <span>integer <var>$minLength</var> = <span class="php-num">0</span></span>, <span>integer|null <var>$maxLength</var> = <span class="php-keyword1">null</span></span>, <span>string|null <var>$pattern</var> = <span class="php-keyword1">null</span></span>, <span>boolean <var>$raw</var> = <span class="php-keyword1">false</span> </span> )</code>
+			<code>__construct( <span>array <var>$allOf</var></span> )</code>
 
 			<div class="description short">
-				<p>[__construct description]</p>
+				
 			</div>
 
 			<div class="description detailed hidden">
-				<p>[__construct description]</p>
+				
 
 
 					<h4>Parameters</h4>
 					<div class="list"><dl>
-						<dt><var>$minLength</var></dt>
-						<dd><p><em>[Optional]</em>
-    Minimum number of its characters, default is 0</p></dd>
-						<dt><var>$maxLength</var></dt>
-						<dd><p><em>[Optional]</em>
-    Maximum number of its characters, default is null</p></dd>
-						<dt><var>$pattern</var></dt>
-						<dd><p><em>[Optional]</em>
-    Regular expresion pattern for validating, default is null</p></dd>
-						<dt><var>$raw</var></dt>
-						<dd><p><em>[Optional]</em>
-    Keep raw value, dont sanitize value after validation, default is false</p></dd>
+						<dt><var>$allOf</var></dt>
+						<dd></dd>
 					</dl></div>
 
 
 
+					<h4>Example</h4>
+					<div class="list">
+							<pre><span class="php-var">$validator</span> = <span class="php-keyword1">new</span> AllOf([
+    <span class="php-keyword1">new</span> IntegerValidator(),
+    <span class="php-keyword1">new</span> EnumValidator([<span class="php-num">2</span>, <span class="php-num">4</span>, <span class="php-num">8</span>])
+]);
+
+<span class="php-comment">//Will parse successfully</span>
+<span class="php-var">$parsed</span> = <span class="php-var">$validator</span>-&gt;parse(<span class="php-num">8</span>);
+
+<span class="php-comment">//But not</span>
+<span class="php-var">$parsed</span> = <span class="php-var">$validator</span>-&gt;parse(<span class="php-num">10</span>);</pre><br>
+					</div>
 
 					<h4>Overrides</h4>
-					<div class="list"><code><a href="class-Phramework.Validate.BaseValidator.html#___construct">Phramework\Validate\BaseValidator::__construct</a></code></div>
+					<div class="list"><code><a href="class-Phramework.Validate.AnyOf.html#___construct">Phramework\Validate\AnyOf::__construct</a></code></div>
 
 			</div>
 			</div></td>
@@ -259,10 +259,12 @@
 					</div>
 					<h4>Uses</h4>
 					<div class="list">
-							https://secure.php.net/manual/en/function.is-string.php<br>
-							filter_var with FILTER_VALIDATE_REGEXP for pattern<br>
+							<br>
+							\Phramework\Validate\AnyOf::validate<br>
 					</div>
 
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Phramework.Validate.AnyOf.html#_validate">Phramework\Validate\AnyOf::validate</a></code></div>
 
 			</div>
 			</div></td>
@@ -311,7 +313,7 @@
 		<tr data-order="type" id="$type">
 			<td class="attributes"><code>
 				protected static 
-				string
+				null
 			</code></td>
 
 			<td class="name">
@@ -328,7 +330,7 @@
 			<td class="value">
 				<div>
 					<a href="#$type" class="anchor">#</a>
-					<code><span class="php-quote">'string'</span></code>
+					<code><span class="php-keyword1">null</span></code>
 				</div>
 			</td>
 		</tr>
@@ -355,17 +357,44 @@ Can be overwriten</p>
 				<div>
 					<a href="#$typeAttributes" class="anchor">#</a>
 					<code>[
-    <span class="php-quote">'minLength'</span>,
-    <span class="php-quote">'maxLength'</span>,
-    <span class="php-quote">'pattern'</span>,
-    <span class="php-quote">'raw'</span> <span class="php-comment">//non standard</span>
+    <span class="php-quote">'allOf'</span>
 ]</code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="anyOfProperty" id="$anyOfProperty">
+			<td class="attributes"><code>
+				protected  
+				string
+			</code></td>
+
+			<td class="name">
+<var>$anyOfProperty</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$anyOfProperty" class="anchor">#</a>
+					<code><span class="php-quote">'allOf'</span></code>
 				</div>
 			</td>
 		</tr>
 			</table>
 		</div>
 
+		<div class="panel panel-default">
+            <div class="panel-heading"><h3>Properties inherited from <a href="class-Phramework.Validate.AnyOf.html#properties">Phramework\Validate\AnyOf</a></h3></div>
+			<p class="elementList">
+				<code><a href="class-Phramework.Validate.AnyOf.html#$requiredCountOfAnyOf"><var>$requiredCountOfAnyOf</var></a></code>
+			</p>
+		</div>
 		<div class="panel panel-default">
             <div class="panel-heading"><h3>Properties inherited from <a href="class-Phramework.Validate.BaseValidator.html#properties">Phramework\Validate\BaseValidator</a></h3></div>
 			<p class="elementList">
@@ -376,83 +405,6 @@ Can be overwriten</p>
 		</div>
 
 
-		<div class="panel panel-default">
-            <div class="panel-heading"><h3>Magic properties</h3></div>
-			<table class="summary table table-bordered table-striped properties" id="magicProperties">
-		<tr data-order="minLength" id="m$minLength">
-			<td class="attributes"><code>
-				public  
-				integer
-			</code></td>
-
-			<td class="name">
-<var>$minLength</var>
-				<div class="description short">
-					<p>Minimum number of its characters</p>
-				</div>
-
-				<div class="description detailed hidden">
-					
-
-				</div>
-			</td>
-		</tr>
-		<tr data-order="maxLength" id="m$maxLength">
-			<td class="attributes"><code>
-				public  
-				integer|null
-			</code></td>
-
-			<td class="name">
-<var>$maxLength</var>
-				<div class="description short">
-					<p>Maximum number of its characters</p>
-				</div>
-
-				<div class="description detailed hidden">
-					
-
-				</div>
-			</td>
-		</tr>
-		<tr data-order="pattern" id="m$pattern">
-			<td class="attributes"><code>
-				public  
-				string|null
-			</code></td>
-
-			<td class="name">
-<var>$pattern</var>
-				<div class="description short">
-					<p>Regular expresion pattern for validating</p>
-				</div>
-
-				<div class="description detailed hidden">
-					
-
-				</div>
-			</td>
-		</tr>
-		<tr data-order="raw" id="m$raw">
-			<td class="attributes"><code>
-				public  
-				boolean
-			</code></td>
-
-			<td class="name">
-<var>$raw</var>
-				<div class="description short">
-					<p>Keep raw value, dont sanitize value after validation</p>
-				</div>
-
-				<div class="description detailed hidden">
-					
-
-				</div>
-			</td>
-		</tr>
-			</table>
-		</div>
 
 
 

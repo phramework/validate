@@ -406,7 +406,7 @@ abstract class BaseValidator
      */
     public static function createFromObject($object)
     {
-        //$isFromBase = (static::class === self::class);
+        $isFromBase = (static::class === self::class);
 
         //Test type if it's set
         if (property_exists($object, 'type')) {
@@ -572,7 +572,11 @@ abstract class BaseValidator
      */
     public function toArray()
     {
-        $object = ['type' => static::$type];
+        $object = [];
+
+        if (static::$type) {
+            $object['type'] = static::$type;
+        }
 
         $attributes = array_merge(
             static::getTypeAttributes(),

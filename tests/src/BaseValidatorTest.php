@@ -194,6 +194,8 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $validationObject = IntegerValidator::createFromJSON($json);
     }
 
+    
+
     /**
      * @covers Phramework\Validate\BaseValidator::parse
      */
@@ -324,6 +326,16 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             3
         );
     }
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromObject
+     */
+    public function testCreateFromObjectTypeless()
+    {
+        $validator = IntegerValidator::createFromObject((object)[]);
+
+        $this->assertInstanceOf(IntegerValidator::class, $validator);
+    }
+
     /**
      * Validate against common enum keyword
      * @covers Phramework\Validate\BaseValidator::validateCommon
@@ -590,6 +602,34 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(1, $validator->minimum);
         $this->assertSame(2, $validator->maximum);
+
+        $schema = (object)[
+            'type' => 'object',
+            'properties' => (object)[
+                'code' => (object)[
+                    'type' => 'integer'
+                ]
+            ]
+        ];
+
+        $validator = BaseValidator::createFromObject($schema);
+
+        $this->assertInstanceOf(ObjectValidator::class, $validator);
+
+        $validator->parse((object)['code' => 10]);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromObject
+     * @expectedException Exception
+     */
+    public function testCreateFromObjectFailure()
+    {
+        $object = (object)[
+            'type' => 'x-not-found'
+        ];
+
+        $validator = BaseValidator::createFromObject($object);
     }
 
     /**
@@ -598,7 +638,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     public function testToObject()
     {
         $return = $this->int->toObject();
-        
+
         $this->assertInternalType('object', $return);
 
         $this->assertObjectHasAttribute('type', $return);

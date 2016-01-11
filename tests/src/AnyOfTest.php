@@ -169,9 +169,34 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AnyOf::createFromJSON
+     * @covers Phramework\Validate\BaseValidator::createFromObject
      */
-    public function testCreateFromJSON()
+    public function testCreateFromObject()
+    {
+        $object = (object)json_decode('{
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          ]
+        }');
+
+        $validator = BaseValidator::createFromObject($object);
+
+        $this->assertInstanceOf(AnyOf::class, $validator);
+
+        $this->assertInternalType('array', $validator->anyOf);
+    }
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
+     */
+    public function testCreateFromObjectForAdditional()
     {
         $json = '{
           "anyOf": [

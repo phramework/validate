@@ -258,7 +258,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($return->status);
 
         $this->assertInstanceOf(
-            'Phramework\\Exceptions\\MissingParametersException',
+            \Phramework\Exceptions\MissingParametersException::class,
             $return->errorObject
         );
 

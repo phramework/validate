@@ -113,7 +113,7 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\OneOf::createFromJSON
+     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
      */
     public function testCreateFromJSON()
     {

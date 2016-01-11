@@ -121,7 +121,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AllOf::createFromJSON
+     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
      */
     public function testCreateFromJSON()
     {

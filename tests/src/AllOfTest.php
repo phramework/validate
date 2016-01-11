@@ -123,9 +123,81 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\AllOf::createFromJSON
      */
-    public function createFromJSON()
+    public function testCreateFromJSON()
     {
+        $json = '{
+          "allOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }';
 
+        $validator = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(AllOf::class, $validator);
+
+        //Set validator
+        $this->object = $validator;
+
+        $this->assertInternalType('array', $validator->allOf);
+
+        $this->testValidateSuccess(10, 10);
+        $this->testValidateSuccess(-1, -1);
+
+        $this->testValidateFailure(10.5);
+
+        $this->setUp();
+
+        return $validator;
+    }
+
+    /**
+     * @covers Phramework\Validate\AllOf::toObject
+     * @depends testCreateFromJSON
+     */
+    public function testToObject($validator)
+    {
+        $object = $validator->toObject();
+
+        $this->assertObjectHasAttribute('allOf', $object);
+        $this->assertInternalType('array', $object->allOf);
+
+        $this->assertInternalType('object', $object->allOf[0]);
+        $this->assertInternalType('object', $object->allOf[1]);
+    }
+
+    /**
+     * @covers Phramework\Validate\AllOf::toArray
+     * @depends testCreateFromJSON
+     */
+    public function testToArray($validator)
+    {
+        $object = $validator->toArray();
+
+        $this->assertArrayHasKey('allOf', $object);
+        $this->assertInternalType('array', $object['allOf']);
+
+        $this->assertInternalType('array', $object['allOf'][0]);
+        $this->assertInternalType('array', $object['allOf'][1]);
+    }
+
+    /**
+     * @covers Phramework\Validate\AllOf::toJSON
+     * @depends testCreateFromJSON
+     */
+    public function testToJSON($validator)
+    {
+        $json = $validator->toJSON();
+
+        $this->assertInternalType('string', $json);
+
+        $object = json_decode($json);
+
+        $this->assertObjectHasAttribute('allOf', $object);
     }
 
     /**

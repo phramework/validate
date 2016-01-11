@@ -33,6 +33,20 @@ class AllOf extends \Phramework\Validate\AnyOf
      */
     protected static $type = null;
 
+    protected static $typeAttributes = [
+        'allOf'
+    ];
+
+    /**
+     * @var string
+     */
+    protected $anyOfProperty = 'allOf';
+
+    public function __construct(
+        array $allOf
+    ) {
+        parent::__construct($allOf);
+    }
 
     /**
      * Validate value
@@ -44,7 +58,7 @@ class AllOf extends \Phramework\Validate\AnyOf
      */
     public function validate($value)
     {
-        $this->requiredCountOfAnyOf = count($this->anyOf);
+        $this->requiredCountOfAnyOf = count($this->allOf);
 
         return parent::validate($value);
     }

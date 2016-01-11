@@ -115,9 +115,43 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\OneOf::createFromJSON
      */
-    public function createFromJSON()
+    public function testCreateFromJSON()
     {
+        $json = '{
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength" : 1,
+              "maxLength" : 3
+            },
+            {
+              "type": "string",
+              "minLength" : 2,
+              "maxLength" : 5
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }';
 
+        $validator = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(OneOf::class, $validator);
+
+        $this->assertInternalType('array', $validator->oneOf);
+
+        //Set validator
+        $this->object = $validator;
+
+        $this->testValidateSuccess('a', 'a');
+        $this->testValidateSuccess('abced', 'abced');
+        $this->testValidateSuccess(10, 10);
+
+        $this->testValidateFailure('10');
+        $this->testValidateFailure('abc');
+
+        $this->setUp();
     }
 
     /**

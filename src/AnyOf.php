@@ -44,13 +44,14 @@ class AnyOf extends \Phramework\Validate\BaseValidator
 
         foreach ($anyOf as $validator) {
             if (!($validator instanceof \Phramework\Validate\BaseValidator)) {
-                throw new \Exception(
-                    'Items of anyOf parameter MUST be instances of Phramework\Validate\BaseValidator'
-                );
+                throw new \Exception(sprintf(
+                    'Items of %s parameter MUST be instances of Phramework\Validate\BaseValidator',
+                    $this->anyOfProperty
+                ));
             }
         }
 
-        $this->anyOf = $anyOf;
+        $this->{$this->anyOfProperty} = $anyOf;
     }
 
     /**
@@ -62,11 +63,17 @@ class AnyOf extends \Phramework\Validate\BaseValidator
     protected $requiredCountOfAnyOf = null;
 
     /**
+     * @var string
+     */
+    protected $anyOfProperty = 'anyOf';
+
+    /**
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
      * @return ValidateResult
      * @uses $requiredCountOfAnyOf
+     * @uses $anyOfProperty
      */
     public function validate($value)
     {
@@ -75,7 +82,7 @@ class AnyOf extends \Phramework\Validate\BaseValidator
         //return    ->
         $successValidated = [];
 
-        foreach ($this->anyOf as $validator) {
+        foreach ($this->{$this->anyOfProperty} as $validator) {
             $validatorReturn = $validator->validate($value);
 
             if ($validatorReturn->status) {
@@ -101,17 +108,10 @@ class AnyOf extends \Phramework\Validate\BaseValidator
         }
 
         //error
-
-        $failure = 'anyOf';
-
-        if ($this->requiredCountOfAnyOf !== null) {
-            $failure = ($this->requiredCountOfAnyOf === 1 ? 'oneOf' : 'allOf');
-        }
-
         $return->errorObject = new IncorrectParametersException([
             [
                 'type' => static::getType(),
-                'failure' => $failure
+                'failure' => $this->anyOfProperty
             ]
         ]);
 

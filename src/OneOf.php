@@ -33,6 +33,20 @@ class OneOf extends \Phramework\Validate\AnyOf
      */
     protected static $type = null;
 
+    protected static $typeAttributes = [
+        'oneOf'
+    ];
+
+    /**
+     * @var string
+     */
+    protected $anyOfProperty = 'oneOf';
+
+    public function __construct(
+        array $allOf
+    ) {
+        parent::__construct($allOf);
+    }
 
     /**
      * Validate value

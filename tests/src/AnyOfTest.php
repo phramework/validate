@@ -60,7 +60,8 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
             [['abc', 10, 32]],
             [null],
             [[]], //expectes arrays with at least one item (minItems)
-            [[null]]
+            [[null]],
+            [10.4]
         ];
     }
 
@@ -170,9 +171,40 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\AnyOf::createFromJSON
      */
-    public function createFromJSON()
+    public function testCreateFromJSON()
     {
+        $json = '{
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          ]
+        }';
 
+        $validator = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(AnyOf::class, $validator);
+
+        $this->assertInternalType('array', $validator->anyOf);
+
+        //Set validator
+        $this->object = $validator;
+
+        $this->testValidateSuccess(10, 10);
+        $this->testValidateSuccess([10, 20], [10, 20]);
+
+        $this->testValidateFailure(10.5);
+        $this->testValidateFailure('null');
+
+        $this->setUp();
+
+        return $validator;
     }
 
     /**

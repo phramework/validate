@@ -598,7 +598,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     public function testToObject()
     {
         $return = $this->int->toObject();
-
+        
         $this->assertInternalType('object', $return);
 
         $this->assertObjectHasAttribute('type', $return);

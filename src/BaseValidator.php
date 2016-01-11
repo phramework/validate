@@ -321,6 +321,7 @@ abstract class BaseValidator
     private static $validatorRegistry = [
         'string'            => StringValidator::class,
         'url'               => URLValidator::class,
+        'integer'           => IntegerValidator::class,
         'int'               => IntegerValidator::class, //alias
         'unsignedinteger'   => UnsignedIntegerValidator::class,
         'uinteger'          => UnsignedIntegerValidator::class, //alias
@@ -364,6 +365,39 @@ abstract class BaseValidator
     }
 
     /**
+     * Helper method.
+     * Used to create anyOf, allOf and oneOf validators from objects
+     * @param  \stdClass $object Validation object
+     * @return AnyOf|AllOf|OneOf|null
+     */
+    protected static function createFromObjectForAdditional($object)
+    {
+        $indexProperty = null;
+        $class = null;
+        if (property_exists($object, 'anyOf')) {
+            $indexProperty = 'anyOf';
+            $class = AnyOf::class;
+        } elseif (property_exists($object, 'allOf')) {
+            $indexProperty = 'allOf';
+            $class = AllOf::class;
+        } elseif (property_exists($object, 'oneOf')) {
+            $indexProperty = 'oneOf';
+            $class = OneOf::class;
+        } else {
+            return null;
+        }
+
+        //Parse index property's object as validator
+        foreach ($object->{$indexProperty} as &$property) {
+            $property = BaseValidator::createFromObject($property);
+        }
+
+        $validator = new $class($object->{$indexProperty});
+
+        return $validator;
+    }
+
+    /**
      * Create validator from validation object
      * @param  \stdClass $object Validation object
      * @return BaseValidator
@@ -372,30 +406,21 @@ abstract class BaseValidator
      */
     public static function createFromObject($object)
     {
-        $isFromBase = (static::class === self::class);
+        //$isFromBase = (static::class === self::class);
 
         //Test type if it's set
-        if (property_exists($object, 'type')) {// && $object->type !== static::$type) {
+        if (property_exists($object, 'type')) {
             if (array_key_exists($object->type, self::$validatorRegistry)) {
                 $className = self::$validatorRegistry[$object->type];
-                $class = new $className();
+                $validator = new $className();
             } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
                 //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type;
-                $class = new $className();
+                $validator = new $className();
             } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type . 'Validator')) {
+                //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type . 'Validator';
-                $class = new $className();
-            } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
-                $className = __NAMESPACE__ . '\\' . ucfirst($object->type);
-                $class = new $className();
-            } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . 'Validator.php')) {
-                $className = __NAMESPACE__ . '\\' . ucfirst($object->type) . 'Validator';
-                $class = new $className();
-            /*} elseif ($object->type == 'url') {
-                $class = new URLValidator();
-            } elseif ($object->type == 'unsignedinteger') {
-                $class = new UnsignedIntegerValidator();*/
+                $validator = new $className();
             } else {
                 $className = $object->type . 'Validator';
 
@@ -403,7 +428,7 @@ abstract class BaseValidator
                     //prevent fatal error
                     new \ReflectionClass($className);
                     //attempt to create class
-                    $class = new $className();
+                    $validator = new $className();
                 } catch (\Exception $e) {
                     //Wont catch the fatal error
                     throw new \Exception(sprintf(
@@ -413,8 +438,10 @@ abstract class BaseValidator
                     ));
                 }
             }
+        } elseif (($validator = static::createFromObjectForAdditional($object)) !== null) {
+            return $validator;
         } elseif (!$isFromBase || $object->type == static::$type) {
-            $class = new static();
+            $validator = new static();
         } else {
             throw new \Exception(sprintf(
                 'Type is required when creating from "%s"',
@@ -424,8 +451,8 @@ abstract class BaseValidator
 
         //For each Validator's attribute
         foreach (array_merge(
-            $class::getTypeAttributes(),
-            $class::$commonAttributes
+            $validator::getTypeAttributes(),
+            $validator::$commonAttributes
         ) as $attribute) {
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
@@ -447,19 +474,19 @@ abstract class BaseValidator
                         BaseValidator::createFromObject($property);
                     }
                     //push to class
-                    $class->{$attribute} = $createdProperties;
+                    $validator->{$attribute} = $createdProperties;
                 } elseif ($attribute == 'items') {
-                    $class->{$attribute} = BaseValidator::createFromObject(
+                    $validator->{$attribute} = BaseValidator::createFromObject(
                         $object->{$attribute}
                     );
                 } else {
                     //Use attributes value in Validator object
-                    $class->{$attribute} = $object->{$attribute};
+                    $validator->{$attribute} = $object->{$attribute};
                 }
             }
         }
 
-        return $class;
+        return $validator;
     }
 
     /**
@@ -501,7 +528,7 @@ abstract class BaseValidator
     {
         $object = $this->toObject();
 
-        foreach ($object as &$attribute) {
+        foreach ($object as $key => &$attribute) {
             //Check if any of attributes is an instance of BaseValidator
             if (is_object($attribute) && is_a($attribute, BaseValidator::class)) {
                 $attribute = $attribute->toObject();
@@ -525,6 +552,15 @@ abstract class BaseValidator
         //fix type to object
         if (isset($object['properties'])) {
             $object['properties'] = (object)$object['properties'];
+        }
+
+        foreach (['anyOf', 'allOf', 'oneOf'] as $property) {
+            //fix type to object
+            if (isset($object[$property])) {
+                foreach ($object[$property] as &$propertyItem) {
+                    $propertyItem = (object)$propertyItem;
+                }
+            }
         }
 
         return (object)$object;
@@ -565,6 +601,12 @@ abstract class BaseValidator
                 }
                 //fix type to array
                 $object[$attribute] = (array)$object[$attribute];
+            } elseif (in_array($attribute, ['allOf', 'anyOf', 'oneOf'])) {
+                foreach ($object[$attribute] as $key => $property) {
+                    if ($property instanceof BaseValidator) {
+                        $object[$attribute][$key] = $property->toArray();
+                    }
+                }
             }
         }
 

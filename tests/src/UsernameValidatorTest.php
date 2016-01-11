@@ -106,4 +106,24 @@ class UsernameValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('username', $this->object->getType());
     }
+
+    /**
+     * @covers Phramework\Validate\UsernameValidator::setUsernamePattern
+     */
+    public function testSetUsernamePattern()
+    {
+        UsernameValidator::setUsernamePattern('/^[A-Za-z0-9_\.]{3,32}$/');
+    }
+
+    /**
+     * @covers Phramework\Validate\UsernameValidator::getUsernamePattern
+     */
+    public function testGetUsernamePattern()
+    {
+        $pattern = '/^[A-Za-z0-9_\.]{3,6}$/';
+        
+        UsernameValidator::setUsernamePattern($pattern);
+
+        $this->assertSame($pattern, UsernameValidator::getUsernamePattern());
+    }
 }

@@ -108,7 +108,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
         }
 
         //Apply all rules
-        if (filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
+        if (!is_numeric($value) || filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
@@ -141,7 +141,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
                 ]
             ]);
         } elseif ($this->multipleOf !== null
-            && ((float)$value % $this->multipleOf) !== 0
+            && fmod((float)$value, (float)$this->multipleOf) != 0
         ) {
             //error
             $return->errorObject = new IncorrectParametersException([

@@ -38,7 +38,8 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
         return [
             [1, 1],
             [10, 10],
-            [100, 100]
+            [100, 100],
+            [0, 0]
         ];
     }
 
@@ -47,7 +48,9 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
         //input
         return [
             [],
-            ['01'],
+            [0.0000000000000000000001],
+            [0.00000001],
+            ['0a1'],
             ['τρθε'],
             ['positive'],
             ['negative'],
@@ -114,7 +117,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertEquals(false, $return->status);
+        $this->assertSame(false, $return->status);
     }
 
     /**

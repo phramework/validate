@@ -205,7 +205,7 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidateFailure($input)
     {
         $return = $this->object->validate($input);
-
+        
         $this->assertFalse($return->status);
 
         $this->markTestIncomplete(

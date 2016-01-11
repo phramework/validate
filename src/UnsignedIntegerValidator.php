@@ -54,7 +54,7 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
         $maximum = null,
         $exclusiveMinimum = null,
         $exclusiveMaximum = null,
-        $multipleOf = null
+        $multipleOf = 1
     ) {
         if ($minimum < 0) {
             throw new \Exception('Minimum cannot be negative');
@@ -67,32 +67,5 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
             $exclusiveMaximum,
             $multipleOf
         );
-    }
-
-    /**
-     * Validate value
-     * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
-     * @return ValidateResult
-     */
-    public function validate($value)
-    {
-        $return = parent::validate($value);
-
-        //Apply additional rules
-        if ($return->status == true) {
-            if ($return->value < 0) {
-                //error
-                $return->status = false;
-                $return->errorObject = new IncorrectParametersException([
-                    [
-                        'type' => static::getType(),
-                        'failure' => 'minimum'
-                    ]
-                ]);
-            }
-        }
-
-        return $return;
     }
 }

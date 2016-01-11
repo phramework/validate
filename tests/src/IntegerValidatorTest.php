@@ -72,6 +72,44 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\IntegerValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure()
+    {
+        $validator = new IntegerValidator(
+            'a'
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\IntegerValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure2()
+    {
+        $validator = new IntegerValidator(
+            1,
+            'a'
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\IntegerValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure3()
+    {
+        $validator = new IntegerValidator(
+            1,
+            2,
+            null,
+            null,
+            'a'
+        );
+    }
+
+    /**
      * @covers Phramework\Validate\IntegerValidator::createFromJSON
      * @dataProvider validateSuccessProvider
      */

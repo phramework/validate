@@ -48,7 +48,7 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
         $maximum = null,
         $exclusiveMinimum = null,
         $exclusiveMaximum = null,
-        $multipleOf = null
+        $multipleOf = 1
     ) {
         if ($minimum !== null && !is_int($minimum)) {
             throw new \Exception('Minimum must be integer');
@@ -58,8 +58,8 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
             throw new \Exception('Maximum must be integer');
         }
 
-        if ($multipleOf !== null && !is_int($multipleOf)) {
-            throw new \Exception('multipleOf must be integer');
+        if (!is_int($multipleOf) || $multipleOf < 0) {
+            throw new \Exception('multipleOf must be a positive integer');
         }
 
         parent::__construct(
@@ -81,22 +81,9 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
     {
         $return = parent::validate($value);
 
-        //Apply additional rules
-        if ($return->status == true) {
-            if (filter_var($value, FILTER_VALIDATE_INT) === false) {
-                //error
-                $return->errorObject = new IncorrectParametersException([
-                    [
-                        'type' => static::getType(),
-                        'failure' => 'type'
-                    ]
-                ]);
-                $return->status = false;
-
-                return $return;
-            }
-
-            $return->value  = (int)($value);
+        //Apply correct integer type
+        if ($return->status) {
+            $return->value = (int)$value;
         }
 
         return $return;

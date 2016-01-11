@@ -52,7 +52,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
         //input
         return [
             [],
-            ['01'],
+            ['0a1'],
             ['τρθε'],
             ['positive'],
             ['negative'],

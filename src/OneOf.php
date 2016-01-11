@@ -20,9 +20,11 @@ use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
- * @property array anyOf
+ * Validates successfully if it validates successfully against exactly one schema defined in oneOf attribute
+ * @property array oneOf
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @see http://json-schema.org/latest/json-schema-validation.html#anchor88
  * @since 0.4.0
  */
 class OneOf extends \Phramework\Validate\AnyOf
@@ -42,10 +44,28 @@ class OneOf extends \Phramework\Validate\AnyOf
      */
     protected $anyOfProperty = 'oneOf';
 
+    /**
+     * @param array $oneOf
+     * @example
+     * ```php
+     * $validator = new OneOf([
+     *     new IntegerValidator(0, 7),
+     *     new NumberValidator(5, 10)
+     * ]);
+     *
+     * //Will parse successfully both
+     *
+     * $parsed = $validator->parse(3);
+     * $parsed = $validator->parse(7);
+     *
+     * //but NOT!
+     * $parsed = $validator->parse(6);
+     * ```
+     */
     public function __construct(
-        array $allOf
+        array $oneOf
     ) {
-        parent::__construct($allOf);
+        parent::__construct($oneOf);
     }
 
     /**

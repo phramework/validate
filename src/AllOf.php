@@ -20,9 +20,11 @@ use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
- * @property array anyOf
+ * Validates successfully if it validates successfully against all schema defined in allOf attribute
+ * @property array allOf
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @see http://json-schema.org/latest/json-schema-validation.html#anchor82
  * @since 0.4.0
  */
 class AllOf extends \Phramework\Validate\AnyOf
@@ -42,6 +44,22 @@ class AllOf extends \Phramework\Validate\AnyOf
      */
     protected $anyOfProperty = 'allOf';
 
+    /**
+     * @param array $allOf
+     * @example
+     * ```php
+     * $validator = new AllOf([
+     *     new IntegerValidator(),
+     *     new EnumValidator([2, 4, 8])
+     * ]);
+     *
+     * //Will parse successfully
+     * $parsed = $validator->parse(8);
+     *
+     * //But not
+     * $parsed = $validator->parse(10);
+     * ```
+     */
     public function __construct(
         array $allOf
     ) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,36 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
 
 /**
- * Validates successfully if it validates successfully against at least one schema defined in anyOf attribute
+ * Validates successfully if it validates successfully against at least one schema defined in anyOf attribute.
+ *
  * @property array anyOf
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor85
  * @since 0.4.0
  */
 class AnyOf extends \Phramework\Validate\BaseValidator
 {
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var null
      */
     protected static $type = null;
 
     protected static $typeAttributes = [
-        'anyOf'
+        'anyOf',
     ];
 
     /**
      * @param array $anyOf
+     *
      * @example
      * ```php
      * $validator = new AnyOf([
@@ -78,8 +83,9 @@ class AnyOf extends \Phramework\Validate\BaseValidator
     /**
      * When not null, a specific count of passed anyOf validations will be used in
      * validate method.
-     * This internal parameter is useful for oneOf, and allOf classes
-     * @var integer|null
+     * This internal parameter is useful for oneOf, and allOf classes.
+     *
+     * @var int|null
      */
     protected $requiredCountOfAnyOf = null;
 
@@ -89,10 +95,14 @@ class AnyOf extends \Phramework\Validate\BaseValidator
     protected $anyOfProperty = 'anyOf';
 
     /**
-     * Validate value
+     * Validate value.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
+     *
      * @uses $requiredCountOfAnyOf
      * @uses $anyOfProperty
      */
@@ -108,9 +118,9 @@ class AnyOf extends \Phramework\Validate\BaseValidator
 
             if ($validatorReturn->status) {
                 //push to successValidated list
-                $successValidated[] = (object)[
+                $successValidated[] = (object) [
                     'validator' => $validator,
-                    'return'    => $validatorReturn
+                    'return'    => $validatorReturn,
                 ];
             }
         }
@@ -125,15 +135,16 @@ class AnyOf extends \Phramework\Validate\BaseValidator
         ) {
             //Use first in list
             $return = $successValidated[0]->return;
+
             return $this->validateCommon($value, $return);
         }
 
         //error
         $return->errorObject = new IncorrectParametersException([
             [
-                'type' => static::getType(),
-                'failure' => $this->anyOfProperty
-            ]
+                'type'    => static::getType(),
+                'failure' => $this->anyOfProperty,
+            ],
         ]);
 
         unset($successValidated);

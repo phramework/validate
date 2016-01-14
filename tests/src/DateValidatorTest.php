@@ -4,7 +4,6 @@ namespace Phramework\Validate;
 
 class DateValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var DateValidator
      */
@@ -25,7 +24,6 @@ class DateValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -33,7 +31,7 @@ class DateValidatorTest extends \PHPUnit_Framework_TestCase
         //input, expected
         return [
             ['2000-10-12'],
-            ['2000-01-02']
+            ['2000-01-02'],
         ];
     }
 

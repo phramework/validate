@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,32 +16,37 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
 
 /**
- * Enum validator
+ * Enum validator.
+ *
  * @property array values
+ *
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @since 0.0.0
  */
 class EnumValidator extends \Phramework\Validate\BaseValidator
 {
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var string
      */
     protected static $type = 'enum';
 
     /**
-     * Overwrite base class attributes
+     * Overwrite base class attributes.
+     *
      * @var array
      */
     protected static $typeAttributes = [
-        'validateType' //custom
+        'validateType', //custom
     ];
 
     public function __construct(
@@ -51,15 +56,18 @@ class EnumValidator extends \Phramework\Validate\BaseValidator
     ) {
         parent::__construct();
 
-        $this->enum  = $enum;
+        $this->enum = $enum;
         $this->validateType = $validateType;
         $this->default = $default;
     }
 
     /**
-     * Validate value
+     * Validate value.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
      */
     public function validate($value)

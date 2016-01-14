@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,31 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
 
 /**
- * URL validator
+ * URL validator.
+ *
  * @uses \Phramework\Validate\String As base implementation's rules to
  * validate that the value is a number and then applies additional rules
- * @property integer $minLength Minimum number of its characters, default is 0
- * @property integer|null $maxLength Maximum number of its characters
+ *
+ * @property int $minLength Minimum number of its characters, default is 0
+ * @property int|null $maxLength Maximum number of its characters
+ *
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @since 0.0.0
  */
 class URLValidator extends \Phramework\Validate\StringValidator
 {
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var string
      */
     protected static $type = 'url';
@@ -50,10 +56,13 @@ class URLValidator extends \Phramework\Validate\StringValidator
     }
 
     /**
-     * Validate value
+     * Validate value.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @see https://secure.php.net/manual/en/filter.filters.validate.php
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
      */
     public function validate($value)
@@ -68,9 +77,9 @@ class URLValidator extends \Phramework\Validate\StringValidator
                 $return->status = false;
                 $return->errorObject = new IncorrectParametersException([
                     [
-                        'type' => static::getType(),
-                        'failure' => 'format'
-                    ]
+                        'type'    => static::getType(),
+                        'failure' => 'format',
+                    ],
                 ]);
             }
         }

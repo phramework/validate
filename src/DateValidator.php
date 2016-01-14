@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,28 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
 
 /**
- * Date validator
+ * Date validator.
+ *
  * @uses \Phramework\Validate\String As base implementation's rules to
  * validate that the value is a number and then applies additional rules
+ *
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @since 0.1.0
  */
 class DateValidator extends \Phramework\Validate\StringValidator
 {
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var string
      */
     protected static $type = 'date';
@@ -46,10 +51,14 @@ class DateValidator extends \Phramework\Validate\StringValidator
     }
 
     /**
-     * Validate value, validates as SQL date or SQL date
+     * Validate value, validates as SQL date or SQL date.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
+     *
      * @todo set errorObject
      */
     public function validate($value)
@@ -62,7 +71,7 @@ class DateValidator extends \Phramework\Validate\StringValidator
             '/^(\d{4})-(\d{2})-(\d{2})$/',
             $value,
             $matches
-        )) ) {
+        ))) {
             if (checkdate($matches[2], $matches[3], $matches[1])) {
                 //Set status to success
                 $return->status = true;
@@ -74,9 +83,9 @@ class DateValidator extends \Phramework\Validate\StringValidator
         $return->status = false;
         $return->errorObject = new IncorrectParametersException([
             [
-                'type' => static::getType(),
-                'failure' => 'format'
-            ]
+                'type'    => static::getType(),
+                'failure' => 'format',
+            ],
         ]);
 
         return $return;

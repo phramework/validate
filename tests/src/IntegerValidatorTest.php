@@ -7,7 +7,6 @@ namespace Phramework\Validate;
  */
 class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var IntegerValidator
      */
@@ -28,7 +27,6 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -39,7 +37,7 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
             [124, 124],
             [0, 0],
             [-10, -10],
-            [-99, -99]
+            [-99, -99],
         ];
     }
 
@@ -56,7 +54,7 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
             [10000000],
             ['-1000000000'],
             [1.4],
-            [-13.5]
+            [-13.5],
         ];
     }
 
@@ -149,7 +147,7 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Helper method
+     * Helper method.
      */
     private function validateSuccess(IntegerValidator $object, $input, $expected)
     {
@@ -200,7 +198,8 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Validate against common enum keyword
+     * Validate against common enum keyword.
+     *
      * @covers Phramework\Validate\IntegerValidator::validateEnum
      */
     public function testValidateCommon()

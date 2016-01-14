@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,65 +16,66 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Exceptions\MissingParametersException;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\MissingParametersException;
 
 /**
  * Provides various methods for validating data for varius datatypes.
  *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @deprecated since 0.0.0
  */
 class Validate
 {
     /**
-     * Required field
+     * Required field.
      */
     const REQUIRED = 'required';
 
     /**
-     * Text type
+     * Text type.
      */
     const TYPE_TEXT = 'text';
 
     /**
-     * Alias of Text type
+     * Alias of Text type.
      */
     const TYPE_STRING = 'text';
 
     /**
-     * Multiline text type
+     * Multiline text type.
      */
     const TYPE_TEXTAREA = 'textarea';
 
     /**
-     * Signed integer type
+     * Signed integer type.
      */
     const TYPE_INT = 'int';
 
     /**
-     * Unsigned integer type
+     * Unsigned integer type.
      */
     const TYPE_UINT = 'uint';
 
     /**
-     * Floating point number type
+     * Floating point number type.
      */
     const TYPE_FLOAT = 'float';
 
     /**
-     * Double presision floating point number type
+     * Double presision floating point number type.
      */
     const TYPE_DOUBLE = 'double';
 
     /**
-     * boolean type
+     * boolean type.
      */
     const TYPE_BOOLEAN = 'boolean';
 
     /**
-     * Color type
+     * Color type.
      */
     const TYPE_COLOR = 'color';
     const TYPE_USERNAME = 'username';
@@ -88,11 +89,11 @@ class Validate
     const TYPE_REGEXP = 'regexp';
 
     /**
-     * Unix timestamp (unsigned integer)
+     * Unix timestamp (unsigned integer).
      */
     const TYPE_UNIX_TIMESTAMP = 'unix_timestamp';
     /**
-     * This type allows only specific values
+     * This type allows only specific values.
      *
      * when used in model an array named values MUST be set for example `'values' => [1, 2, 'abc']`
      */
@@ -102,49 +103,54 @@ class Validate
     const TYPE_ARRAY = 'array';
 
     /**
-     * Comma separated array
+     * Comma separated array.
      *
      * When used in a Validate::model it splits the values ,
      * validates the subtype and returns as array
+     *
      * @example aaa,bb,cc,1,2 Example parameter data
+     *
      * @property string subtype [optional] Defines the subtype, default text
      */
     const TYPE_ARRAY_CSV = 'array_csv';
 
     /**
-     * Regular expression of resource ID
+     * Regular expression of resource ID.
      */
     const REGEXP_RESOURCE_ID = '/^d+$/';  //'/^[A-Za-z0-9_]{3,128}$/' );
 
     /**
-     * Regular expresion of username
+     * Regular expresion of username.
      */
     const REGEXP_USERNAME = '/^[A-Za-z0-9_\.]{3,64}$/';
     /**
-     * Regular expresion of a token
+     * Regular expresion of a token.
      */
     const REGEXP_TOKEN = '/^[A-Za-z0-9_]{3,48}$/';
     /**
-     * Regular expresion of a permalink
+     * Regular expresion of a permalink.
      */
     const REGEXP_PERMALINK = '/^[A-Za-z0-9_]{3,32}$/';
 
     const COLOR_HEX = 'hex';
 
     /**
-     * Custom data types validators
+     * Custom data types validators.
      *
      * This array holds the defined custom types
+     *
      * @var array
      */
     private static $custom_types = [];
 
     /**
-     * Register a custom data type
+     * Register a custom data type.
      *
      * It can be used to validate models
-     * @param string $type
+     *
+     * @param string   $type
      * @param function $callback
+     *
      * @throws \Exception
      */
     public static function registerCustomType($type, $callback)
@@ -153,18 +159,20 @@ class Validate
             throw new \Exception(__('callback_is_not_function_exception'));
         }
 
-        self::$custom_types[$type]= ['callback' => $callback];
+        self::$custom_types[$type] = ['callback' => $callback];
     }
 
     /**
      * Validate a custom data type.
      *
      * This method uses previous custom-defined datatype to validate it's data.
-     * @param string $type Custom type's name
-     * @param mixed $value Value to test
+     *
+     * @param string $type       Custom type's name
+     * @param mixed  $value      Value to test
      * @param string $field_name [optional] field's name
-     * @param array $model [optional]
-     * @throws \Exception type_not_found
+     * @param array  $model      [optional]
+     *
+     * @throws \Exception          type_not_found
      * @throws IncorrectParameters if validation fails
      */
     public static function validateCustomType($type, $value, $field_name, $model = [])
@@ -186,7 +194,7 @@ class Validate
     }
 
     /**
-     * Define available operators
+     * Define available operators.
      */
     /*public static $operators = [
         OPERATOR_EMPTY, OPERATOR_EQUAL, OPERATOR_GREATER, OPERATOR_GREATER_EQUAL,
@@ -195,16 +203,19 @@ class Validate
         OPERATOR_IN, OPERATOR_NOT_IN, OPERATOR_LIKE, OPERATOR_NOT_LIKE];*/
 
     /**
-     * Validate a model
+     * Validate a model.
      *
      * This method accepts a request model, and validates.
      * The values of $parameters array might be changed due to type casting.
+     *
      * @param array $parameters Request parameters
-     * @param array $model Model used for the validation
-     * @return boolean
+     * @param array $model      Model used for the validation
+     *
      * @throws \Exception
      * @throws IncorrectParameters If any field is incorrect
-     * @throws MissingParameters If any required field is missing
+     * @throws MissingParameters   If any required field is missing
+     *
+     * @return bool
      */
     public static function model(&$parameters, $model)
     {
@@ -216,8 +227,8 @@ class Validate
         foreach ($model as $key => $value) {
             if (!isset($parameters[$key])) {
                 if (is_array($value) && (
-                    (isset($value[Validate::REQUIRED]) && $value[Validate::REQUIRED]) ||
-                    in_array(Validate::REQUIRED, $value, true) === true)) {
+                    (isset($value[self::REQUIRED]) && $value[self::REQUIRED]) ||
+                    in_array(self::REQUIRED, $value, true) === true)) {
                     array_push($missing, $key);
                 } elseif (is_array($value) && array_key_exists('default', $value)) {
                     $parameters[$key] = $value['default'];
@@ -283,7 +294,7 @@ class Validate
                         break;
                     case self::TYPE_BOOLEAN:
                         //try to filter as boolean
-                        $parameters[$key] = (boolean)($parameters[$key]);
+                        $parameters[$key] = (boolean) ($parameters[$key]);
                         break;
                     case self::TYPE_DOUBLE:
                         //Replace comma with dot
@@ -308,7 +319,7 @@ class Validate
                                 $incorrect[$key] = $temporary_exception_description;
                             }
 
-                            $parameters[$key] = doubleval($parameters[$key]);
+                            $parameters[$key] = floatval($parameters[$key]);
                         }
                         break;
                     case self::TYPE_FLOAT:
@@ -373,10 +384,9 @@ class Validate
                                 && $value['max'] !== null
                                 && mb_strlen($parameters[$key]) > $value['max']
                             ) {
-                                    $temporary_exception_description['failure'] = 'max';
-                                    $temporary_exception_description['max'] = $value['max'];
-                                    $incorrect[$key] = $temporary_exception_description;
-
+                                $temporary_exception_description['failure'] = 'max';
+                                $temporary_exception_description['max'] = $value['max'];
+                                $incorrect[$key] = $temporary_exception_description;
                             }
                             if (isset($value['min'])
                                 && $value['min'] !== null
@@ -385,7 +395,6 @@ class Validate
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
-
                             }
                         }
                         break;
@@ -465,7 +474,7 @@ class Validate
                     case self::TYPE_ARRAY:
                         //Get single value
                         if (!is_array($parameters[$key])) {
-                            $parameters[$key] = [ $parameters[$key]];
+                            $parameters[$key] = [$parameters[$key]];
                         }
 
                         if (isset($value['max'])
@@ -495,18 +504,18 @@ class Validate
                             $subtype = (
                                 isset($value['subtype'])
                                 ? $value['subtype']
-                                : Validate::TYPE_TEXT
+                                : self::TYPE_TEXT
                             );
 
                             //Validate every record of this subtype
                             foreach ($values as &$v) {
                                 //Create temporary model
-                                $m = [ $key => $v];
+                                $m = [$key => $v];
 
                                 //Validate this model
-                                Validate::model(
+                                self::model(
                                     $m,
-                                    [ $key => ['type' => $subtype]]
+                                    [$key => ['type' => $subtype]]
                                 );
 
                                 //Overwrite $v
@@ -529,7 +538,7 @@ class Validate
                                 $incorrect[$key] = $temporary_exception_description;
                             } else {
                                 //update output
-                                $parameters[$key]=$output;
+                                $parameters[$key] = $output;
                             }
                         } else {
                             if (isset($value['max']) && $value['max'] !== null) {
@@ -561,47 +570,53 @@ class Validate
         } elseif ($missing) {
             throw new MissingParametersException($missing);
         }
+
         return true;
     }
 
     /**
-     * Check if callback is valid
+     * Check if callback is valid.
+     *
      * @link http://www.geekality.net/2010/06/27/php-how-to-easily-provide-json-and-jsonp/ source
+     *
      * @param string $subject
-     * @return boolean
+     *
+     * @return bool
      */
     public function isValidJsonpCallback($subject)
     {
         $identifier_syntax
           = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*+$/u';
 
-        $reserved_words = array('break', 'do', 'instanceof', 'typeof', 'case',
+        $reserved_words = ['break', 'do', 'instanceof', 'typeof', 'case',
           'else', 'new', 'var', 'catch', 'finally', 'return', 'void', 'continue',
           'for', 'switch', 'while', 'debugger', 'function', 'this', 'with',
           'default', 'if', 'throw', 'delete', 'in', 'try', 'class', 'enum',
           'extends', 'super', 'const', 'export', 'import', 'implements', 'let',
           'private', 'public', 'yield', 'interface', 'package', 'protected',
-          'static', 'null', 'true', 'false');
+          'static', 'null', 'true', 'false', ];
 
         return preg_match($identifier_syntax, $subject)
-            && ! in_array(mb_strtolower($subject, 'UTF-8'), $reserved_words);
+            && !in_array(mb_strtolower($subject, 'UTF-8'), $reserved_words);
     }
 
     /**
-     * Validate a signed integer
+     * Validate a signed integer.
      *
-     * @param string|integer $input Input value
-     * @param integer|null $min Minimum value. [optional] Default is NULL, if NULL then the minum value is skipped
-     * @param integer|null $max Maximum value. [optional] Default is NULL, if NULL then the maximum value is skipped
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is int
+     * @param string|int $input      Input value
+     * @param int|null   $min        Minimum value. [optional] Default is NULL, if NULL then the minum value is skipped
+     * @param int|null   $max        Maximum value. [optional] Default is NULL, if NULL then the maximum value is skipped
+     * @param string     $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is int
+     *
      * @throws IncorrectParameters If valu type is not correct.
-     * @return integer Returns the value of the input value as int
+     *
+     * @return int Returns the value of the input value as int
      */
     public static function int($input, $min = null, $max = null, $field_name = 'int')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_INT, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_INT, self::REQUIRED],
         ];
 
         if ($min !== null) {
@@ -613,25 +628,28 @@ class Validate
         }
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate an unsigned integer
-     * @param string|integer $input Input value
-     * @param integer $min Minimum value. Optional default is 0.
-     * @param integer|null $max Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
-     * @param String $field_name Field's name, used in IncorrectParametersException. Optional default is uint
+     * Validate an unsigned integer.
+     *
+     * @param string|int $input      Input value
+     * @param int        $min        Minimum value. Optional default is 0.
+     * @param int|null   $max        Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
+     * @param string     $field_name Field's name, used in IncorrectParametersException. Optional default is uint
+     *
      * @throws IncorrectParameters If valu type is not correct.
-     * @return integer Returns the value of the input value as int
+     *
+     * @return int Returns the value of the input value as int
      */
     public static function uint($input, $min = 0, $max = null, $field_name = 'uint')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_UINT, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_UINT, self::REQUIRED],
         ];
 
         $model[$field_name]['min'] = $min;
@@ -641,26 +659,29 @@ class Validate
         }
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate a floating point number
+     * Validate a floating point number.
+     *
      * @param string|float|int $input
-     * @param float|null $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
+     * @param float|null       $min   Minimum value. Optional default is NULL, if NULL then the minum value is skipped
      * @param float|null Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is number
-     * @return float Returns the input value as float
+     *                           Optional default is number
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return float Returns the input value as float
      */
     public static function float($input, $min = null, $max = null, $field_name = 'float')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_FLOAT, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_FLOAT, self::REQUIRED],
         ];
 
         if ($min !== null) {
@@ -672,26 +693,29 @@ class Validate
         }
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate a double presision floating point number
-     * @param string|double|float|int $input
-     * @param double|null $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
-     * @param double|null Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
+     * Validate a double presision floating point number.
+     *
+     * @param string|float|float|int $input
+     * @param float|null             $min   Minimum value. Optional default is NULL, if NULL then the minum value is skipped
+     * @param float|null Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is number
-     * @return double Returns the input value as double
+     *                           Optional default is number
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return float Returns the input value as double
      */
     public static function double($input, $min = null, $max = null, $field_name = 'double')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_DOUBLE, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_DOUBLE, self::REQUIRED],
         ];
 
         if ($min !== null) {
@@ -703,102 +727,115 @@ class Validate
         }
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate an email address
+     * Validate an email address.
+     *
      * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is email
-     * @return string Return the email address
+     *                           Optional default is email
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return string Return the email address
      */
     public static function email($input, $field_name = 'email')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_EMAIL, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_EMAIL, self::REQUIRED],
         ];
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate a url
+     * Validate a url.
+     *
      * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is url
-     * @return string Return the url
+     *                           Optional default is url
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return string Return the url
      */
     public static function url($input, $field_name = 'url')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_URL, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_URL, self::REQUIRED],
         ];
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate a permalink id
+     * Validate a permalink id.
+     *
      * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is permalink
-     * @return string Return the permalink
+     *                           Optional default is permalink
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return string Return the permalink
      */
     public static function permalink($input, $field_name = 'permalink')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_PERMALINK, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_PERMALINK, self::REQUIRED],
         ];
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     *
      * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is token
-     * @return string Return the token
+     *                           Optional default is token
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return string Return the token
      */
     public static function token($input, $field_name = 'token')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_TOKEN, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_TOKEN, self::REQUIRED],
         ];
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Check if input value is in allowed values
-     * @param string|integer $input Input array to check
-     * @param array $values Array of strings or number, defines the allowed input values
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is enum
+     * Check if input value is in allowed values.
+     *
+     * @param string|int $input      Input array to check
+     * @param array      $values     Array of strings or number, defines the allowed input values
+     * @param string     $field_name [optional] Field's name, used in IncorrectParametersException.
+     *                               Optional default is enum
+     *
      * @throws IncorrectParameters If valu type is not correct.
+     *
      * @return returns the value of the input value
      */
     public static function enum($input, $values, $field_name = 'enum')
@@ -812,23 +849,26 @@ class Validate
         //Define trivial model
         $model = [
             $field_name => [
-                'type' => Validate::TYPE_ENUM, 'values' => $values, Validate::REQUIRED
-            ]
+                'type' => self::TYPE_ENUM, 'values' => $values, self::REQUIRED,
+            ],
         ];
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate SQL date, datetime
-     * @param string $date Input date
+     * Validate SQL date, datetime.
+     *
+     * @param string $date       Input date
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is date
-     * @return string
+     *                           Optional default is date
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return string
      */
     public static function sqlDate($date, $field_name = 'date')
     {
@@ -837,84 +877,98 @@ class Validate
                 return $date;
             }
         }
-        throw new IncorrectParametersException([ $field_name]);
+        throw new IncorrectParametersException([$field_name]);
     }
 
     /**
-     * Validate color
-     * @param type $input Input color
-     * @param string $type Color value type. Optional, default is hex
+     * Validate color.
+     *
+     * @param type   $input      Input color
+     * @param string $type       Color value type. Optional, default is hex
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
-     * Optional default is color
-     * @return string
+     *                           Optional default is color
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return string
+     *
      * @todo Implement additional types
      */
-    public static function color($input, $type = Validate::COLOR_HEX, $field_name = 'color')
+    public static function color($input, $type = self::COLOR_HEX, $field_name = 'color')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_COLOR, 'color_type' => $type, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_COLOR, 'color_type' => $type, self::REQUIRED],
         ];
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate an operator
+     * Validate an operator.
+     *
      * @param string $operator
      * @param string $field_name [optional]
-     * @return string
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return string
      */
     public static function operator($operator, $field_name = 'operator')
     {
         if (!in_array($operator, self::$operators)) {
-            throw new IncorrectParametersException([ $field_name]);
+            throw new IncorrectParametersException([$field_name]);
         }
+
         return $operator;
     }
 
     /**
-     * Validate a regexp
+     * Validate a regexp.
+     *
      * @param string input
      * @param string regexp
      * @param string $field_name [optional]
-     * @return string
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return string
      */
     public static function regexp($input, $regexp, $field_name = 'regexp')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_REGEXP, 'regexp' => $regexp, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_REGEXP, 'regexp' => $regexp, self::REQUIRED],
         ];
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }
 
     /**
-     * Validate a regexp
+     * Validate a regexp.
+     *
      * @param mixed input
      * @param string $field_name [optional]
-     * @return boolean
+     *
      * @throws IncorrectParameters If value type is not correct.
+     *
+     * @return bool
      */
     public static function boolean($input, $field_name = 'boolean')
     {
         //Define trivial model
         $model = [
-            $field_name => ['type' => Validate::TYPE_BOOLEAN, Validate::REQUIRED]
+            $field_name => ['type' => self::TYPE_BOOLEAN, self::REQUIRED],
         ];
 
         $parameters = [$field_name => $input];
-        Validate::model($parameters, $model);
+        self::model($parameters, $model);
 
         return $parameters[$field_name];
     }

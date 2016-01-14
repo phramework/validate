@@ -7,7 +7,6 @@ namespace Phramework\Validate;
  */
 class NumberValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var NumberValidator
      */
@@ -28,7 +27,6 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -42,7 +40,7 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
             [-99, -99.0],
             [3.5, 3.5],
             ['13.5', 13.5],
-            ['-23.6', -23.6]
+            ['-23.6', -23.6],
         ];
     }
 
@@ -59,7 +57,7 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
             [-1000], //should fail becaus of exclusiveMinimum
             [-10000000],
             [10000000],
-            ['-1000000000']
+            ['-1000000000'],
         ];
     }
 
@@ -192,7 +190,7 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Helper method
+     * Helper method.
      */
     private function validateSuccess(NumberValidator $object, $input, $expected)
     {
@@ -237,7 +235,8 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Validate against common enum keyword
+     * Validate against common enum keyword.
+     *
      * @covers Phramework\Validate\NumberValidator::validateEnum
      */
     public function testValidateCommon()

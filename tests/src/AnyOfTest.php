@@ -4,7 +4,6 @@ namespace Phramework\Validate;
 
 class AnyOfTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var AnyOf
      */
@@ -22,7 +21,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
                 1,
                 10,
                 new IntegerValidator()
-            )
+            ),
         ]);
     }
 
@@ -32,7 +31,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -43,7 +41,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
             [10, 10],
             [[10], [10]],
             [[10, 100, 32], [10, 100, 32]],
-            [[10, 40], [10, 40]]
+            [[10, 40], [10, 40]],
         ];
     }
 
@@ -61,7 +59,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
             [null],
             [[]], //expectes arrays with at least one item (minItems)
             [[null]],
-            [10.4]
+            [10.4],
         ];
     }
 
@@ -76,7 +74,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
                 1,
                 10,
                 new StringValidator()
-            )
+            ),
         ]);
     }
 
@@ -121,7 +119,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
         $validator = new AnyOf([
             new StringValidator(),
-            new IntegerValidator()
+            new IntegerValidator(),
         ]);
 
         $return = $validator->validate([1]);
@@ -134,7 +132,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
         $validator = new AllOf([
             new StringValidator(),
-            new IntegerValidator()
+            new IntegerValidator(),
         ]);
 
         $return = $validator->validate([1]);
@@ -147,7 +145,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
         $validator = new OneOf([
             new StringValidator(),
-            new IntegerValidator()
+            new IntegerValidator(),
         ]);
 
         $return = $validator->validate([1]);
@@ -173,7 +171,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateFromObject()
     {
-        $object = (object)json_decode('{
+        $object = (object) json_decode('{
           "anyOf": [
             {
               "type": "integer"
@@ -193,6 +191,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $validator->anyOf);
     }
+
     /**
      * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
      */
@@ -233,7 +232,8 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Validate against common enum keyword
+     * Validate against common enum keyword.
+     *
      * @covers Phramework\Validate\AnyOf::validateEnum
      */
     public function testValidateCommon()

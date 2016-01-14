@@ -4,14 +4,13 @@ namespace Phramework\Validate;
 
 class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ArrayValidator
      */
     protected $object;
 
     /**
-     * Sets up the fixture
+     * Sets up the fixture.
      */
     protected function setUp()
     {
@@ -24,7 +23,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     /**
@@ -48,7 +46,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
             [[2, '3']],
             [['2', '3']],
             [[1, 2, 3]],
-            [[1,2]]
+            [[1, 2]],
         ];
     }
 
@@ -57,8 +55,8 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         //input
         return [
             [1],
-            ['0 items' => []],
-            ['>3 items' => [1,2,3,4,5,6]]
+            ['0 items'  => []],
+            ['>3 items' => [1, 2, 3, 4, 5, 6]],
         ];
     }
 
@@ -217,7 +215,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
                 [1, 0]
             )
         );
-
 
         $this->assertFalse(
             ArrayValidator::equals(

@@ -7,7 +7,6 @@ namespace Phramework\Validate;
  */
 class UsernameValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var UsernameValidator
      */
@@ -28,7 +27,6 @@ class UsernameValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -38,7 +36,7 @@ class UsernameValidatorTest extends \PHPUnit_Framework_TestCase
             ['nohponex'],
             ['NohponeX'],
             ['nohp_onex'],
-            ['nohp_o.nex']
+            ['nohp_o.nex'],
         ];
     }
 
@@ -47,8 +45,8 @@ class UsernameValidatorTest extends \PHPUnit_Framework_TestCase
         //input
         return [
             ['too short' =>  'ni'],
-            ['too long' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
-            ['invalid character' => 'nohponεξ'],
+            ['too long'            => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
+            ['invalid character'   => 'nohponεξ'],
             ['invalid character +' => '+nohponex'],
             ['invalid character @' => '@nohponex'],
         ];
@@ -121,7 +119,7 @@ class UsernameValidatorTest extends \PHPUnit_Framework_TestCase
     public function testGetUsernamePattern()
     {
         $pattern = '/^[A-Za-z0-9_\.]{3,6}$/';
-        
+
         UsernameValidator::setUsernamePattern($pattern);
 
         $this->assertSame($pattern, UsernameValidator::getUsernamePattern());

@@ -7,7 +7,6 @@ namespace Phramework\Validate;
  */
 class EnumValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var EnumValidator
      */
@@ -28,7 +27,6 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -39,7 +37,7 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
             ['2', '2'],
             ['ok', 'ok'],
             [5, 5],
-            [[1,2,3], [1, 2, 3]]
+            [[1, 2, 3], [1, 2, 3]],
         ];
     }
 
@@ -52,7 +50,7 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
             ['5'],
             [4],
             ['7'],
-            ['string']
+            ['string'],
         ];
     }
 

@@ -7,7 +7,6 @@ namespace Phramework\Validate;
  */
 class UnsignedIntegerValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var UnsignedIntegerValidator
      */
@@ -28,7 +27,6 @@ class UnsignedIntegerValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -36,7 +34,7 @@ class UnsignedIntegerValidatorTest extends \PHPUnit_Framework_TestCase
         //input, expected
         return [
             ['100', 100],
-            [124, 124]
+            [124, 124],
         ];
     }
 
@@ -51,7 +49,7 @@ class UnsignedIntegerValidatorTest extends \PHPUnit_Framework_TestCase
             ['-4'],
             [4], //because of min,
             [1.4],
-            [-13.5]
+            [-13.5],
         ];
     }
 
@@ -78,7 +76,7 @@ class UnsignedIntegerValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Helper method
+     * Helper method.
      */
     private function validateSuccess(UnsignedIntegerValidator $object, $input, $expected)
     {

@@ -7,7 +7,6 @@ namespace Phramework\Validate;
  */
 class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ObjectValidator
      */
@@ -21,7 +20,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $properties = [
             'str' => new \Phramework\Validate\StringValidator(2, 4),
-            'ok' => new \Phramework\Validate\BooleanValidator(),
+            'ok'  => new \Phramework\Validate\BooleanValidator(),
         ];
 
         $this->object = new ObjectValidator($properties, ['ok'], true, 2, 2);
@@ -33,16 +32,15 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
     {
         //input
         return [
-            [(object)['ok' => true, 'str2' => 'my str']],
-            [(object)['ok' => 'true', 'okk' => '123']],
-            [(object)['ok' => false, 'okk' => 'xyz' ]]
+            [(object) ['ok' => true, 'str2' => 'my str']],
+            [(object) ['ok' => 'true', 'okk' => '123']],
+            [(object) ['ok' => false, 'okk' => 'xyz']],
         ];
     }
 
@@ -53,11 +51,11 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             [1], //not an array or object
             [['ok']], //`ok` is not an object key
             [['abc']],
-            [(object)['str' => 'my str', 'okk' => false]],
-            [(object)(['okk' => 'hello'])], //because missing ok
-            [['ok'=> 'omg', 'okk' => '2']], //because of ok is not boolean
-            [(object)['ok' => 'true', 'str' => 'my str', 'okk' => '123']], //maxProperties
-            [(object)['ok' => 'true']] //minProperties
+            [(object) ['str' => 'my str', 'okk' => false]],
+            [(object) (['okk' => 'hello'])], //because missing ok
+            [['ok' => 'omg', 'okk' => '2']], //because of ok is not boolean
+            [(object) ['ok' => 'true', 'str' => 'my str', 'okk' => '123']], //maxProperties
+            [(object) ['ok' => 'true']], //minProperties
         ];
     }
 
@@ -123,7 +121,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($return->status);
         $this->assertInternalType('object', $return->value);
-
     }
 
     /**
@@ -137,7 +134,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
                     ->setDefault(0),
                 'request' => (new ObjectValidator(
                     [
-                        'url' => new StringValidator(3, 256),
+                        'url'    => new StringValidator(3, 256),
                         'method' => (new StringValidator(3, 10))
                             ->setDefault('GET'),
                         'response' => new ObjectValidator(
@@ -146,13 +143,13 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
                                     ->setDefault(200),
                                 'default' => (new UnsignedIntegerValidator(100, 999))
                                     ->setDefault(200),
-                                'ruleObjects' => (new ArrayValidator())
+                                'ruleObjects' => (new ArrayValidator()),
                             ],
                             ['statusCode', 'ruleObjects']
-                        )
+                        ),
                     ],
                     ['url', 'response']
-                ))
+                )),
             ],
             ['request']
         );
@@ -197,14 +194,14 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $parsed = $validationObject->parse(
             [
-                'order' => 5,
+                'order'   => 5,
                 'request' => [
-                    'url' => 'account/',
+                    'url'      => 'account/',
                     'response' => [
-                        'statusCode' => 400,
-                        'ruleObjects' => ['abc', 'cda']
-                    ]
-                ]
+                        'statusCode'  => 400,
+                        'ruleObjects' => ['abc', 'cda'],
+                    ],
+                ],
             ]
         );
 
@@ -247,7 +244,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validationObject = new ObjectValidator(
             [
-                'key' => new StringValidator()
+                'key' => new StringValidator(),
             ],
             ['key'],
             false
@@ -271,20 +268,20 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
                 'key' => new StringValidator(),
                 'obj' => new ObjectValidator(
                     [
-                        'o' => new StringValidator()
+                        'o' => new StringValidator(),
                     ],
                     ['o'],
                     true
-                )
+                ),
             ],
             ['obj']
         );
 
         $return = $validationObject->validate([
-            'ok' => 'true',
+            'ok'  => 'true',
             'obj' => [
-                'ok' => false
-            ]
+                'ok' => false,
+            ],
         ]);
 
         $this->assertFalse($return->status);
@@ -294,6 +291,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             $return->errorObject
         );
     }
+
     /**
      * @covers Phramework\Validate\ObjectValidator::validate
      */
@@ -301,7 +299,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validationObject = new ObjectValidator(
             [
-                'key' => new StringValidator()
+                'key' => new StringValidator(),
             ],
             ['key'],
             false
@@ -322,7 +320,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers Phramework\Validate\ObjectValidator::addProperties
+     * @covers Phramework\Validate\ObjectValidator::addProperties
      */
     public function testAddPropertiesSuccess()
     {
@@ -340,8 +338,8 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers Phramework\Validate\ObjectValidator::addProperties
-      * @expectedException Exception
+     * @covers Phramework\Validate\ObjectValidator::addProperties
+     * @expectedException Exception
      */
     public function testAddPropertiesFailure()
     {
@@ -359,7 +357,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers Phramework\Validate\ObjectValidator::addProperty
+     * @covers Phramework\Validate\ObjectValidator::addProperty
      */
     public function testAddPropertySuccess()
     {
@@ -373,8 +371,8 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers Phramework\Validate\ObjectValidator::addProperty
-      * @expectedException Exception
+     * @covers Phramework\Validate\ObjectValidator::addProperty
+     * @expectedException Exception
      */
     public function testAddPropertyFailure()
     {
@@ -399,23 +397,23 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $input = [
             'weight' => '5',
-            'obj' => [
-                'valid' => 'true',
+            'obj'    => [
+                'valid'  => 'true',
                 'number' => 10.2,
-            ]
+            ],
         ];
 
         $validationObject = new ObjectValidator(
             [ //properties
                 'weight' => new IntegerValidator(-10, 10, true),
-                'obj' => new ObjectValidator(
+                'obj'    => new ObjectValidator(
                     [ //properties
-                        'valid' => new BooleanValidator(),
-                        'number' => new NumberValidator(0, 100),
+                        'valid'        => new BooleanValidator(),
+                        'number'       => new NumberValidator(0, 100),
                         'not_required' => (new NumberValidator(0, 100))->setDefault(5.5),
                     ],
                     ['valid'] //required
-                )
+                ),
             ],
             ['weight'] //required
         );
@@ -433,30 +431,31 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\ObjectValidator::parse
      * @expectedException Exception
+     *
      * @todo \Phramework\Exceptions\MissingParametersException
      */
     public function testParseFailure()
     {
         $input = [
             'weight' => '5',
-            'obj' => [
+            'obj'    => [
                 //'valid' => 'true',
                 'number' => 10.2,
-            ]
+            ],
         ];
 
         $validationObject = new ObjectValidator(
             [ //properties
                 'weight' => new IntegerValidator(-10, 10, true),
-                'obj' => new ObjectValidator(
+                'obj'    => new ObjectValidator(
                     [ //properties
-                        'valid' => new BooleanValidator(),
-                        'number' => new NumberValidator(0, 100),
+                        'valid'        => new BooleanValidator(),
+                        'number'       => new NumberValidator(0, 100),
                         'not_required' => (new NumberValidator(0, 100))
                             ->setDefault(5.5),
                     ],
                     ['valid'] //required
-                )
+                ),
             ],
             ['weight'] //required
         );
@@ -467,30 +466,31 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\ObjectValidator::parse
      * @expectedException Exception
+     *
      * @todo \Phramework\Exceptions\IncorrectParametersException
      */
     public function testParseFailure2()
     {
         $input = [
             'weight' => '555', //out of range
-            'obj' => [
-                'valid' => 'ΝΟΤ_VALID',
-                'number' => 10.2
-            ]
+            'obj'    => [
+                'valid'  => 'ΝΟΤ_VALID',
+                'number' => 10.2,
+            ],
         ];
 
         $validationObject = new ObjectValidator(
             [ //properties
                 'weight' => new IntegerValidator(-10, 10, true),
-                'obj' => new ObjectValidator(
+                'obj'    => new ObjectValidator(
                     [ //properties
-                        'valid' => new BooleanValidator(),
-                        'number' => new NumberValidator(0, 100),
+                        'valid'        => new BooleanValidator(),
+                        'number'       => new NumberValidator(0, 100),
                         'not_required' => (new NumberValidator(0, 100))
                             ->setDefault(5),
                     ],
                     ['valid'] //required
-                )
+                ),
             ],
             ['weight'] //required
         );

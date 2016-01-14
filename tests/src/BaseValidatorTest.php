@@ -7,9 +7,8 @@ namespace Phramework\Validate;
  */
 class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     * @var Boolean
+     * @var bool
      */
     protected $bool;
     protected $int;
@@ -33,7 +32,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     /**
@@ -162,7 +160,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
     /**
      * @covers Phramework\Validate\BaseValidator::createFromJSON
      * @expectedException Exception
@@ -194,8 +191,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $validationObject = IntegerValidator::createFromJSON($json);
     }
 
-    
-
     /**
      * @covers Phramework\Validate\BaseValidator::parse
      */
@@ -203,23 +198,23 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $input = [
             'weight' => '5',
-            'obj' => [
-                'valid' => 'true',
+            'obj'    => [
+                'valid'  => 'true',
                 'number' => 10.2,
-            ]
+            ],
         ];
 
         $validationObject = new ObjectValidator(
             [ //properties
                 'weight' => new IntegerValidator(-10, 10, true),
-                'obj' => new ObjectValidator(
+                'obj'    => new ObjectValidator(
                     [ //properties
-                        'valid' => new BooleanValidator(),
-                        'number' => new NumberValidator(0, 100),
+                        'valid'        => new BooleanValidator(),
+                        'number'       => new NumberValidator(0, 100),
                         'not_required' => (new NumberValidator(0, 100))->setDefault(5.5),
                     ],
                     ['valid'] //required
-                )
+                ),
             ],
             ['weight'] //required
         );
@@ -251,29 +246,30 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\BaseValidator::parse
      * @expectedException Exception
+     *
      * @todo \Phramework\Exceptions\MissingParametersException
      */
     public function testParseFailure()
     {
         $input = [
             'weight' => '5',
-            'obj' => [
+            'obj'    => [
                 //'valid' => 'true',
                 'number' => 10.2,
-            ]
+            ],
         ];
 
         $validationObject = new ObjectValidator(
             [ //properties
                 'weight' => new IntegerValidator(-10, 10, true),
-                'obj' => new ObjectValidator(
+                'obj'    => new ObjectValidator(
                     [ //properties
-                        'valid' => new BooleanValidator(),
-                        'number' => new NumberValidator(0, 100),
+                        'valid'        => new BooleanValidator(),
+                        'number'       => new NumberValidator(0, 100),
                         'not_required' => (new NumberValidator(0, 100))->setDefault(5.5),
                     ],
                     ['valid'] //required
-                )
+                ),
             ],
             ['weight'] //required
         );
@@ -284,36 +280,36 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\BaseValidator::parse
      * @expectedException Exception
+     *
      * @todo \Phramework\Exceptions\IncorrectParametersException
      */
     public function testParseFailure2()
     {
         $input = [
             'weight' => '555', //out of range
-            'obj' => [
-                'valid' => 'ΝΟΤ_VALID',
-                'number' => 10.2
-            ]
+            'obj'    => [
+                'valid'  => 'ΝΟΤ_VALID',
+                'number' => 10.2,
+            ],
         ];
 
         $validationObject = new ObjectValidator(
             [ //properties
                 'weight' => new IntegerValidator(-10, 10, true),
-                'obj' => new ObjectValidator(
+                'obj'    => new ObjectValidator(
                     [ //properties
-                        'valid' => new BooleanValidator(),
-                        'number' => new NumberValidator(0, 100),
+                        'valid'        => new BooleanValidator(),
+                        'number'       => new NumberValidator(0, 100),
                         'not_required' => (new NumberValidator(0, 100))
                             ->setDefault(5),
                     ],
                     ['valid'] //required
-                )
+                ),
             ],
             ['weight'] //required
         );
 
         $record = $validationObject->parse($input);
-
     }
 
     /**
@@ -326,18 +322,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             3
         );
     }
+
     /**
      * @covers Phramework\Validate\BaseValidator::createFromObject
      */
     public function testCreateFromObjectTypeless()
     {
-        $validator = IntegerValidator::createFromObject((object)[]);
+        $validator = IntegerValidator::createFromObject((object) []);
 
         $this->assertInstanceOf(IntegerValidator::class, $validator);
     }
 
     /**
-     * Validate against common enum keyword
+     * Validate against common enum keyword.
+     *
      * @covers Phramework\Validate\BaseValidator::validateCommon
      */
     public function testValidateCommon()
@@ -360,7 +358,8 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Validate against common enum keyword
+     * Validate against common enum keyword.
+     *
      * @covers Phramework\Validate\BaseValidator::validateEnum
      */
     public function testValidateEnum()
@@ -377,7 +376,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             'Expect true since "1" is in enum array'
         );
 
-        $return = $validator->validate("1");
+        $return = $validator->validate('1');
 
         $this->assertFalse(
             $return->status,
@@ -393,7 +392,8 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword,
-     * expect exception sice objects and arrays are not yet supported for enum keyword
+     * expect exception sice objects and arrays are not yet supported for enum keyword.
+     *
      * @expectedException Exception
      * @covers Phramework\Validate\BaseValidator::validateEnum
      */
@@ -431,7 +431,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('integer', $validator->type);
 
         $this->assertEquals(0, $validator->__get('default'));
-
     }
 
     /**
@@ -572,9 +571,9 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     public function testCreateFromArray()
     {
         $schema = [
-            'type' => 'integer',
-            'minimum' =>  1,
-            'maximum' =>  2,
+            'type'    => 'integer',
+            'minimum' => 1,
+            'maximum' => 2,
         ];
 
         $validator = BaseValidator::createFromArray($schema);
@@ -590,10 +589,10 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateFromObject()
     {
-        $schema = (object)[
-            'type' => 'integer',
-            'minimum' =>  1,
-            'maximum' =>  2,
+        $schema = (object) [
+            'type'    => 'integer',
+            'minimum' => 1,
+            'maximum' => 2,
         ];
 
         $validator = BaseValidator::createFromObject($schema);
@@ -603,20 +602,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, $validator->minimum);
         $this->assertSame(2, $validator->maximum);
 
-        $schema = (object)[
-            'type' => 'object',
-            'properties' => (object)[
-                'code' => (object)[
-                    'type' => 'integer'
-                ]
-            ]
+        $schema = (object) [
+            'type'       => 'object',
+            'properties' => (object) [
+                'code' => (object) [
+                    'type' => 'integer',
+                ],
+            ],
         ];
 
         $validator = BaseValidator::createFromObject($schema);
 
         $this->assertInstanceOf(ObjectValidator::class, $validator);
 
-        $validator->parse((object)['code' => 10]);
+        $validator->parse((object) ['code' => 10]);
     }
 
     /**
@@ -625,8 +624,8 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateFromObjectFailure()
     {
-        $object = (object)[
-            'type' => 'x-not-found'
+        $object = (object) [
+            'type' => 'x-not-found',
         ];
 
         $validator = BaseValidator::createFromObject($object);
@@ -653,7 +652,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $return = (new ObjectValidator(
             [
-                'int' => new IntegerValidator()
+                'int' => new IntegerValidator(),
             ],
             ['int']
         ))->toObject();
@@ -665,7 +664,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('required', $return);
 
         $this->assertInternalType('object', $return->properties);
-
     }
 
     /**
@@ -680,7 +678,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('type', $return);
         $this->assertArrayHasKey('minimum', $return);
         $this->assertArrayHasKey('maximum', $return);
-
     }
 
     /**
@@ -690,7 +687,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $return = (new ObjectValidator(
             [
-                'int' => new IntegerValidator()
+                'int' => new IntegerValidator(),
             ],
             ['int']
         ))->toArray();
@@ -702,7 +699,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('required', $return);
 
         $this->assertInternalType('array', $return['properties']);
-
     }
 
     /**

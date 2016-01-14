@@ -7,7 +7,6 @@ namespace Phramework\Validate;
  */
 class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var BooleanValidator
      */
@@ -28,7 +27,6 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -48,7 +46,7 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
             ['false', false],
             ['FALSE', false],
             ['no', false],
-            ['off', false]
+            ['off', false],
         ];
     }
 
@@ -63,7 +61,7 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
             [124],
             ['τρθε'],
             ['positive'],
-            ['negative']
+            ['negative'],
         ];
     }
 
@@ -100,7 +98,8 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Validate against common enum keyword
+     * Validate against common enum keyword.
+     *
      * @covers Phramework\Validate\BooleanValidator::validateEnum
      */
     public function testValidateCommon()

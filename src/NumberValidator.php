@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,31 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
 
 /**
- * Number validator
+ * Number validator.
+ *
  * @property float|null minimum
  * @property float|null maximum
- * @property boolean|null exclusiveMinimum
- * @property boolean|null exclusiveMaximum
+ * @property bool|null exclusiveMinimum
+ * @property bool|null exclusiveMaximum
  * @property float multipleOf
+ *
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @since 0.0.0
  */
 class NumberValidator extends \Phramework\Validate\BaseValidator
 {
     /**
-     * Overwrite base class attributes
+     * Overwrite base class attributes.
+     *
      * @var array
      */
     protected static $typeAttributes = [
@@ -43,11 +48,12 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
         'maximum',
         'exclusiveMinimum',
         'exclusiveMaximum',
-        'multipleOf'
+        'multipleOf',
     ];
 
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var string
      */
     protected static $type = 'number';
@@ -93,9 +99,12 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
     }
 
     /**
-     * Validate value
+     * Validate value.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
      */
     public function validate($value)
@@ -112,9 +121,9 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'type'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'type',
+                ],
             ]);
         } elseif ($this->maximum !== null
             && ($value > $this->maximum
@@ -124,9 +133,9 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'maximum'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'maximum',
+                ],
             ]);
         } elseif ($this->minimum !== null
             && ($value < $this->minimum
@@ -136,26 +145,26 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'minimum'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'minimum',
+                ],
             ]);
         } elseif ($this->multipleOf !== null
-            && fmod((float)$value, (float)$this->multipleOf) != 0
+            && fmod((float) $value, (float) $this->multipleOf) != 0
         ) {
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'multipleOf'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'multipleOf',
+                ],
             ]);
         } else {
             $return->errorObject = null;
             //Set status to success
             $return->status = true;
             //Type cast
-            $return->value  = (float)($value);
+            $return->value = (float) ($value);
         }
 
         return $this->validateCommon($value, $return);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,30 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Exceptions\IncorrectParametersException;
-use \Phramework\Exceptions\MissingParametersException;
+use Phramework\Exceptions\IncorrectParametersException;
 
 /**
- * BaseValidator, every validator **MUST** extend this class
+ * BaseValidator, every validator **MUST** extend this class.
  *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @since 0.0.0
  */
 abstract class BaseValidator
 {
     /**
      * Validator's type
-     * Must be overwriten, default is 'string'
+     * Must be overwriten, default is 'string'.
+     *
      * @var string|null
      */
     protected static $type = null;
 
     /**
      * This static method will instanciate a new object as validation model
-     * to parse the input value
+     * to parse the input value.
+     *
      * @param mixed $value Input value to validate
      */
     public static function parseStatic($value)
@@ -48,18 +50,24 @@ abstract class BaseValidator
     }
 
     /**
-    * Validate value
-    * @see \Phramework\Validate\ValidateResult for ValidateResult object
-    * @param  mixed $value Input value to validate
-    * @return ValidateResult
+     * Validate value.
+     *
+     * @see \Phramework\Validate\ValidateResult for ValidateResult object
+     *
+     * @param mixed $value Input value to validate
+     *
+     * @return ValidateResult
      */
     abstract public function validate($value);
 
     /**
-     * Common helper method to validate against all common keywords
+     * Common helper method to validate against all common keywords.
+     *
      * @uses validateEnum
-     * @param  mixed $value Value to validate
-     * @param  ValidateResult $return Current ValidateResult status
+     *
+     * @param mixed          $value  Value to validate
+     * @param ValidateResult $return Current ValidateResult status
+     *
      * @return ValidateResult
      */
     protected function validateCommon($value, $validateResult)
@@ -80,10 +88,14 @@ abstract class BaseValidator
     }
 
     /**
-     * Common helper method to validate against "enum" keyword
+     * Common helper method to validate against "enum" keyword.
+     *
      * @see 5.5.1. enum http://json-schema.org/latest/json-schema-validation.html#anchor75
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
+     *
      * @todo provide support for objects and arrays
      */
     protected function validateEnum($value)
@@ -139,8 +151,8 @@ abstract class BaseValidator
             $return->status = false;
             //Error
             $return->errorObject = new IncorrectParametersException([[
-                'type' => static::getType(),
-                'failure' => 'enum'
+                'type'    => static::getType(),
+                'failure' => 'enum',
             ]]);
         } else {
             //Ignored validation, set status to true
@@ -151,7 +163,8 @@ abstract class BaseValidator
     }
 
     /**
-     * Get validator's type
+     * Get validator's type.
+     *
      * @return string|null
      */
     public static function getType()
@@ -161,14 +174,16 @@ abstract class BaseValidator
 
     /**
      * Validator's attributes
-     * Can be overwriten
+     * Can be overwriten.
+     *
      * @var string[]
      */
     protected static $typeAttributes = [
     ];
 
     /**
-     * Common valdator attributes
+     * Common valdator attributes.
+     *
      * @var string[]
      */
     protected static $commonAttributes = [
@@ -177,13 +192,14 @@ abstract class BaseValidator
         'default',
         'format',
         'enum',
-        'validateType' //non standard attribute, can be used in combination with enum
+        'validateType', //non standard attribute, can be used in combination with enum
     ];
 
     public $default;
 
     /**
-     * Get validator's attributes
+     * Get validator's attributes.
+     *
      * @return string[]
      */
     public static function getTypeAttributes()
@@ -192,7 +208,8 @@ abstract class BaseValidator
     }
 
     /**
-     * Objects current attributes and values
+     * Objects current attributes and values.
+     *
      * @var array
      */
     protected $attributes = [];
@@ -211,10 +228,13 @@ abstract class BaseValidator
     }
 
     /**
-     * Get attribute's value
-     * @param  string $key Attribute's key
-     * @return mixed
+     * Get attribute's value.
+     *
+     * @param string $key Attribute's key
+     *
      * @throws \Exception If key not found
+     *
+     * @return mixed
      */
     public function __get($key)
     {
@@ -233,10 +253,13 @@ abstract class BaseValidator
     }
 
     /**
-     * Set attribute's value
+     * Set attribute's value.
+     *
      * @param string $key   Attribute's key
-     * @param mixed $value  Attribute's value
+     * @param mixed  $value Attribute's value
+     *
      * @throws \Exception If key not found
+     *
      * @return BaseValidator Return's this validator object
      */
     public function __set($key, $value)
@@ -295,10 +318,13 @@ abstract class BaseValidator
 
     /**
      * This method use this validator to parse data from $value argument
-     * and return a clean object
-     * @param  mixed $value Input value to validate
+     * and return a clean object.
+     *
+     * @param mixed $value Input value to validate
+     *
      * @throws \Phramework\Exceptions\MissingParametersException
      * @throws \Phramework\Exceptions\IncorrectParametersException
+     *
      * @return mixed
      */
     public function parse($value)
@@ -315,7 +341,8 @@ abstract class BaseValidator
     }
 
     /**
-     * Validator classes registry
+     * Validator classes registry.
+     *
      * @var string[]
      */
     private static $validatorRegistry = [
@@ -326,18 +353,21 @@ abstract class BaseValidator
         'unsignedinteger'   => UnsignedIntegerValidator::class,
         'uinteger'          => UnsignedIntegerValidator::class, //alias
         'uint'              => UnsignedIntegerValidator::class, //alias
-        'date-time'         => DatetimeValidator::class
+        'date-time'         => DatetimeValidator::class,
     ];
 
     /**
-     * Register a custom validator for a type
-     * @param  string $type      Type's name, `x-` SHOULD be used for custom types
-     * @param  string $className Validator's full classname.
-     * All validators MUST extend `BaseValidator` class
+     * Register a custom validator for a type.
+     *
+     * @param string $type      Type's name, `x-` SHOULD be used for custom types
+     * @param string $className Validator's full classname.
+     *                          All validators MUST extend `BaseValidator` class
+     *
      * @example
      * ```php
      * BaseValidator::registerValidator('x-address', 'My\APP\AddressValidator');
      * ```
+     *
      * @throws Exception
      */
     public static function registerValidator($type, $className)
@@ -352,12 +382,12 @@ abstract class BaseValidator
 
         if (!is_subclass_of(
             $className,
-            BaseValidator::class,
+            self::class,
             true
         )) {
             throw new \Exception(sprintf(
                 '"className" MUST extend "%s"',
-                BaseValidator::class
+                self::class
             ));
         }
 
@@ -366,8 +396,10 @@ abstract class BaseValidator
 
     /**
      * Helper method.
-     * Used to create anyOf, allOf and oneOf validators from objects
-     * @param  \stdClass $object Validation object
+     * Used to create anyOf, allOf and oneOf validators from objects.
+     *
+     * @param \stdClass $object Validation object
+     *
      * @return AnyOf|AllOf|OneOf|null
      */
     protected static function createFromObjectForAdditional($object)
@@ -384,12 +416,12 @@ abstract class BaseValidator
             $indexProperty = 'oneOf';
             $class = OneOf::class;
         } else {
-            return null;
+            return;
         }
 
         //Parse index property's object as validator
         foreach ($object->{$indexProperty} as &$property) {
-            $property = BaseValidator::createFromObject($property);
+            $property = self::createFromObject($property);
         }
 
         $validator = new $class($object->{$indexProperty});
@@ -398,11 +430,15 @@ abstract class BaseValidator
     }
 
     /**
-     * Create validator from validation object
-     * @param  \stdClass $object Validation object
-     * @return BaseValidator
-     * @todo cleanup class loading
+     * Create validator from validation object.
+     *
+     * @param \stdClass $object Validation object
+     *
      * @throws \Exception When validator class cannot be found for object's type
+     *
+     * @return BaseValidator
+     *
+     * @todo cleanup class loading
      */
     public static function createFromObject($object)
     {
@@ -413,16 +449,16 @@ abstract class BaseValidator
             if (array_key_exists($object->type, self::$validatorRegistry)) {
                 $className = self::$validatorRegistry[$object->type];
                 $validator = new $className();
-            } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
+            } elseif (class_exists(__NAMESPACE__.'\\'.$object->type)) {
                 //if already loaded
-                $className = __NAMESPACE__ . '\\' . $object->type;
+                $className = __NAMESPACE__.'\\'.$object->type;
                 $validator = new $className();
-            } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type . 'Validator')) {
+            } elseif (class_exists(__NAMESPACE__.'\\'.$object->type.'Validator')) {
                 //if already loaded
-                $className = __NAMESPACE__ . '\\' . $object->type . 'Validator';
+                $className = __NAMESPACE__.'\\'.$object->type.'Validator';
                 $validator = new $className();
             } else {
-                $className = $object->type . 'Validator';
+                $className = $object->type.'Validator';
 
                 try {
                     //prevent fatal error
@@ -471,12 +507,12 @@ abstract class BaseValidator
                         }
 
                         $createdProperties->{$key} =
-                        BaseValidator::createFromObject($property);
+                        self::createFromObject($property);
                     }
                     //push to class
                     $validator->{$attribute} = $createdProperties;
                 } elseif ($attribute == 'items') {
-                    $validator->{$attribute} = BaseValidator::createFromObject(
+                    $validator->{$attribute} = self::createFromObject(
                         $object->{$attribute}
                     );
                 } else {
@@ -490,22 +526,27 @@ abstract class BaseValidator
     }
 
     /**
-     * Create validator from validation array
-     * @param  array $object Validation array
+     * Create validator from validation array.
+     *
+     * @param array $object Validation array
+     *
      * @return BaseValidator
      */
     public static function createFromArray($array)
     {
-        $object = (object)($array);
-        return static::createFromObject($object);
+        $object = (object) ($array);
 
+        return static::createFromObject($object);
     }
 
     /**
-     * Create validator from validation object encoded as json object
-     * @param  string $object Validation json encoded object
-     * @return BaseValidator
+     * Create validator from validation object encoded as json object.
+     *
+     * @param string $object Validation json encoded object
+     *
      * @throws Exception when JSON sting is not well formed
+     *
+     * @return BaseValidator
      */
     public static function createFromJSON($json)
     {
@@ -513,7 +554,7 @@ abstract class BaseValidator
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \Exception(
-                'JSON parse had errors - ' . json_last_error_msg()
+                'JSON parse had errors - '.json_last_error_msg()
             );
         }
 
@@ -521,7 +562,8 @@ abstract class BaseValidator
     }
 
     /**
-     * Export validator to json encoded string
+     * Export validator to json encoded string.
+     *
      * @return string
      */
     public function toJSON($JSON_PRETTY_PRINT = false)
@@ -530,7 +572,7 @@ abstract class BaseValidator
 
         foreach ($object as $key => &$attribute) {
             //Check if any of attributes is an instance of BaseValidator
-            if (is_object($attribute) && is_a($attribute, BaseValidator::class)) {
+            if (is_object($attribute) && is_a($attribute, self::class)) {
                 $attribute = $attribute->toObject();
             }
         }
@@ -542,7 +584,8 @@ abstract class BaseValidator
     }
 
     /**
-     * Export validator to object
+     * Export validator to object.
+     *
      * @return \stdClass
      */
     public function toObject()
@@ -551,23 +594,24 @@ abstract class BaseValidator
 
         //fix type to object
         if (isset($object['properties'])) {
-            $object['properties'] = (object)$object['properties'];
+            $object['properties'] = (object) $object['properties'];
         }
 
         foreach (['anyOf', 'allOf', 'oneOf'] as $property) {
             //fix type to object
             if (isset($object[$property])) {
                 foreach ($object[$property] as &$propertyItem) {
-                    $propertyItem = (object)$propertyItem;
+                    $propertyItem = (object) $propertyItem;
                 }
             }
         }
 
-        return (object)$object;
+        return (object) $object;
     }
 
     /**
-     * Export validator to array
+     * Export validator to array.
+     *
      * @return array
      */
     public function toArray()
@@ -599,15 +643,15 @@ abstract class BaseValidator
 
             if (static::$type == 'object' && $attribute == 'properties') {
                 foreach ($object[$attribute] as $key => $property) {
-                    if ($property instanceof BaseValidator) {
+                    if ($property instanceof self) {
                         $object[$attribute]->{$key} = $property->toArray();
                     }
                 }
                 //fix type to array
-                $object[$attribute] = (array)$object[$attribute];
+                $object[$attribute] = (array) $object[$attribute];
             } elseif (in_array($attribute, ['allOf', 'anyOf', 'oneOf'])) {
                 foreach ($object[$attribute] as $key => $property) {
-                    if ($property instanceof BaseValidator) {
+                    if ($property instanceof self) {
                         $object[$attribute][$key] = $property->toArray();
                     }
                 }

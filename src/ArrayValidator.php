@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,32 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
-use \Phramework\Models\Filter;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
 
 /**
- * Array validator
+ * Array validator.
+ *
  * @property BaseValidator|BaseValidator[]|null $items If it is an object,
  * this object MUST be a valid JSON Schema. If it is an array, items of this
  * array MUST be objects, and each of these objects MUST be a valid JSON Schema.
- * @property integer $minItems Minimum number of items
- * @property integer $maxItems Maximum number of items
- * @property boolean $uniqueItems If true, only unique array items are allowed
+ * @property int $minItems Minimum number of items
+ * @property int $maxItems Maximum number of items
+ * @property bool $uniqueItems If true, only unique array items are allowed
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor36 Validation keywords for arrays
  * @since 0.0.0
+ *
  * @todo support array for attribute items
  */
 class ArrayValidator extends \Phramework\Validate\BaseValidator
 {
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var string
      */
     protected static $type = 'array';
@@ -47,18 +51,18 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         'maxItems',
         'items',
         'uniqueItems',
-        'additionalItems'
+        'additionalItems',
     ];
 
     /**
-     * @param integer                                $minItems
-     *     *[Optional]* Default is 0
-     * @param integer|null                           $maxItems
-     *     *[Optional]*
-     * @param BaseValidator|BaseValidator[]|null     $items
-     *     *[Optional]* Default is null
-     * @param Boolean                                $uniqueItems
-     *     *[Optional]*
+     * @param int                                $minItems
+     *                                                        *[Optional]* Default is 0
+     * @param int|null                           $maxItems
+     *                                                        *[Optional]*
+     * @param BaseValidator|BaseValidator[]|null $items
+     *                                                        *[Optional]* Default is null
+     * @param bool                               $uniqueItems
+     *                                                        *[Optional]*
      */
     public function __construct(
         $minItems = 0,
@@ -84,14 +88,17 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         $this->maxItems = $maxItems;
         $this->items = $items;
         $this->uniqueItems = $uniqueItems;
-
     }
 
     /**
-     * Validate value
+     * Validate value.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
+     *
      * @todo incomplete
      */
     public function validate($value)
@@ -103,10 +110,11 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'type'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'type',
+                ],
             ]);
+
             return $return;
         } else {
             $propertiesCount = count($value);
@@ -115,18 +123,19 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                 //error
                 $return->errorObject = new IncorrectParametersException(
                     [
-                        'type' => static::getType(),
-                        'failure' => 'minItems'
+                        'type'    => static::getType(),
+                        'failure' => 'minItems',
                     ]
                 );
+
                 return $return;
             } elseif ($this->maxItems !== null
                 && $propertiesCount > $this->maxItems
             ) {
                 $return->errorObject = new IncorrectParametersException(
                     [
-                        'type' => static::getType(),
-                        'failure' => 'maxItems'
+                        'type'    => static::getType(),
+                        'failure' => 'maxItems',
                     ]
                 );
                 //error
@@ -150,13 +159,14 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
             if (!empty($errorItems)) {
                 $return->errorObject = new IncorrectParametersException(
                     [
-                        'type' => static::getType(),
+                        'type'    => static::getType(),
                         'failure' => 'items',
-                        'items' => [
-                            $errorItems
-                        ]
+                        'items'   => [
+                            $errorItems,
+                        ],
                     ]
                 );
+
                 return $return;
             }
         }
@@ -165,10 +175,11 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         if ($this->uniqueItems && count($value) !== count(array_unique($value))) {
             $return->errorObject = new IncorrectParametersException(
                 [
-                    'type' => static::getType(),
-                    'failure' => 'uniqueItems'
+                    'type'    => static::getType(),
+                    'failure' => 'uniqueItems',
                 ]
             );
+
             return $return;
         }
 
@@ -183,17 +194,18 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
     }
 
     /**
-     * @param  array $a
-     * @param  array $b
-     * @return boolean
+     * @param array $a
+     * @param array $b
+     *
+     * @return bool
+     *
      * @since 0.4.0
      */
     public static function equals($a, $b)
     {
-        return (
+        return
             is_array($a)
             && is_array($b)
-            && array_diff($a, $b) === array_diff($b, $a)
-        );
+            && array_diff($a, $b) === array_diff($b, $a);
     }
 }

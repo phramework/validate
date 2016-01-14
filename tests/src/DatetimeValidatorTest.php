@@ -4,7 +4,6 @@ namespace Phramework\Validate;
 
 class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var DatetimeValidator
      */
@@ -25,7 +24,6 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -33,7 +31,7 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
         //input, expected
         return [
             ['2000-10-12 12:00:00'],
-            ['2000-10-12 12:56:00']
+            ['2000-10-12 12:56:00'],
         ];
     }
 
@@ -51,7 +49,7 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
             ['2000-10-12 25:56:00'],
             ['2000-10-12 23:56'],
             ['2000-10-12'],
-            ['2000-10-12 23']
+            ['2000-10-12 23'],
         ];
     }
 

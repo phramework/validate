@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,28 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Models\Filter;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Models\Filter;
 
 /**
- * String validator
- * @property integer $minLength Minimum number of its characters
- * @property integer|null $maxLength Maximum number of its characters
+ * String validator.
+ *
+ * @property int $minLength Minimum number of its characters
+ * @property int|null $maxLength Maximum number of its characters
  * @property string|null $pattern Regular expresion pattern for validating
- * @property boolean $raw Keep raw value, dont sanitize value after validation
+ * @property bool $raw Keep raw value, dont sanitize value after validation
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @since 0.0.0
  * @see ECMA 262 regular expression dialect for regular expression pattern
  */
 class StringValidator extends \Phramework\Validate\BaseValidator
 {
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var string
      */
     protected static $type = 'string';
@@ -42,19 +46,20 @@ class StringValidator extends \Phramework\Validate\BaseValidator
         'minLength',
         'maxLength',
         'pattern',
-        'raw' //non standard
+        'raw', //non standard
     ];
 
     /**
-     * [__construct description]
-     * @param integer       $minLength *[Optional]*
-     *     Minimum number of its characters, default is 0
-     * @param integer|null  $maxLength *[Optional]*
-     *     Maximum number of its characters, default is null
-     * @param string|null   $pattern   *[Optional]*
-     *     Regular expresion pattern for validating, default is null
-     * @param boolean       $raw       *[Optional]*
-     *     Keep raw value, dont sanitize value after validation, default is false
+     * [__construct description].
+     *
+     * @param int         $minLength *[Optional]*
+     *                               Minimum number of its characters, default is 0
+     * @param int|null    $maxLength *[Optional]*
+     *                               Maximum number of its characters, default is null
+     * @param string|null $pattern   *[Optional]*
+     *                               Regular expresion pattern for validating, default is null
+     * @param bool        $raw       *[Optional]*
+     *                               Keep raw value, dont sanitize value after validation, default is false
      */
     public function __construct(
         $minLength = 0,
@@ -79,10 +84,14 @@ class StringValidator extends \Phramework\Validate\BaseValidator
     }
 
     /**
-     * Validate value
+     * Validate value.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
+     *
      * @uses https://secure.php.net/manual/en/function.is-string.php
      * @uses filter_var with FILTER_VALIDATE_REGEXP for pattern
      */
@@ -94,17 +103,17 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'type'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'type',
+                ],
             ]);
         } elseif (mb_strlen($value) < $this->minLength) {
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'minLength'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'minLength',
+                ],
             ]);
         } elseif ($this->maxLength !== null
             && mb_strlen($value) > $this->maxLength
@@ -112,25 +121,25 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'maxLength'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'maxLength',
+                ],
             ]);
         } elseif ($this->pattern !== null
             && filter_var(
                 $value,
                 FILTER_VALIDATE_REGEXP,
                 [
-                    'options' => ['regexp' => $this->pattern]
+                    'options' => ['regexp' => $this->pattern],
                 ]
             ) === false
         ) {
             //error
             $return->errorObject = new IncorrectParametersException([
                 [
-                    'type' => static::getType(),
-                    'failure' => 'pattern'
-                ]
+                    'type'    => static::getType(),
+                    'failure' => 'pattern',
+                ],
             ]);
         } else {
             $return->errorObject = null;

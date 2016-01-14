@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,34 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
 
 /**
- * Integer validator
+ * Integer validator.
+ *
  * @uses \Phramework\Validate\Number As base implementation's rules to
  * validate that the value is a number and then applies additional rules
  * to validate that this is a interger
- * @property integer|null minimum
- * @property integer|null maximum
- * @property boolean|null exclusiveMinimum
- * @property boolean|null exclusiveMaximum
- * @property integer multipleOf
+ *
+ * @property int|null minimum
+ * @property int|null maximum
+ * @property bool|null exclusiveMinimum
+ * @property bool|null exclusiveMaximum
+ * @property int multipleOf
+ *
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @since 0.0.0
  */
 class IntegerValidator extends \Phramework\Validate\NumberValidator
 {
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var string
      */
     protected static $type = 'integer';
@@ -72,9 +77,12 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
     }
 
     /**
-     * Validate value
+     * Validate value.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
      */
     public function validate($value)
@@ -83,7 +91,7 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
 
         //Apply correct integer type
         if ($return->status) {
-            $return->value = (int)$value;
+            $return->value = (int) $value;
         }
 
         return $return;

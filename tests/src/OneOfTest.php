@@ -4,7 +4,6 @@ namespace Phramework\Validate;
 
 class OneOfTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var OneOf
      */
@@ -23,7 +22,7 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
             new ObjectValidator(['a' => new IntegerValidator()], ['a'], true, 0, 1),
             new ArrayValidator(2, 2, new IntegerValidator()),
             new StringValidator(2, 4),
-            new StringValidator(3, 6)
+            new StringValidator(3, 6),
         ]);
     }
 
@@ -33,7 +32,6 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -47,11 +45,11 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
             [13.4, 13.4], //exists only in Number
             [[1, 2], [1, 2]],
             [
-                (object)['a' => 1],
-                (object)['a' => 1]
+                (object) ['a' => 1],
+                (object) ['a' => 1],
             ],
             ['ab', 'ab'], //exists only in first string
-            ['ababab', 'ababab'] //exists only in first string
+            ['ababab', 'ababab'], //exists only in first string
         ];
     }
 
@@ -60,7 +58,7 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
         //input
         return [
             [10], //exists in two
-            ['abc', 'abc'] //exists in both string
+            ['abc', 'abc'], //exists in both string
         ];
     }
 
@@ -75,7 +73,7 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
                 1,
                 10,
                 new StringValidator()
-            )
+            ),
         ]);
     }
 
@@ -155,7 +153,8 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Validate against common enum keyword
+     * Validate against common enum keyword.
+     *
      * @covers Phramework\Validate\OneOf::validateEnum
      */
     public function testValidateCommon()

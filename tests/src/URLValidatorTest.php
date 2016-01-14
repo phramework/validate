@@ -4,7 +4,6 @@ namespace Phramework\Validate;
 
 class URLValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var URL
      */
@@ -25,7 +24,6 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -34,7 +32,7 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
         return [
             ['https://nohponex.gr'],
             ['http://www.thmmy.gr/dir/file.php?param=ok&second=false#ok'],
-            ['http://127.0.0.1/app']
+            ['http://127.0.0.1/app'],
         ];
     }
 
@@ -49,7 +47,7 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
             ['http::://nohponex.gr'],
             ['nohponex.gr'],
             ['nohponex'],
-            ['//nohponex.gr']
+            ['//nohponex.gr'],
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015 - 2016 Xenofon Spafaridis.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,30 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
 
 /**
- * Validates successfully if it validates successfully against all schema defined in allOf attribute
+ * Validates successfully if it validates successfully against all schema defined in allOf attribute.
+ *
  * @property array allOf
+ *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ *
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor82
  * @since 0.4.0
  */
 class AllOf extends \Phramework\Validate\AnyOf
 {
     /**
-     * Overwrite base class type
+     * Overwrite base class type.
+     *
      * @var null
      */
     protected static $type = null;
 
     protected static $typeAttributes = [
-        'allOf'
+        'allOf',
     ];
 
     /**
@@ -46,6 +49,7 @@ class AllOf extends \Phramework\Validate\AnyOf
 
     /**
      * @param array $allOf
+     *
      * @example
      * ```php
      * $validator = new AllOf([
@@ -67,10 +71,14 @@ class AllOf extends \Phramework\Validate\AnyOf
     }
 
     /**
-     * Validate value
+     * Validate value.
+     *
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     *
+     * @param mixed $value Value to validate
+     *
      * @return ValidateResult
+     *
      * @uses $requiredCountOfAnyOf
      * @uses \Phramework\Validate\AnyOf::validate
      */

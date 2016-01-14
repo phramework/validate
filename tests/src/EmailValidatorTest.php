@@ -7,7 +7,6 @@ namespace Phramework\Validate;
  */
 class EmailValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var EmailValidator
      */
@@ -28,7 +27,6 @@ class EmailValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -37,7 +35,7 @@ class EmailValidatorTest extends \PHPUnit_Framework_TestCase
         return [
             ['nohponex@gmail.com'],
             ['nohponex_under@gmail.com'],
-            ['nohponex@mail.co.uk']
+            ['nohponex@mail.co.uk'],
         ];
     }
 
@@ -47,10 +45,10 @@ class EmailValidatorTest extends \PHPUnit_Framework_TestCase
         return [
             ['string' =>  '100'],
             ['less than 10 characters' => 'nx@ma.il'],
-            ['dotless' => 'nohponex@gmailcom'],
-            ['longer' => 'nohponex_long_long_long_long_long@gmail.com'],
-            ['without@' => 'dasdjs#sdads.fd'],
-            ['number' => 124],
+            ['dotless'                 => 'nohponex@gmailcom'],
+            ['longer'                  => 'nohponex_long_long_long_long_long@gmail.com'],
+            ['without@'                => 'dasdjs#sdads.fd'],
+            ['number'                  => 124],
         ];
     }
 

@@ -4,7 +4,6 @@ namespace Phramework\Validate;
 
 class AllOfTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var AllOf
      */
@@ -19,7 +18,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
         $this->object = new AllOf([
             new IntegerValidator(),
             new UnsignedIntegerValidator(),
-            new NumberValidator()
+            new NumberValidator(),
         ]);
     }
 
@@ -29,7 +28,6 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -39,7 +37,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
             [1, 1],
             [10, 10],
             [100, 100],
-            [0, 0]
+            [0, 0],
         ];
     }
 
@@ -58,7 +56,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
             [['abc', 10, 32]],
             [0.1],
             [-10],
-            [-1]
+            [-1],
         ];
     }
 
@@ -73,7 +71,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
                 1,
                 10,
                 new StringValidator()
-            )
+            ),
         ]);
     }
 
@@ -201,7 +199,8 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Validate against common enum keyword
+     * Validate against common enum keyword.
+     *
      * @covers Phramework\Validate\AllOf::validateEnum
      */
     public function testValidateCommon()

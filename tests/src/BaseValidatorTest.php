@@ -194,26 +194,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $validationObject = IntegerValidator::createFromJSON($json);
     }
 
-    
+
 
     /**
      * @covers Phramework\Validate\BaseValidator::parse
      */
     public function testParseSuccess()
     {
-        $input = [
-            'weight' => '5',
-            'obj' => [
-                'valid' => 'true',
-                'number' => 10.2,
-            ]
-        ];
+
 
         $validationObject = new ObjectValidator(
             [ //properties
                 'weight' => new IntegerValidator(-10, 10, true),
                 'obj' => new ObjectValidator(
-                    [ //properties
+                    (object)[ //properties
                         'valid' => new BooleanValidator(),
                         'number' => new NumberValidator(0, 100),
                         'not_required' => (new NumberValidator(0, 100))->setDefault(5.5),
@@ -223,6 +217,14 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             ['weight'] //required
         );
+
+        $input = (object)[
+            'weight' => '5',
+            'obj' => (object)[
+                'valid' => 'true',
+                'number' => 10.2,
+            ]
+        ];
 
         $record = $validationObject->parse($input);
         $this->assertInternalType('object', $record);

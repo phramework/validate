@@ -196,11 +196,11 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $parsed = $validationObject->parse(
-            [
+            (object)[
                 'order' => 5,
-                'request' => [
+                'request' => (object)[
                     'url' => 'account/',
-                    'response' => [
+                    'response' => (object)[
                         'statusCode' => 400,
                         'ruleObjects' => ['abc', 'cda']
                     ]
@@ -253,7 +253,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $return = $validationObject->validate(['ok' => 'true']);
+        $return = $validationObject->validate((object)['ok' => 'true']);
 
         $this->assertFalse($return->status);
 
@@ -280,9 +280,9 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             ['obj']
         );
 
-        $return = $validationObject->validate([
+        $return = $validationObject->validate((object)[
             'ok' => 'true',
-            'obj' => [
+            'obj' => (object)[
                 'ok' => false
             ]
         ]);
@@ -307,10 +307,13 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $return = $validationObject->validate(['key' => '1', 'additiona' => 'true']);
+        $return = $validationObject->validate((object)[
+            'key' => '1',
+            'additional' => 'true'
+        ]);
 
         $this->assertFalse($return->status);
-
+        
         $this->assertInstanceOf(
             'Phramework\\Exceptions\\IncorrectParametersException',
             $return->errorObject
@@ -397,9 +400,9 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseSuccess()
     {
-        $input = [
+        $input = (object)[
             'weight' => '5',
-            'obj' => [
+            'obj' => (object)[
                 'valid' => 'true',
                 'number' => 10.2,
             ]

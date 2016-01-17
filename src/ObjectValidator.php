@@ -104,18 +104,14 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     /**
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
-     * @param  mixed $value Value to validate
+     * @param  object $value Value to validate
      * @return ValidateResult
-     * @todo if array, remove elements without keys
      * @todo clean up failure of recurvice objects
      */
     public function validate($value)
     {
         $return = new ValidateResult($value, false);
         $failure = null;
-        if (!is_object($value) && is_array($value)) {
-            $value = (object)($value);
-        }
 
         if (is_array($this->properties)) {
             $this->properties = (object)$this->properties;

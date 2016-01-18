@@ -84,7 +84,6 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         $this->maxItems = $maxItems;
         $this->items = $items;
         $this->uniqueItems = $uniqueItems;
-
     }
 
     /**

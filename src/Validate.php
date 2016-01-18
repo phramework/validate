@@ -373,10 +373,9 @@ class Validate
                                 && $value['max'] !== null
                                 && mb_strlen($parameters[$key]) > $value['max']
                             ) {
-                                    $temporary_exception_description['failure'] = 'max';
-                                    $temporary_exception_description['max'] = $value['max'];
-                                    $incorrect[$key] = $temporary_exception_description;
-
+                                $temporary_exception_description['failure'] = 'max';
+                                $temporary_exception_description['max'] = $value['max'];
+                                $incorrect[$key] = $temporary_exception_description;
                             }
                             if (isset($value['min'])
                                 && $value['min'] !== null
@@ -385,7 +384,6 @@ class Validate
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
-
                             }
                         }
                         break;

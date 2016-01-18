@@ -176,7 +176,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
                 if (!$propertyValidateResult->status) {
                     if (!$propertyValidateResult->errorObject) {
-                         $errorObjects[$key] = [];
+                        $errorObjects[$key] = [];
                     } else {
                         switch (get_class($propertyValidateResult->errorObject)) {
                             case MissingParametersException::class:
@@ -189,12 +189,10 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                                 $errorObjects[$key] = [];
                         }
                     }
-
                 }
 
                 //use type casted value
                 $value->{$key} = $propertyValidateResult->value;
-
             } elseif (property_exists($property, 'default')) {
                 //Else use default property's value
                 $value->{$key} = $property->default;

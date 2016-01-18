@@ -33,7 +33,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function validateSuccessProvider()
@@ -123,7 +122,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($return->status);
         $this->assertInternalType('object', $return->value);
-
     }
 
     /**

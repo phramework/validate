@@ -498,7 +498,6 @@ abstract class BaseValidator
     {
         $object = (object)($array);
         return static::createFromObject($object);
-
     }
 
     /**

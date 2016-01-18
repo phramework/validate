@@ -33,7 +33,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     /**
@@ -201,8 +200,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseSuccess()
     {
-
-
         $validationObject = new ObjectValidator(
             [ //properties
                 'weight' => new IntegerValidator(-10, 10, true),
@@ -315,7 +312,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $record = $validationObject->parse($input);
-
     }
 
     /**
@@ -433,7 +429,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('integer', $validator->type);
 
         $this->assertEquals(0, $validator->__get('default'));
-
     }
 
     /**
@@ -667,7 +662,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('required', $return);
 
         $this->assertInternalType('object', $return->properties);
-
     }
 
     /**
@@ -682,7 +676,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('type', $return);
         $this->assertArrayHasKey('minimum', $return);
         $this->assertArrayHasKey('maximum', $return);
-
     }
 
     /**
@@ -704,7 +697,6 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('required', $return);
 
         $this->assertInternalType('array', $return['properties']);
-
     }
 
     /**

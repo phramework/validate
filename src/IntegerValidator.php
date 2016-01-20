@@ -73,7 +73,6 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
 
     /**
      * Validate value
-     * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
      * @return ValidateResult
      */

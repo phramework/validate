@@ -40,9 +40,9 @@ class ValidateResult
     public $errorObject;
 
     /**
-     * @param mixed          $value       [description]
-     * @param boolean        $status      [description]
-     * @param Exception|null $errorObject [description]
+     * @param mixed           $value
+     * @param boolean         $status      *[Optional]*
+     * @param \Exception|null $errorObject *[Optional]*
      */
     public function __construct($value, $status = false, $errorObject = null)
     {

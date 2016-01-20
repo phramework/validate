@@ -372,7 +372,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(
             $return->status,
-            'Expect true since "1" is in enum array'
+            'Expect true since 1 is in enum'
         );
 
         $return = $validator->validate("1");
@@ -385,13 +385,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $return = $validator->validate(2);
         $this->assertFalse(
             $return->status,
-            'Expect false since "2" is not in enum array'
+            'Expect false since "2" is not in enum'
         );
+
+        $validator = (new EnumValidator([111, 3, 5]));
+
+        $parsed = $validator->parse('111');
+
+        $this->assertInternalType('integer', $parsed);
+        $this->assertSame(111, $parsed);
     }
 
     /**
      * Validate against common enum keyword,
-     * expect exception sice objects and arrays are not yet supported for enum keyword
+     * expect exception since objects and arrays are not yet supported for enum keyword
      * @expectedException Exception
      * @covers Phramework\Validate\BaseValidator::validateEnum
      */

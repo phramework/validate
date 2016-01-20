@@ -59,7 +59,7 @@ abstract class BaseValidator
      * Common helper method to validate against all common keywords
      * @uses validateEnum
      * @param  mixed $value Value to validate
-     * @param  ValidateResult $return Current ValidateResult status
+     * @param  ValidateResult $validateResult Current ValidateResult status
      * @return ValidateResult
      */
     protected function validateCommon($value, $validateResult)
@@ -69,10 +69,11 @@ abstract class BaseValidator
 
         //validate against enum using validateEnum
         if ($validateResult->status === true) {
-            $validateEnum = $this->validateEnum($value);
+            $validateResult = $this->validateEnum($value, $validateResult->value);
 
-            if ($validateEnum->status !== true) {
-                return $validateEnum;
+            if ($validateResult->status !== true) {
+                //failed to validate against enum
+                return $validateResult;
             }
         }
 
@@ -83,12 +84,13 @@ abstract class BaseValidator
      * Common helper method to validate against "enum" keyword
      * @see 5.5.1. enum http://json-schema.org/latest/json-schema-validation.html#anchor75
      * @param  mixed $value Value to validate
+     * @param  mixed $value Parsed value from previous validators
      * @return ValidateResult
      * @todo provide support for objects and arrays
      */
-    protected function validateEnum($value)
+    protected function validateEnum($value, $parsedValue)
     {
-        $return = new ValidateResult($value, false);
+        $return = new ValidateResult($parsedValue, false);
 
         //Check if $this->enum is set and it's not null since its optional
         if ($this->enum && $this->enum !== null) {
@@ -103,9 +105,7 @@ abstract class BaseValidator
                 }
 
                 if ($value == $v) {
-                    if ($this->validateType && $this->validateType
-                        && gettype($value) !== gettype($v)) {
-                        //ignore that the value is found
+                    if ($this->validateType && ($valueType = gettype($value)) !== ($vType = gettype($v))) {
                         continue;
                     }
 
@@ -123,7 +123,6 @@ abstract class BaseValidator
                     && ArrayValidator::equals($value, $v)
                 ) {
                     //Type is same (arrays)
-
                     //Success value is found
 
                     //Overwrite $return's value (get correct object type)
@@ -161,14 +160,14 @@ abstract class BaseValidator
 
     /**
      * Validator's attributes
-     * Can be overwriten
+     * Can be overwritten
      * @var string[]
      */
     protected static $typeAttributes = [
     ];
 
     /**
-     * Common valdator attributes
+     * Common validator attributes
      * @var string[]
      */
     protected static $commonAttributes = [
@@ -197,6 +196,9 @@ abstract class BaseValidator
      */
     protected $attributes = [];
 
+    /**
+     * BaseValidator constructor.
+     */
     protected function __construct()
     {
         //Append common attributes
@@ -237,7 +239,7 @@ abstract class BaseValidator
      * @param string $key   Attribute's key
      * @param mixed $value  Attribute's value
      * @throws \Exception If key not found
-     * @return BaseValidator Return's this validator object
+     * @return $this
      */
     public function __set($key, $value)
     {
@@ -255,6 +257,7 @@ abstract class BaseValidator
 
     /**
      * @param string $title
+     * @return $this
      */
     public function setTitle($title)
     {
@@ -265,6 +268,7 @@ abstract class BaseValidator
 
     /**
      * @param array|null $enum
+     * @return $this
      */
     public function setEnum($enum)
     {
@@ -275,6 +279,7 @@ abstract class BaseValidator
 
     /**
      * @param string $description
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -285,6 +290,7 @@ abstract class BaseValidator
 
     /**
      * @param mixed $default
+     * @return $this
      */
     public function setDefault($default)
     {
@@ -309,9 +315,9 @@ abstract class BaseValidator
             throw $validateResult->errorObject;
         }
 
-        $castedValue = $validateResult->value;
+        $typeCastedValue = $validateResult->value;
 
-        return $castedValue;
+        return $typeCastedValue;
     }
 
     /**
@@ -338,7 +344,7 @@ abstract class BaseValidator
      * ```php
      * BaseValidator::registerValidator('x-address', 'My\APP\AddressValidator');
      * ```
-     * @throws Exception
+     * @throws \Exception
      */
     public static function registerValidator($type, $className)
     {
@@ -367,7 +373,7 @@ abstract class BaseValidator
     /**
      * Helper method.
      * Used to create anyOf, allOf and oneOf validators from objects
-     * @param  \stdClass $object Validation object
+     * @param  object $object Validation object
      * @return AnyOf|AllOf|OneOf|null
      */
     protected static function createFromObjectForAdditional($object)
@@ -399,7 +405,7 @@ abstract class BaseValidator
 
     /**
      * Create validator from validation object
-     * @param  \stdClass $object Validation object
+     * @param object $object Validation object
      * @return BaseValidator
      * @todo cleanup class loading
      * @throws \Exception When validator class cannot be found for object's type
@@ -491,7 +497,7 @@ abstract class BaseValidator
 
     /**
      * Create validator from validation array
-     * @param  array $object Validation array
+     * @param  array $array Validation array
      * @return BaseValidator
      */
     public static function createFromArray($array)
@@ -502,9 +508,9 @@ abstract class BaseValidator
 
     /**
      * Create validator from validation object encoded as json object
-     * @param  string $object Validation json encoded object
+     * @param  string $json Validation json encoded object
      * @return BaseValidator
-     * @throws Exception when JSON sting is not well formed
+     * @throws \Exception when JSON sting is not well formed
      */
     public static function createFromJSON($json)
     {
@@ -521,6 +527,7 @@ abstract class BaseValidator
 
     /**
      * Export validator to json encoded string
+     * @param boolean $JSON_PRETTY_PRINT *[Optional]*
      * @return string
      */
     public function toJSON($JSON_PRETTY_PRINT = false)
@@ -542,7 +549,7 @@ abstract class BaseValidator
 
     /**
      * Export validator to object
-     * @return \stdClass
+     * @return object
      */
     public function toObject()
     {

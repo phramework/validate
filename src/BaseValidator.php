@@ -25,6 +25,11 @@ use \Phramework\Exceptions\MissingParametersException;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
+ * @property string title
+ * @property string description
+ * @property mixed default
+ * @property string format
+ * @property array enum
  */
 abstract class BaseValidator
 {
@@ -327,12 +332,20 @@ abstract class BaseValidator
     private static $validatorRegistry = [
         'string'            => StringValidator::class,
         'url'               => URLValidator::class,
+        'number'            => NumberValidator::class,
+        'float'             => NumberValidator::class, //alias
         'integer'           => IntegerValidator::class,
         'int'               => IntegerValidator::class, //alias
         'unsignedinteger'   => UnsignedIntegerValidator::class,
         'uinteger'          => UnsignedIntegerValidator::class, //alias
         'uint'              => UnsignedIntegerValidator::class, //alias
-        'date-time'         => DatetimeValidator::class
+        'date'              => DateValidator::class,
+        'date-time'         => DatetimeValidator::class,
+        'enum'              => EnumValidator::class,
+        'array'             => ArrayValidator::class,
+        'object'            => ObjectValidator::class,
+        'email'             => EmailValidator::class,
+        'username'          => UsernameValidator::class,
     ];
 
     /**

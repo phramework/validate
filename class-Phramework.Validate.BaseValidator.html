@@ -278,7 +278,7 @@ to parse the input value</p>
 						<dt><var>$value</var></dt>
 						<dd>Value to validate</dd>
 						<dt><var>$validateResult</var></dt>
-						<dd>$return Current ValidateResult status</dd>
+						<dd>Current ValidateResult status</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -307,7 +307,7 @@ to parse the input value</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_validateEnum">#</a>
-			<code>validateEnum( <span>mixed <var>$value</var></span> )</code>
+			<code>validateEnum( <span>mixed <var>$value</var></span>, <span>mixed <var>$parsedValue</var></span> )</code>
 
 			<div class="description short">
 				<p>Common helper method to validate against "enum" keyword</p>
@@ -321,6 +321,8 @@ to parse the input value</p>
 					<div class="list"><dl>
 						<dt><var>$value</var></dt>
 						<dd>Value to validate</dd>
+						<dt><var>$parsedValue</var></dt>
+						<dd>$value Parsed value from previous validators</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -426,11 +428,11 @@ to parse the input value</p>
 			<code>__construct( )</code>
 
 			<div class="description short">
-				
+				<p>BaseValidator constructor.</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
+				<p>BaseValidator constructor.</p>
 
 
 
@@ -487,7 +489,7 @@ to parse the input value</p>
 
 			<td class="attributes"><code>
 				 public 
-				<code><a href="class-Phramework.Validate.BaseValidator.html">Phramework\Validate\BaseValidator</a></code>
+				
 				
 				</code>
 			</td>
@@ -514,7 +516,7 @@ to parse the input value</p>
 
 					<h4>Returns</h4>
 					<div class="list">
-						<code><a href="class-Phramework.Validate.BaseValidator.html">Phramework\Validate\BaseValidator</a></code><br>Return's this validator object
+						<br>$this
 					</div>
 
 					<h4>Throws</h4>
@@ -554,6 +556,10 @@ to parse the input value</p>
 						<dd></dd>
 					</dl></div>
 
+					<h4>Returns</h4>
+					<div class="list">
+						<br>$this
+					</div>
 
 
 
@@ -588,6 +594,10 @@ to parse the input value</p>
 						<dd></dd>
 					</dl></div>
 
+					<h4>Returns</h4>
+					<div class="list">
+						<br>$this
+					</div>
 
 
 
@@ -622,6 +632,10 @@ to parse the input value</p>
 						<dd></dd>
 					</dl></div>
 
+					<h4>Returns</h4>
+					<div class="list">
+						<br>$this
+					</div>
 
 
 
@@ -656,6 +670,10 @@ to parse the input value</p>
 						<dd></dd>
 					</dl></div>
 
+					<h4>Returns</h4>
+					<div class="list">
+						<br>$this
+					</div>
 
 
 
@@ -764,7 +782,7 @@ All validators MUST extend <code>BaseValidator</code> class</p></dd>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_createFromObjectForAdditional">#</a>
-			<code>createFromObjectForAdditional( <span>stdClass <var>$object</var></span> )</code>
+			<code>createFromObjectForAdditional( <span>object <var>$object</var></span> )</code>
 
 			<div class="description short">
 				<p>Helper method.
@@ -804,7 +822,7 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_createFromObject">#</a>
-			<code>createFromObject( <span>stdClass <var>$object</var></span> )</code>
+			<code>createFromObject( <span>object <var>$object</var></span> )</code>
 
 			<div class="description short">
 				<p>Create validator from validation object</p>
@@ -863,7 +881,7 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 					<h4>Parameters</h4>
 					<div class="list"><dl>
 						<dt><var>$array</var></dt>
-						<dd>$object Validation array</dd>
+						<dd>Validation array</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -901,7 +919,7 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 					<h4>Parameters</h4>
 					<div class="list"><dl>
 						<dt><var>$json</var></dt>
-						<dd>$object Validation json encoded object</dd>
+						<dd>Validation json encoded object</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -930,7 +948,7 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_toJSON">#</a>
-			<code>toJSON( <span> <var>$JSON_PRETTY_PRINT</var> = <span class="php-keyword1">false</span></span> )</code>
+			<code>toJSON( <span>boolean <var>$JSON_PRETTY_PRINT</var> = <span class="php-keyword1">false</span></span> )</code>
 
 			<div class="description short">
 				<p>Export validator to json encoded string</p>
@@ -940,6 +958,11 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 				<p>Export validator to json encoded string</p>
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$JSON_PRETTY_PRINT</var></dt>
+						<dd><em>[Optional]</em></dd>
+					</dl></div>
 
 					<h4>Returns</h4>
 					<div class="list">
@@ -956,7 +979,7 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 
 			<td class="attributes"><code>
 				 public 
-				stdClass
+				object
 				
 				</code>
 			</td>
@@ -976,7 +999,7 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 
 					<h4>Returns</h4>
 					<div class="list">
-						stdClass
+						object
 					</div>
 
 
@@ -1070,12 +1093,12 @@ Must be overwriten, default is 'string'</p>
 <var>$typeAttributes</var>
 				<div class="description short">
 					<p>Validator's attributes
-Can be overwriten</p>
+Can be overwritten</p>
 				</div>
 
 				<div class="description detailed hidden">
 					<p>Validator's attributes
-Can be overwriten</p>
+Can be overwritten</p>
 
 				</div>
 			</td>
@@ -1096,11 +1119,11 @@ Can be overwriten</p>
 			<td class="name">
 <var>$commonAttributes</var>
 				<div class="description short">
-					<p>Common valdator attributes</p>
+					<p>Common validator attributes</p>
 				</div>
 
 				<div class="description detailed hidden">
-					<p>Common valdator attributes</p>
+					<p>Common validator attributes</p>
 
 				</div>
 			</td>

@@ -339,6 +339,8 @@ abstract class BaseValidator
         'unsignedinteger'   => UnsignedIntegerValidator::class,
         'uinteger'          => UnsignedIntegerValidator::class, //alias
         'uint'              => UnsignedIntegerValidator::class, //alias
+        'boolean'           => BooleanValidator::class,
+        'bool'              => BooleanValidator::class, //alias
         'date'              => DateValidator::class,
         'date-time'         => DatetimeValidator::class,
         'enum'              => EnumValidator::class,

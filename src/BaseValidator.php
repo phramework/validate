@@ -343,6 +343,7 @@ abstract class BaseValidator
         'bool'              => BooleanValidator::class, //alias
         'date'              => DateValidator::class,
         'date-time'         => DatetimeValidator::class,
+        'datetime'          => DatetimeValidator::class, //alias
         'enum'              => EnumValidator::class,
         'array'             => ArrayValidator::class,
         'object'            => ObjectValidator::class,
@@ -453,7 +454,7 @@ abstract class BaseValidator
                 } catch (\Exception $e) {
                     //Wont catch the fatal error
                     throw new \Exception(sprintf(
-                        'Incorrect type %s from %s',
+                        'Incorrect type "%s" from "%s"',
                         $object->type,
                         static::class
                     ));

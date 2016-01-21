@@ -46,7 +46,6 @@ class StringValidator extends \Phramework\Validate\BaseValidator
     ];
 
     /**
-     * [__construct description]
      * @param integer       $minLength *[Optional]*
      *     Minimum number of its characters, default is 0
      * @param integer|null  $maxLength *[Optional]*

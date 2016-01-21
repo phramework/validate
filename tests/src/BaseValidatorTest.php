@@ -161,6 +161,29 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromJSON
+     */
+    public function testCreateFromJSONNot()
+    {
+        $json = '{
+            "type": "integer",
+            "minimum": -1000,
+            "maximum": 1000,
+            "not": {
+                "type" : "integer",
+                "enum" : [1, 2]
+            }
+        }';
+
+        $validator = BaseValidator::createFromJSON($json);
+
+        $this->assertSame(5, $validator->parse(5));
+
+        $return = $validator->validate(2);
+
+        $this->assertFalse($return->status);
+    }
 
     /**
      * @covers Phramework\Validate\BaseValidator::createFromJSON
@@ -412,6 +435,39 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Validate against common enum keyword
+     * @covers Phramework\Validate\BaseValidator::validateNot
+     */
+    public function testValidateNot()
+    {
+        $validator = new StringValidator();
+
+        $validator->not = new IntegerValidator();
+
+        $validator->parse('asdf');
+
+        $this->assertSame('asdf', $validator->parse('asdf'));
+
+        $return = $validator->validate('5');
+
+        $this->assertFalse($return->status);
+
+        $parameters = $return->errorObject->getParameters();
+
+        $this->assertSame('not', $parameters[0]['failure']);
+
+        $validator = new StringValidator();
+
+        $validator->not = new EnumValidator(['a', 'aa']);
+
+        $this->assertSame('asdf', $validator->parse('asdf'));
+
+        $return = $validator->validate('aa');
+
+        $this->assertFalse($return->status);
+    }
+
+    /**
      * @covers Phramework\Validate\BaseValidator::parse
      * @expectedException Exception
      */
@@ -539,6 +595,27 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             $validator->default,
             222
         );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::setNot
+     */
+    public function testSetNot()
+    {
+        $validator = new IntegerValidator();
+
+        $validator->setNot(new EnumValidator([0, 2]));
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::setNot
+     * @expectedException Exception
+     */
+    public function testSetNotFailure()
+    {
+        $validator = new IntegerValidator();
+
+        $validator->setNot([0, 1]);
     }
 
     /**

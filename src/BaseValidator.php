@@ -73,11 +73,21 @@ abstract class BaseValidator
         //keep validating against common keywords
 
         //validate against enum using validateEnum
-        if ($validateResult->status === true) {
+        if ($validateResult->status === true && $this->enum) {
             $validateResult = $this->validateEnum($value, $validateResult->value);
 
             if ($validateResult->status !== true) {
                 //failed to validate against enum
+                return $validateResult;
+            }
+        }
+
+        //validate against not
+        if ($validateResult->status === true && $this->not) {
+            $validateResult = $this->validateNot($value, $validateResult->value);
+
+            if ($validateResult->status !== true) {
+                //failed to validate against not
                 return $validateResult;
             }
         }
@@ -155,6 +165,50 @@ abstract class BaseValidator
     }
 
     /**
+     * Common helper method to validate against "not" keyword
+     * @param  mixed $value Value to validate
+     * @param  mixed $value Parsed value from previous validators
+     * @return ValidateResult
+     */
+    protected function validateNot($value, $parsedValue)
+    {
+        $return = new ValidateResult($parsedValue, true);
+
+        //Check if $this->not is set and it's not null since its optional
+        if ($this->not && $this->not !== null) {
+            if (!is_subclass_of(
+                $this->not,
+                BaseValidator::class,
+                true
+            )) {
+                throw new \Exception(sprintf(
+                    'Property "not" MUST extend "%s"',
+                    BaseValidator::class
+                ));
+            }
+
+            $validateNot = $this->not->validate($value);
+
+            if ($validateNot->status === true) {
+                //Error
+                $return->status = false;
+
+                $return->errorObject = new IncorrectParametersException([[
+                    'type' => static::getType(),
+                    'failure' => 'not'
+                ]]);
+
+                return $return;
+            }
+        } else {
+            //Ignored validation, set status to true
+            $return->status = true;
+        }
+
+        return $return;
+    }
+
+    /**
      * Get validator's type
      * @return string|null
      */
@@ -181,7 +235,8 @@ abstract class BaseValidator
         'default',
         'format',
         'enum',
-        'validateType' //non standard attribute, can be used in combination with enum
+        'validateType', //non standard attribute, can be used in combination with enum
+        'not'
     ];
 
     public $default;
@@ -278,6 +333,28 @@ abstract class BaseValidator
     public function setEnum($enum)
     {
         $this->enum = $enum;
+
+        return $this;
+    }
+
+    /**
+     * @param BaseValidator|null $not
+     * @return $this
+     */
+    public function setNot($not)
+    {
+        if ($not !== null && !is_subclass_of(
+            $not,
+            BaseValidator::class,
+            true
+        )) {
+            throw new \Exception(sprintf(
+                'Property "not" MUST extend "%s"',
+                BaseValidator::class
+            ));
+        }
+
+        $this->not = $not;
 
         return $this;
     }
@@ -497,7 +574,7 @@ abstract class BaseValidator
                     }
                     //push to class
                     $validator->{$attribute} = $createdProperties;
-                } elseif ($attribute == 'items') {
+                } elseif ($attribute == 'items' || $attribute == 'not') {
                     $validator->{$attribute} = BaseValidator::createFromObject(
                         $object->{$attribute}
                     );
@@ -576,7 +653,7 @@ abstract class BaseValidator
             $object['properties'] = (object)$object['properties'];
         }
 
-        foreach (['anyOf', 'allOf', 'oneOf'] as $property) {
+        foreach (['anyOf', 'allOf', 'oneOf', 'not'] as $property) {
             //fix type to object
             if (isset($object[$property])) {
                 foreach ($object[$property] as &$propertyItem) {
@@ -627,10 +704,12 @@ abstract class BaseValidator
                 }
                 //fix type to array
                 $object[$attribute] = (array)$object[$attribute];
-            } elseif (in_array($attribute, ['allOf', 'anyOf', 'oneOf'])) {
-                foreach ($object[$attribute] as $key => $property) {
-                    if ($property instanceof BaseValidator) {
-                        $object[$attribute][$key] = $property->toArray();
+            } elseif (in_array($attribute, ['allOf', 'anyOf', 'oneOf', 'not'])) {
+                if (isset($object[$attribute]) && $object[$attribute] !== null) {
+                    foreach ($object[$attribute] as $key => $property) {
+                        if ($property instanceof BaseValidator) {
+                            $object[$attribute][$key] = $property->toArray();
+                        }
                     }
                 }
             }

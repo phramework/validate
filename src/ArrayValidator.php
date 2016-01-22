@@ -27,12 +27,12 @@ use \Phramework\Models\Filter;
  * array MUST be objects, and each of these objects MUST be a valid JSON Schema.
  * @property integer $minItems Minimum number of items
  * @property integer $maxItems Maximum number of items
+ * @property BaseValidator|null $maxItems Maximum number of items
  * @property boolean $uniqueItems If true, only unique array items are allowed
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor36 Validation keywords for arrays
  * @since 0.0.0
- * @todo support array for attribute items
  */
 class ArrayValidator extends \Phramework\Validate\BaseValidator
 {
@@ -55,10 +55,11 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
      *     *[Optional]* Default is 0
      * @param integer|null                           $maxItems
      *     *[Optional]*
-     * @param BaseValidator|BaseValidator[]|null     $items
+     * @param BaseValidator|null     $items
      *     *[Optional]* Default is null
      * @param Boolean                                $uniqueItems
      *     *[Optional]*
+     * @throws \Exception
      */
     public function __construct(
         $minItems = 0,
@@ -76,8 +77,19 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
             throw new \Exception('minItems must be positive integer');
         }
 
-        if (($maxItems !== null && !is_int($maxItems)) || $maxItems < $minItems) {
+        if (($maxItems !== null && (!is_int($maxItems)) || $maxItems < $minItems)) {
             throw new \Exception('maxItems must be positive integer');
+        }
+
+        if ($items !== null && !is_subclass_of(
+            $items,
+            BaseValidator::class,
+            true
+        )) {
+            throw new \Exception(sprintf(
+                'Property "items" MUST extend "%s"',
+                BaseValidator::class
+            ));
         }
 
         $this->minItems = $minItems;
@@ -135,7 +147,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
 
         if ($this->items !== null) {
             $errorItems = [];
-            //Currently we support only a signle type
+            //Currently we support only a single type
             foreach ($value as $k => $v) {
                 $validateItems = $this->items->validate($v);
 
@@ -175,7 +187,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         $return->errorObject = null;
         $return->status = true;
 
-        //typecasted
+        //type casted
         $return->value = $value;
 
         return $this->validateCommon($value, $return);

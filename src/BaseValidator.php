@@ -30,6 +30,7 @@ use \Phramework\Exceptions\MissingParametersException;
  * @property mixed default
  * @property string format
  * @property array enum
+ * @property BaseValidator not
  */
 abstract class BaseValidator
 {
@@ -704,13 +705,20 @@ abstract class BaseValidator
                 }
                 //fix type to array
                 $object[$attribute] = (array)$object[$attribute];
-            } elseif (in_array($attribute, ['allOf', 'anyOf', 'oneOf', 'not'])) {
+            } elseif (in_array($attribute, ['allOf', 'anyOf', 'oneOf'])) {
                 if (isset($object[$attribute]) && $object[$attribute] !== null) {
                     foreach ($object[$attribute] as $key => $property) {
                         if ($property instanceof BaseValidator) {
                             $object[$attribute][$key] = $property->toArray();
                         }
                     }
+                }
+            } elseif (in_array($attribute, ['items', 'not'])) {
+                if (isset($object[$attribute])
+                    && $object[$attribute]
+                    && $object[$attribute] instanceof BaseValidator
+                ) {
+                    $object[$attribute] = $object[$attribute]->toArray();
                 }
             }
         }

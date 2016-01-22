@@ -43,6 +43,14 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
      */
     protected static $type = 'integer';
 
+    /**
+     * @param integer|null $minimum
+     * @param integer|null $maximum
+     * @param boolean|null $exclusiveMinimum
+     * @param boolean|null $exclusiveMaximum
+     * @param integer|null $multipleOf
+     * @throws \Exception
+     */
     public function __construct(
         $minimum = null,
         $maximum = null,

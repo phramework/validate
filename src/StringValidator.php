@@ -23,8 +23,8 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * String validator
  * @property integer $minLength Minimum number of its characters
  * @property integer|null $maxLength Maximum number of its characters
- * @property string|null $pattern Regular expresion pattern for validating
- * @property boolean $raw Keep raw value, dont sanitize value after validation
+ * @property string|null $pattern Regular expression pattern for validating
+ * @property boolean $raw Keep raw value, don't sanitize value after validation
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
@@ -51,9 +51,10 @@ class StringValidator extends \Phramework\Validate\BaseValidator
      * @param integer|null  $maxLength *[Optional]*
      *     Maximum number of its characters, default is null
      * @param string|null   $pattern   *[Optional]*
-     *     Regular expresion pattern for validating, default is null
+     *     Regular expression pattern for validating, default is null
      * @param boolean       $raw       *[Optional]*
-     *     Keep raw value, dont sanitize value after validation, default is false
+     *     Keep raw value, don't sanitize value after validation, default is false
+     * @throws \Exception
      */
     public function __construct(
         $minLength = 0,
@@ -67,7 +68,7 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             throw new \Exception('minLength must be positive integer');
         }
 
-        if ($maxLength !== null && !is_int($maxLength) || $maxLength < $minLength) {
+        if ($maxLength !== null && (!is_int($maxLength) || $maxLength < $minLength)) {
             throw new \Exception('maxLength must be positive integer');
         }
 

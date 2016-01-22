@@ -64,6 +64,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * *[Optional]* Default is 0
      * @param integer               $maxProperties
      * *[Optional]* Default is null
+     * @throws \Exception
      */
     public function __construct(
         $properties = [],
@@ -83,7 +84,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             throw new \Exception('minProperties must be positive integer');
         }
 
-        if (($maxProperties !== null && !is_int($maxProperties)) || $maxProperties < $minProperties) {
+        if (($maxProperties !== null && (!is_int($maxProperties)) || $maxProperties < $minProperties)) {
             throw new \Exception('maxProperties must be positive integer');
         }
 

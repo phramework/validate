@@ -52,6 +52,14 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
      */
     protected static $type = 'number';
 
+    /**
+     * @param float|null $minimum
+     * @param float|null $maximum
+     * @param boolean|null $exclusiveMinimum
+     * @param boolean|null $exclusiveMaximum
+     * @param float|null $multipleOf
+     * @throws \Exception
+     */
     public function __construct(
         $minimum = null,
         $maximum = null,

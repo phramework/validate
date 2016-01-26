@@ -188,12 +188,12 @@
 			<code>parseStatic( <span>mixed <var>$value</var></span> )</code>
 
 			<div class="description short">
-				<p>This static method will instanciate a new object as validation model
+				<p>This static method will instantiate a new object as validation model
 to parse the input value</p>
 			</div>
 
 			<div class="description detailed hidden">
-				<p>This static method will instanciate a new object as validation model
+				<p>This static method will instantiate a new object as validation model
 to parse the input value</p>
 
 
@@ -290,6 +290,49 @@ to parse the input value</p>
 					<h4>Uses</h4>
 					<div class="list">
 							<code><a href="class-Phramework.Validate.BaseValidator.html#_validateEnum">Phramework\Validate\BaseValidator::validateEnum()</a></code><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="runValidateCallback" id="_runValidateCallback">
+
+			<td class="attributes"><code>
+				 protected 
+				<code><a href="class-Phramework.Validate.ValidateResult.html">Phramework\Validate\ValidateResult</a></code>
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_runValidateCallback">#</a>
+			<code>runValidateCallback( <span><code><a href="class-Phramework.Validate.ValidateResult.html">Phramework\Validate\ValidateResult</a></code> <var>$validateResult</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$validateResult</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Validate.ValidateResult.html">Phramework\Validate\ValidateResult</a></code>
+					</div>
+
+
+					<h4>Todo</h4>
+					<div class="list">
+							<p>May cause issues when parent validator calls
+this method and then child type casts the returned value (see number and integer validator)</p><br>
 					</div>
 
 
@@ -677,6 +720,10 @@ to parse the input value</p>
 						<br>$this
 					</div>
 
+					<h4>Throws</h4>
+					<div class="list">
+						Exception
+					</div>
 
 
 
@@ -754,6 +801,60 @@ to parse the input value</p>
 					</div>
 
 
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="setValidateCallback" id="_setValidateCallback">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_setValidateCallback">#</a>
+			<code>setValidateCallback( <span>callable <var>$callback</var></span> )</code>
+
+			<div class="description short">
+				<p>Set validation callback, this</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Set validation callback, this</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$callback</var></dt>
+						<dd>Callback method may have two arguments, first is</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<br>$this
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Exception<br>When callback is not callable
+					</div>
+
+					<h4>Example</h4>
+					<div class="list">
+							<pre><span class="php-comment">//Will increase the parsed value by one</span>
+<span class="php-var">$validator</span> = (<span class="php-keyword1">new</span> IntegerValidator())
+    -&gt;setValidateCallback(<span class="php-keyword1">function</span> (<span class="php-var">$validateResult</span>, <span class="php-var">$validator</span>) {
+        <span class="php-var">$validateResult</span>-&gt;value = <span class="php-var">$validateResult</span>-&gt;value + <span class="php-num">1</span>;
+
+        <span class="php-keyword1">return</span> <span class="php-var">$validateResult</span>;
+    });
+
+<span class="php-var">$parsed</span> = <span class="php-var">$validator</span>-&gt;parse(<span class="php-num">5</span>); <span class="php-comment">//Expect 6</span></pre><br>
+					</div>
 
 
 			</div>
@@ -1135,6 +1236,30 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 		<div class="panel panel-default">
             <div class="panel-heading"><h2>Properties summary</h2></div>
 			<table class="summary table table-bordered table-striped properties" id="properties">
+		<tr data-order="validateCallback" id="$validateCallback">
+			<td class="attributes"><code>
+				protected  
+				callable|null
+			</code></td>
+
+			<td class="name">
+<var>$validateCallback</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$validateCallback" class="anchor">#</a>
+					<code><span class="php-keyword1">null</span></code>
+				</div>
+			</td>
+		</tr>
 		<tr data-order="type" id="$type">
 			<td class="attributes"><code>
 				protected static 
@@ -1145,12 +1270,12 @@ Used to create anyOf, allOf and oneOf validators from objects</p>
 <var>$type</var>
 				<div class="description short">
 					<p>Validator's type
-Must be overwriten, default is 'string'</p>
+Must be overwritten, default is 'string'</p>
 				</div>
 
 				<div class="description detailed hidden">
 					<p>Validator's type
-Must be overwriten, default is 'string'</p>
+Must be overwritten, default is 'string'</p>
 
 				</div>
 			</td>

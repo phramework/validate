@@ -2,6 +2,7 @@
 
 namespace Phramework\Validate;
 
+use Nette\Neon\Exception;
 use Phramework\Exceptions\IncorrectParametersException;
 
 /**
@@ -349,6 +350,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             3
         );
     }
+
     /**
      * @covers Phramework\Validate\BaseValidator::createFromObject
      */
@@ -357,6 +359,15 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = IntegerValidator::createFromObject((object)[]);
 
         $this->assertInstanceOf(IntegerValidator::class, $validator);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromObject
+     * @expectedException Exception
+     */
+    public function testCreateFromObjectTypelessFailure()
+    {
+        $validator = BaseValidator::createFromObject((object)[]);
     }
 
     /**
@@ -781,7 +792,9 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $return = (new ObjectValidator(
             [
-                'int' => new IntegerValidator()
+                'int' => new IntegerValidator(),
+                'n'   => (new IntegerValidator())
+                    ->setNot(new EnumValidator([5]))
             ],
             ['int']
         ))->toArray();
@@ -800,11 +813,11 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testToJSON()
     {
-        $return = $this->int->toJSON();
+        $json = $this->int->toJSON();
 
-        $this->assertInternalType('string', $return);
+        $this->assertInternalType('string', $json);
 
-        $jsonObject = json_decode($return);
+        $jsonObject = json_decode($json);
 
         //assert no errors
         $this->assertSame(JSON_ERROR_NONE, json_last_error());
@@ -812,6 +825,35 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('type', $jsonObject);
         $this->assertObjectHasAttribute('minimum', $jsonObject);
         $this->assertObjectHasAttribute('maximum', $jsonObject);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::toJSON
+     */
+    public function testToJSON2()
+    {
+        $validator = new ObjectValidator(
+            [
+                'int' => new IntegerValidator()
+            ],
+            ['int']
+        );
+
+        $json = $validator->toJSON();
+
+        $this->assertInternalType('string', $json);
+
+        $jsonObject = json_decode($json);
+
+        //assert no errors
+        $this->assertSame(JSON_ERROR_NONE, json_last_error());
+
+        $this->assertObjectHasAttribute('type', $jsonObject);
+        $this->assertObjectHasAttribute('properties', $jsonObject);
+
+        $this->assertInternalType('object', $jsonObject->properties);
+
+        $this->assertObjectHasAttribute('int', $jsonObject->properties);
     }
 
     /**

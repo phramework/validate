@@ -597,7 +597,7 @@ abstract class BaseValidator
             }
         } elseif (($validator = static::createFromObjectForAdditional($object)) !== null) {
             return $validator;
-        } elseif (!$isFromBase || $object->type == static::$type) {
+        } elseif (!$isFromBase || (isset($object->type) && $object->type == static::$type)) {
             $validator = new static();
         } else {
             throw new \Exception(sprintf(
@@ -620,12 +620,13 @@ abstract class BaseValidator
                     $createdProperties = new \stdClass();
 
                     foreach ($properties as $key => $property) {
-                        if (!is_object($property)) {
-                            throw new \Exception(sprintf(
-                                'Expected object for property value "%"',
-                                $key
-                            ));
-                        }
+                        //TODO remove
+                        //if (!is_object($property)) {
+                        //    throw new \Exception(sprintf(
+                        //        'Expected object for property value "%s"',
+                        //        $key
+                        //    ));
+                        //}
 
                         $createdProperties->{$key} =
                         BaseValidator::createFromObject($property);

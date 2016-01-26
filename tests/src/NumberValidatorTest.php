@@ -212,10 +212,19 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::validate
+     * @covers Phramework\Validate\NumberValidator::validateNumber
+     * @dataProvider validateSuccessProvider
+     */
+    public function testValidateNumberSuccess($input, $expected)
+    {
+        $this->validateSuccess($this->object, $input, $expected);
+    }
+
+    /**
+     * @covers Phramework\Validate\NumberValidator::validateNumber
      * @dataProvider validateFailureProvider
      */
-    public function testValidateFailure($input)
+    public function testValidateNumberFailure($input)
     {
         $return = $this->object->validate($input);
 
@@ -223,7 +232,7 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::validate
+     * @covers Phramework\Validate\NumberValidator::validateNumber
      */
     public function testValidateFailureMultipleOf()
     {

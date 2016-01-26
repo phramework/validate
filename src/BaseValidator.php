@@ -411,15 +411,20 @@ abstract class BaseValidator
 
     /**
      * Set validation callback, this
-     * @param callable $callback Callback method may have two arguments
+     * @param callable $callback Callback method may have two arguments, first is
      * @return $this
      * @throws \Exception When callback is not callable
      * @example
      * ```php
+     * //Will increase the parsed value by one
      * $validator = (new IntegerValidator())
-     *     ->setValidateCallback(function ($value, $validator) {
-     *         return $value + 1;
+     *     ->setValidateCallback(function ($validateResult, $validator) {
+     *         $validateResult->value = $validateResult->value + 1;
+     *
+     *         return $validateResult;
      *     });
+     *
+     * $parsed = $validator->parse(5); //Expect 6
      * ```
      */
     public function setValidateCallback($callback)

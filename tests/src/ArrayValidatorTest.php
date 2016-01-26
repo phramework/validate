@@ -246,4 +246,32 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
             )
         );
     }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::setValidateCallback
+     */
+    public function testSetValidateCallback()
+    {
+        $value = [1, 2];
+
+        $validator = (new ArrayValidator())
+            ->setValidateCallback(
+            /**
+             * @param ValidateResult $validateResult
+             * @param BaseValidator $validator
+             * @return ValidateResult
+             */
+                function ($validateResult, $validator) use ($value) {
+                    $validateResult->value = $value;
+
+                    return $validateResult;
+                });
+
+        $this->assertInstanceOf(ArrayValidator::class, $validator);
+
+        $parsed = $validator->parse(['a', 'b', 'c']);
+
+        $this->assertInternalType('array', $parsed);
+        $this->assertEquals($value, $parsed);
+    }
 }

@@ -365,6 +365,16 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateCommon()
     {
+        (new IntegerValidator())->parse(5);
+
+        $validator = (new IntegerValidator())
+            ->setNot(new EnumValidator([5]));
+
+        $return = $validator->validate(5);
+        $this->assertFalse(
+            $return->status
+        );
+
         $validator = (new IntegerValidator(0, 10));
 
         $validator->enum = [1, 3, 5];
@@ -871,6 +881,13 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             34
         );
     }
+    /**
+     * @covers Phramework\Validate\BaseValidator::runValidateCallback
+     */
+    public function testRunValidateCallback()
+    {
+        (new IntegerValidator())->parse(5);
+    }
 
     /**
      * @covers Phramework\Validate\BaseValidator::setValidateCallback
@@ -880,8 +897,14 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $value = 5;
 
         $validator = (new IntegerValidator())
-            ->setValidateCallback(function ($validateResult, $validator) {
-                $validateResult->value = $validateResult->value + 1;
+            ->setValidateCallback(
+                /**
+                 * @param ValidateResult $validateResult
+                 * @param BaseValidator $validator
+                 * @return ValidateResult
+                 */
+                function ($validateResult, $validator) {
+                    $validateResult->value = $validateResult->value + 1;
 
                 return $validateResult;
             });
@@ -895,7 +918,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::setValidateCallback
+     * @covers Phramework\Validate\BaseValidator::runValidateCallback
      * @expectedException Exception
      */
     public function testSetValidateFailure()

@@ -500,4 +500,40 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('object', $return->value);
     }
+
+    /**
+     * @covers Phramework\Validate\ObjectValidator::setValidateCallback
+     */
+    public function testSetValidateCallback()
+    {
+        $value = 10;
+
+        $validator = (new ObjectValidator())
+            ->setValidateCallback(function ($validateResult, $validator) use ($value) {
+                $validateResult->value->obj = $value;
+
+                return $validateResult;
+            });
+
+        $this->assertInstanceOf(ObjectValidator::class, $validator);
+
+        $parsed = $validator->parse((object) [
+            'obj' => 5
+        ]);
+
+        $this->assertSame($value,  $parsed->obj);
+
+        $validator = (new ObjectValidator())
+            ->setValidateCallback(function ($validateResult, $validator) use ($value) {
+                $validateResult->value = null;
+
+                return $validateResult;
+            });
+
+        $parsed = $validator->parse((object) [
+            'obj' => 5
+        ]);
+
+        $this->assertNull($parsed);
+    }
 }

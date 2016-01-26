@@ -86,13 +86,13 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
      */
     public function validate($value)
     {
-        $return = parent::validate($value);
+        $return = parent::validateNumber($value);
 
         //Apply correct integer type
         if ($return->status) {
-            $return->value = (int)$value;
+            $return->value = (int)$return->value;
         }
 
-        return $return;
+        return $this->validateCommon($value, $return);
     }
 }

@@ -257,7 +257,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         //Apply type casted
         $return->value = $value;
 
-        return $return;
+        return $this->validateCommon($value, $return);
 
         err:
         $return->errorObject = new IncorrectParametersException([

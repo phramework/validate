@@ -108,6 +108,19 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
      */
     public function validate($value)
     {
+        $return = $this->validateNumber($value);
+
+        return $this->validateCommon($return->value, $return);
+    }
+
+    /**
+     * Validate value, without calling validateCommon
+     * @see \Phramework\Validate\ValidateResult for ValidateResult object
+     * @param  mixed $value Value to validate
+     * @return ValidateResult
+     */
+    protected function validateNumber($value)
+    {
         $return = new ValidateResult($value, false);
 
         if (is_string($value)) {
@@ -166,6 +179,6 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             $return->value  = (float)($value);
         }
 
-        return $this->validateCommon($value, $return);
+        return $return;
     }
 }

@@ -18,6 +18,7 @@ namespace Phramework\Validate;
 
 use \Phramework\Exceptions\IncorrectParametersException;
 use \Phramework\Exceptions\MissingParametersException;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * BaseValidator, every validator **MUST** extend this class
@@ -35,14 +36,19 @@ use \Phramework\Exceptions\MissingParametersException;
 abstract class BaseValidator
 {
     /**
+     * @var callable|null
+     */
+    protected $validateCallback = null;
+
+    /**
      * Validator's type
-     * Must be overwriten, default is 'string'
+     * Must be overwritten, default is 'string'
      * @var string|null
      */
     protected static $type = null;
 
     /**
-     * This static method will instanciate a new object as validation model
+     * This static method will instantiate a new object as validation model
      * to parse the input value
      * @param mixed $value Input value to validate
      */
@@ -91,6 +97,26 @@ abstract class BaseValidator
                 //failed to validate against not
                 return $validateResult;
             }
+        }
+
+        return $this->runValidateCallback($validateResult);
+    }
+
+    /**
+     * @todo May cause issues when parent validator calls
+     * this method and then child type casts the returned value (see number and integer validator)
+     * @param ValidateResult $validateResult
+     * @return ValidateResult
+     */
+    protected function runValidateCallback($validateResult)
+    {
+        //Use returned value from validate callback is set
+        if ($validateResult->status === true && $this->validateCallback !== null) {
+            return call_user_func(
+                $this->validateCallback,
+                $validateResult,
+                $this
+            );
         }
 
         return $validateResult;
@@ -341,6 +367,7 @@ abstract class BaseValidator
     /**
      * @param BaseValidator|null $not
      * @return $this
+     * @throws \Exception
      */
     public function setNot($not)
     {
@@ -378,6 +405,30 @@ abstract class BaseValidator
     public function setDefault($default)
     {
         $this->default = $default;
+
+        return $this;
+    }
+
+    /**
+     * Set validation callback, this
+     * @param callable $callback Callback method may have two arguments
+     * @return $this
+     * @throws \Exception When callback is not callable
+     * @example
+     * ```php
+     * $validator = (new IntegerValidator())
+     *     ->setValidateCallback(function ($value, $validator) {
+     *         return $value + 1;
+     *     });
+     * ```
+     */
+    public function setValidateCallback($callback)
+    {
+        if (!is_callable($callback)) {
+            throw new \Exception('Callback is not callable');
+        }
+
+        $this->validateCallback = $callback;
 
         return $this;
     }

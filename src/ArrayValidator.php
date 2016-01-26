@@ -27,7 +27,6 @@ use \Phramework\Models\Filter;
  * array MUST be objects, and each of these objects MUST be a valid JSON Schema.
  * @property integer $minItems Minimum number of items
  * @property integer $maxItems Maximum number of items
- * @property BaseValidator|null $maxItems Maximum number of items
  * @property boolean $uniqueItems If true, only unique array items are allowed
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>

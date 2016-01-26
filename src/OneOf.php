@@ -46,6 +46,7 @@ class OneOf extends \Phramework\Validate\AnyOf
 
     /**
      * @param array $oneOf
+     * @throws \Exception
      * @example
      * ```php
      * $validator = new OneOf([

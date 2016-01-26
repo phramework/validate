@@ -46,6 +46,7 @@ class AllOf extends \Phramework\Validate\AnyOf
 
     /**
      * @param array $allOf
+     * @throws \Exception
      * @example
      * ```php
      * $validator = new AllOf([

@@ -61,7 +61,7 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
         $return = parent::validate($value);
 
         //Apply additional rules
-        if ($return->status == true && (preg_match(
+        if ($return->status === true && (preg_match(
             '/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/',
             $value,
             $matches

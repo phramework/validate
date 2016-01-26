@@ -41,6 +41,7 @@ class AnyOf extends \Phramework\Validate\BaseValidator
 
     /**
      * @param array $anyOf
+     * @throws \Exception
      * @example
      * ```php
      * $validator = new AnyOf([

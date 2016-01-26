@@ -58,7 +58,7 @@ class DateValidator extends \Phramework\Validate\StringValidator
         $return = parent::validate($value);
 
         //Apply additional rules
-        if ($return->status == true && (preg_match(
+        if ($return->status === true && (preg_match(
             '/^(\d{4})-(\d{2})-(\d{2})$/',
             $value,
             $matches

@@ -426,6 +426,7 @@ abstract class BaseValidator
      *
      * $parsed = $validator->parse(5); //Expect 6
      * ```
+     * @since 0.6.0
      */
     public function setValidateCallback($callback)
     {

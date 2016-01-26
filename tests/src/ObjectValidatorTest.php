@@ -523,7 +523,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             'obj' => 5
         ]);
 
-        $this->assertSame($value,  $parsed->obj);
+        $this->assertSame($value, $parsed->obj);
 
         $validator = (new ObjectValidator())
             ->setValidateCallback(function ($validateResult, $validator) use ($value) {

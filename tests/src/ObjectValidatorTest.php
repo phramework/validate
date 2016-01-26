@@ -41,7 +41,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         return [
             [(object)['ok' => true, 'str2' => 'my str']],
             [(object)['ok' => 'true', 'okk' => '123']],
-            [(object)['ok' => false, 'okk' => 'xyz' ]]
+            [(object)['ok' => false, 'okk' => 'xyz' ]],
         ];
     }
 
@@ -52,6 +52,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             [1], //not an array or object
             [['ok']], //`ok` is not an object key
             [['abc']],
+            [(object)['str' => 'my strxxxxxxxxxxx', 'ok' => false]],
             [(object)['str' => 'my str', 'okk' => false]],
             [(object)(['okk' => 'hello'])], //because missing ok
             [['ok'=> 'omg', 'okk' => '2']], //because of ok is not boolean
@@ -111,6 +112,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             2
         );
     }
+
 
     /**
      * @dataProvider validateSuccessProvider

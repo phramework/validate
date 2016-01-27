@@ -729,6 +729,18 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
+     * @expectedException Exception
+     */
+    public function testCreateFromObjectForAdditionalFailureNull(){
+        $object = (object)[
+
+        ];
+
+        BaseValidator::createFromObject($object);
+    }
+
+    /**
      * @covers Phramework\Validate\BaseValidator::createFromObject
      */
     public function testCreateFromObject()
@@ -1014,20 +1026,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::runValidateCallback
+     * @covers Phramework\Validate\BaseValidator::setValidateCallback
      * @expectedException Exception
      */
     public function testSetValidateFailure1()
     {
         $validator = (new IntegerValidator())
-            ->setValidateCallback(['pokemon']);
+            ->setValidateCallback('pokemon');
     }
 
     /**
      * @covers Phramework\Validate\BaseValidator::runValidateCallback
      * @expectedException Exception
      */
-    public function testSetValidateFailure2()
+    public function testRunValidateCallbackFailure()
     {
         $validator = (new IntegerValidator())
             ->setValidateCallback(function ($validateResult, $validator) {

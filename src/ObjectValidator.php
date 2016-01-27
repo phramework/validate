@@ -89,9 +89,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         }
 
         if ($additionalProperties !== null && !is_bool($additionalProperties)) {
-            throw new \Exception(
-                'For now only boolean values supported for "additionalProperties"'
-            );
+            throw new \Exception('For now only boolean values supported for "additionalProperties"');
         }
 
         $this->minProperties = $minProperties;
@@ -107,16 +105,16 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  object $value Value to validate
      * @return ValidateResult
-     * @todo clean up failure of recurvice objects
+     * @todo clean up failure of recursive objects
      */
     public function validate($value)
     {
         $return = new ValidateResult($value, false);
         $failure = null;
 
-        if (is_array($this->properties)) {
+        /*if (is_array($this->properties)) {
             $this->properties = (object)$this->properties;
-        }
+        }*/
 
         if (!is_object($value)) {
             $failure = 'type';
@@ -161,7 +159,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
         }
 
-        $overalPropertyStatus = true;
+        $overallPropertyStatus = true;
         $errorObjects = [];
         $missingObjects = [];
 
@@ -172,8 +170,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 $propertyValue = $valueProperties[$key];
                 $propertyValidateResult = $property->validate($propertyValue);
 
-                //Determine $overalPropertyStatus
-                $overalPropertyStatus = $overalPropertyStatus && $propertyValidateResult->status;
+                //Determine $overallPropertyStatus
+                $overallPropertyStatus = $overallPropertyStatus && $propertyValidateResult->status;
 
                 if (!$propertyValidateResult->status) {
                     if (!$propertyValidateResult->errorObject) {
@@ -200,8 +198,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
         }
 
-        if (!$overalPropertyStatus) {
-            $return->status = $overalPropertyStatus;
+        if (!$overallPropertyStatus) {
+            $return->status = $overallPropertyStatus;
 
             //error
             $errorObject = [];

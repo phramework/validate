@@ -68,7 +68,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
     ) {
         parent::__construct();
 
-        if (is_array($this->items)) {
+        if (is_array($items)) {
             throw new \Exception('Array for attribute "items" are not supported yet');
         }
 

@@ -135,7 +135,7 @@ abstract class BaseValidator
         $return = new ValidateResult($parsedValue, false);
 
         //Check if $this->enum is set and it's not null since its optional
-        if ($this->enum && $this->enum !== null) {
+        if ($this->enum !== null) {
             if (is_object($value)) {
                 throw new \Exception('Objects are not supported');
             }
@@ -183,9 +183,6 @@ abstract class BaseValidator
                 'type' => static::getType(),
                 'failure' => 'enum'
             ]]);
-        } else {
-            //Ignored validation, set status to true
-            $return->status = true;
         }
 
         return $return;
@@ -227,9 +224,6 @@ abstract class BaseValidator
 
                 return $return;
             }
-        } else {
-            //Ignored validation, set status to true
-            $return->status = true;
         }
 
         return $return;
@@ -531,6 +525,7 @@ abstract class BaseValidator
     {
         $indexProperty = null;
         $class = null;
+
         if (property_exists($object, 'anyOf')) {
             $indexProperty = 'anyOf';
             $class = AnyOf::class;
@@ -570,14 +565,14 @@ abstract class BaseValidator
             if (array_key_exists($object->type, self::$validatorRegistry)) {
                 $className = self::$validatorRegistry[$object->type];
                 $validator = new $className();
-            } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
+            /*} elseif (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
                 //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type;
                 $validator = new $className();
             } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type . 'Validator')) {
                 //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type . 'Validator';
-                $validator = new $className();
+                $validator = new $className();*/
             } else {
                 $className = $object->type . 'Validator';
 
@@ -686,12 +681,12 @@ abstract class BaseValidator
     {
         $object = $this->toObject();
 
-        foreach ($object as $key => &$attribute) {
+        /*foreach ($object as $key => &$attribute) {
             //Check if any of attributes is an instance of BaseValidator
             if (is_object($attribute) && is_a($attribute, BaseValidator::class)) {
                 $attribute = $attribute->toObject();
             }
-        }
+        }*/
 
         return json_encode(
             $object,

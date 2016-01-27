@@ -443,6 +443,18 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Validate against common enum keyword
+     * @covers Phramework\Validate\BaseValidator::validateEnum
+     */
+    public function testValidateEnumArray()
+    {
+        $validator = (new ArrayValidator())
+            ->setEnum([[1], [2, 12]]);
+
+        $this->assertEquals([2, 12], $validator->parse([12, 2]));
+    }
+
+    /**
      * Validate against common enum keyword,
      * expect exception since objects and arrays are not yet supported for enum keyword
      * @expectedException Exception
@@ -458,7 +470,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Validate against common enum keyword
+     * @covers Phramework\Validate\BaseValidator::validateEnum
+     * @expectedException Exception
+     */
+    public function testValidateEnumException3()
+    {
+        $validator = (new ObjectValidator());
+
+        $validator->enum = new \stdClass();
+
+        $validator->validate((object)['obj' => 2]);
+    }
+
+    /**
+     * Validate against common not keyword
      * @covers Phramework\Validate\BaseValidator::validateNot
      */
     public function testValidateNot()
@@ -488,6 +513,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $return = $validator->validate('aa');
 
         $this->assertFalse($return->status);
+    }
+
+    /**
+     * Validate against common not keyword
+     * @covers Phramework\Validate\BaseValidator::validateNot
+     * @expectedException Exception
+     */
+    public function testValidateNotFailure()
+    {
+        $validator = new IntegerValidator();
+
+        $validator->not = new \stdClass();
+
+        $validator->parse(1);
     }
 
     /**
@@ -854,6 +893,21 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('object', $jsonObject->properties);
 
         $this->assertObjectHasAttribute('int', $jsonObject->properties);
+
+        $validator = new ArrayValidator(
+            0,
+            1,
+            new IntegerValidator()
+        );
+
+        $json = $validator->toJSON();
+
+        $this->assertInternalType('string', $json);
+
+        $jsonObject = json_decode($json);
+
+        //assert no errors
+        $this->assertSame(JSON_ERROR_NONE, json_last_error());
     }
 
     /**
@@ -963,7 +1017,17 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      * @covers Phramework\Validate\BaseValidator::runValidateCallback
      * @expectedException Exception
      */
-    public function testSetValidateFailure()
+    public function testSetValidateFailure1()
+    {
+        $validator = (new IntegerValidator())
+            ->setValidateCallback(['pokemon']);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::runValidateCallback
+     * @expectedException Exception
+     */
+    public function testSetValidateFailure2()
     {
         $validator = (new IntegerValidator())
             ->setValidateCallback(function ($validateResult, $validator) {

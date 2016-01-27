@@ -40,6 +40,55 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers Phramework\Validate\ArrayValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure1()
+    {
+        $validator = new ArrayValidator(
+            1,
+            3,
+            []
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure2()
+    {
+        $validator = new ArrayValidator(
+            'a'
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure3()
+    {
+        $validator = new ArrayValidator(
+            3,
+            1
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure4()
+    {
+        $validator = new ArrayValidator(
+            1,
+            3,
+            new \stdClass()
+        );
+    }
+
     public function validateSuccessProvider()
     {
         //input

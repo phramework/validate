@@ -113,6 +113,19 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @todo MUST be remove when BaseValidator are supported for "additionalProperties"
+     * @covers Phramework\Validate\ObjectValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure3()
+    {
+        $validator = new ObjectValidator(
+            (object)['obj' => new IntegerValidator()],
+            ['obj'],
+            new IntegerValidator()
+        );
+    }
 
     /**
      * @dataProvider validateSuccessProvider
@@ -250,7 +263,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
                 'key' => new StringValidator()
             ],
             ['key'],
-            false
+            true
         );
 
         $return = $validationObject->validate((object)['ok' => 'true']);

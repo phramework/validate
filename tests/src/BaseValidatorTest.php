@@ -788,6 +788,15 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\BaseValidator::createFromObject
+     * @expectedException Exception
+     */
+    public function testCreateFromObjectFailureNotObject()
+    {
+        BaseValidator::createFromObject('string');
+    }
+
+    /**
      * @covers Phramework\Validate\BaseValidator::toObject
      */
     public function testToObject()

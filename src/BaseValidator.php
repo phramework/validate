@@ -560,6 +560,10 @@ abstract class BaseValidator
     {
         $isFromBase = (static::class === self::class);
 
+        if (!is_object($object)) {
+            throw new \Exception('Expecting an object');
+        }
+
         //Test type if it's set
         if (property_exists($object, 'type') && !empty($object->type)) {
             if (array_key_exists($object->type, self::$validatorRegistry)) {

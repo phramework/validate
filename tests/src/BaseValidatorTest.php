@@ -732,9 +732,9 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
      * @expectedException Exception
      */
-    public function testCreateFromObjectForAdditionalFailureNull(){
+    public function testCreateFromObjectForAdditionalFailureNull()
+    {
         $object = (object)[
-
         ];
 
         BaseValidator::createFromObject($object);

@@ -561,7 +561,7 @@ abstract class BaseValidator
         $isFromBase = (static::class === self::class);
 
         //Test type if it's set
-        if (property_exists($object, 'type')) {
+        if (property_exists($object, 'type') && !empty($object->type)) {
             if (array_key_exists($object->type, self::$validatorRegistry)) {
                 $className = self::$validatorRegistry[$object->type];
                 $validator = new $className();
@@ -592,7 +592,9 @@ abstract class BaseValidator
             }
         } elseif (($validator = static::createFromObjectForAdditional($object)) !== null) {
             return $validator;
-        } elseif (!$isFromBase || (isset($object->type) && $object->type == static::$type)) {
+        } elseif (!$isFromBase
+            || (isset($object->type) && !empty($object->type) && $object->type == static::$type)
+        ) {
             $validator = new static();
         } else {
             throw new \Exception(sprintf(

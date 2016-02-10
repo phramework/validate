@@ -567,6 +567,9 @@ abstract class BaseValidator
         //Test type if it's set
         if (property_exists($object, 'type') && !empty($object->type)) {
             if (array_key_exists($object->type, self::$validatorRegistry)) {
+                if (is_object($object->type) || is_array($object->type) || $object->type === null) {
+                    throw new \Exception('Expecting string for type');
+                }
                 $className = self::$validatorRegistry[$object->type];
                 $validator = new $className();
             /*} elseif (class_exists(__NAMESPACE__ . '\\' . $object->type)) {

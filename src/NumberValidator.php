@@ -77,7 +77,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             throw new \Exception('Maximum must be numeric');
         }
 
-        if ($maximum < $minimum) {
+        if ($maximum !== null && $minimum !== null && $maximum < $minimum) {
             throw new \Exception('maximum cant be less than minimum');
         }
 

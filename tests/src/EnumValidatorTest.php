@@ -105,6 +105,42 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\EnumValidator::validate
+     */
+    public function testCreateFromJSONAndValidate()
+    {
+        $json = '{
+            "type": "enum",
+            "enum": [1, 2, 3],
+            "validateType": false
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(EnumValidator::class, $validationObject);
+
+        $validationObject->parse('1');
+        $validationObject->parse(1);
+    }
+
+    /**
+     * @covers Phramework\Validate\EnumValidator::validate
+     * @expectedException \Phramework\Exceptions\IncorrectParametersException
+     */
+    public function testCreateFromJSONAndValidateType()
+    {
+        $json = '{
+            "type": "enum",
+            "enum": [1, 2, 3],
+            "validateType": true
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $validationObject->parse('1');
+    }
+
+    /**
      * @covers Phramework\Validate\EnumValidator::getType
      */
     public function testGetType()

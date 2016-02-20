@@ -177,6 +177,13 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
         }
 
+        //Return default if it's empty
+        if ($valuePropertiesCount === 0 && property_exists($this, 'default')) {
+            $return->value = $this->default;
+            $return->status = true;
+            return $return;
+        }
+
         $overallPropertyStatus = true;
         $errorObjects = [];
         $missingObjects = [];
@@ -281,9 +288,9 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
             if (!empty($foundAdditionalProperties)) {
                 $return->errorObject = new IncorrectParametersException([[
-                 'type' => static::getType(),
-                 'failure' => 'additionalProperties',
-                 'properties' => $foundAdditionalProperties
+                    'type' => static::getType(),
+                    'failure' => 'additionalProperties',
+                    'properties' => $foundAdditionalProperties
                 ]]);
                 return $return;
             }
@@ -320,7 +327,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     public function parse($value)
     {
         if (is_array($value)) {
-            $value = (object)$value;
+            $value = (object) $value;
         }
 
         return parent::parse($value);

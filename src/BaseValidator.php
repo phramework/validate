@@ -193,6 +193,7 @@ abstract class BaseValidator
      * @param  mixed $value Value to validate
      * @param  mixed $value Parsed value from previous validators
      * @return ValidateResult
+     * @throws \Exception
      */
     protected function validateNot($value, $parsedValue)
     {

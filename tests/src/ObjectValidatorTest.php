@@ -128,6 +128,22 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\ObjectValidator::__construct
+     * @expectedException Exception
+     */
+    public function testConstructFailure4()
+    {
+        $validator = new ObjectValidator(
+            [],
+            [],
+            [],
+            1,
+            null,
+            ['name']
+        );
+    }
+
+    /**
      * @dataProvider validateSuccessProvider
      * @covers Phramework\Validate\ObjectValidator::validate
      */
@@ -137,6 +153,46 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($return->status);
         $this->assertInternalType('object', $return->value);
+    }
+
+    public function testValidateDependencies()
+    {
+        $validator = new ObjectValidator(
+            (object) [
+                'name'            => new StringValidator(),
+                'credit_card'     => new StringValidator(),
+                'billing_address' => new StringValidator()
+            ],
+            ['name'],
+            false,
+            0,
+            null,
+            (object) [
+                'credit_card' => ['billing_address']
+            ]
+        );
+
+        $validator->parse((object) [
+            'name' => 'Jane Doe'
+        ]);
+
+        $validator->parse((object) [
+            'name'            => 'Jane Doe',
+            'billing_address' => '127.0.0.1'
+        ]);
+
+        $validator->parse((object) [
+            'name'            => 'Jane Doe',
+            'credit_card'     => '5555-5555-5555-5555',
+            'billing_address' => '127.0.0.1'
+        ]);
+
+
+        $this->expectException(\Phramework\Exceptions\MissingParametersException::class);
+        $validator->parse((object) [
+            'name'            => 'Jane Doe',
+            'credit_card'     => '5555-5555-5555-5555', //billing_address is a dependency
+        ]);
     }
 
     /**

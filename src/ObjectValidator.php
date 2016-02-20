@@ -25,6 +25,7 @@ use \Phramework\Exceptions\MissingParametersException;
  * @property integer        $minProperties Minimum number of properties
  * @property integer|null   $maxProperties Minimum number of properties
  * @property string[]       $required Required properties keys
+ * @property object         $dependencies Dependencies
  * @property object $properties Properties
  * @property object|boolean|null $additionalProperties
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
@@ -34,8 +35,6 @@ use \Phramework\Exceptions\MissingParametersException;
  * @since 0.0.0
  * @todo Implement patternProperties
  * @todo Implement additionalProperties "additionalProperties": { "type": "string" }
- * @todo Implement dependencies
- * @todo Can it have default?
  */
 class ObjectValidator extends \Phramework\Validate\BaseValidator
 {
@@ -50,7 +49,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         'maxProperties',
         'required',
         'properties',
-        'additionalProperties'
+        'additionalProperties',
+        'dependencies'
     ];
 
     /**
@@ -64,6 +64,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * *[Optional]* Default is 0
      * @param integer               $maxProperties
      * *[Optional]* Default is null
+     * @param object|null           $dependencies
      * @throws \Exception
      */
     public function __construct(
@@ -71,7 +72,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $required = [],
         $additionalProperties = null,
         $minProperties = 0,
-        $maxProperties = null
+        $maxProperties = null,
+        $dependencies = null
     ) {
         parent::__construct();
 
@@ -92,12 +94,28 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             throw new \Exception('For now only boolean values supported for "additionalProperties"');
         }
 
+        if ($dependencies == null) {
+            $dependencies = new \stdClass();
+        } else {
+            if (!is_object($dependencies)) {
+                throw new \Exception('dependencies must be object');
+            }
+
+            foreach ($dependencies as $key => $value) {
+                if (!is_array($value)) {
+                    throw new \Exception('dependencies members must be arrays');
+                }
+            }
+        }
+
+
         $this->minProperties = $minProperties;
         $this->maxProperties = $maxProperties;
 
         $this->properties = $properties;
         $this->required = $required;
         $this->additionalProperties = $additionalProperties;
+        $this->dependencies = $dependencies;
     }
 
     /**
@@ -162,6 +180,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $overallPropertyStatus = true;
         $errorObjects = [];
         $missingObjects = [];
+        $missingDependencies = [];
 
         //Validate all validator's properties
         foreach ($this->properties as $key => $property) {
@@ -169,6 +188,17 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             if (array_key_exists($key, $valueProperties)) {
                 $propertyValue = $valueProperties[$key];
                 $propertyValidateResult = $property->validate($propertyValue);
+
+                //Check dependencies, if key is set, it's dependencies must also be set
+                if (isset($this->dependencies->{$key})) {
+                    foreach ($this->dependencies->{$key} as $dependencyKey) {
+                        if (!array_key_exists($dependencyKey, $valueProperties)) {
+                            $missingDependencies[] = $dependencyKey;
+                            //set status to false
+                            $overallPropertyStatus = false;
+                        }
+                    }
+                }
 
                 //Determine $overallPropertyStatus
                 $overallPropertyStatus = $overallPropertyStatus && $propertyValidateResult->status;
@@ -220,7 +250,17 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 ];
             }
 
-            if (!empty($missingObjects)) {
+            if (!empty($missingDependencies)) {
+                $errorObject[] = [
+                    'type' => static::getType(),
+                    'failure' => 'dependencies',
+                    'properties' => $missingDependencies
+                ];
+            }
+
+            if (!empty($missingDependencies)) {
+                $return->errorObject = new MissingParametersException($missingDependencies);
+            }elseif (!empty($missingObjects)) {
                 $return->errorObject = new MissingParametersException($missingObjects);
             } else {
                 $return->errorObject = new IncorrectParametersException($errorObject);

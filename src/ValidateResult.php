@@ -37,17 +37,17 @@ class ValidateResult
     /**
      * @var Exception|null
      */
-    public $errorObject;
+    public $exception;
 
     /**
      * @param mixed           $value
-     * @param boolean         $status      *[Optional]*
-     * @param \Exception|null $errorObject *[Optional]*
+     * @param boolean         $status    *[Optional]*
+     * @param \Exception|null $exception *[Optional]*
      */
-    public function __construct($value, $status = false, $errorObject = null)
+    public function __construct($value, $status = false, $exception = null)
     {
         $this->value  = $value;
         $this->status = $status;
-        $this->errorObject = $errorObject;
+        $this->exception = $exception;
     }
 }

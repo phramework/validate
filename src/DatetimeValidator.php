@@ -75,7 +75,7 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
         }
 
         $return->status = false;
-        $return->errorObject = new IncorrectParametersException([
+        $return->exception = new IncorrectParametersException([
             [
                 'type' => static::getType(),
                 'failure' => 'format'

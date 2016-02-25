@@ -239,7 +239,7 @@ class NumberValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new NumberValidator(null, null, null, null, 2);
         $return = $validator->validate(5);
 
-        $parameters = $return->errorObject->getParameters();
+        $parameters = $return->exception->getParameters();
 
         $this->assertEquals('multipleOf', $parameters[0]['failure']);
     }

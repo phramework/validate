@@ -16,6 +16,7 @@
  */
 namespace Phramework\Validate;
 
+use Phramework\Exceptions\IncorrectParameterException;
 use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
@@ -59,14 +60,12 @@ class BooleanValidator extends \Phramework\Validate\BaseValidator
 
         if ($filterValue === null) {
             //error
-            $return->errorObject = new IncorrectParametersException([
-                [
-                    'type' => static::getType(),
-                    'failure' => 'type'
-                ]
-            ]);
+            $return->exception = new IncorrectParameterException(
+                'type',
+                $this->source
+            );
         } else {
-            $return->errorObject = null;
+            $return->exception = null;
 
             //Set status to success
             $return->status = true;

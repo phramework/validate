@@ -109,9 +109,9 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         $return = new ValidateResult($value, false);
 
         if (!is_array($value)) {
-            $return->errorObject = 'properties validation';
+            $return->exception = 'properties validation';
             //error
-            $return->errorObject = new IncorrectParametersException([
+            $return->exception = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'type'
@@ -123,7 +123,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
 
             if ($propertiesCount < $this->minItems) {
                 //error
-                $return->errorObject = new IncorrectParametersException(
+                $return->exception = new IncorrectParametersException(
                     [
                         'type' => static::getType(),
                         'failure' => 'minItems'
@@ -133,7 +133,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
             } elseif ($this->maxItems !== null
                 && $propertiesCount > $this->maxItems
             ) {
-                $return->errorObject = new IncorrectParametersException(
+                $return->exception = new IncorrectParametersException(
                     [
                         'type' => static::getType(),
                         'failure' => 'maxItems'
@@ -151,14 +151,14 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                 $validateItems = $this->items->validate($v);
 
                 if (!$validateItems->status) {
-                    $errorItems[$k] = $validateItems->errorObject->getParameters()[0];
+                    $errorItems[$k] = $validateItems->exception->getParameters()[0];
                 } else {
                     $value[$k] = $validateItems->value;
                 }
             }
 
             if (!empty($errorItems)) {
-                $return->errorObject = new IncorrectParametersException(
+                $return->exception = new IncorrectParametersException(
                     [
                         'type' => static::getType(),
                         'failure' => 'items',
@@ -173,7 +173,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
 
         //Check if contains duplicate items
         if ($this->uniqueItems && count($value) !== count(array_unique($value))) {
-            $return->errorObject = new IncorrectParametersException(
+            $return->exception = new IncorrectParametersException(
                 [
                     'type' => static::getType(),
                     'failure' => 'uniqueItems'
@@ -183,7 +183,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         }
 
         //Success
-        $return->errorObject = null;
+        $return->exception = null;
         $return->status = true;
 
         //type casted

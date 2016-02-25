@@ -65,7 +65,7 @@ class EmailValidator extends \Phramework\Validate\StringValidator
         if ($return->status == true) {
             if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
                 //error
-                $return->errorObject = new IncorrectParametersException([
+                $return->exception = new IncorrectParametersException([
                     [
                         'type' => static::getType(),
                         'failure' => 'format'

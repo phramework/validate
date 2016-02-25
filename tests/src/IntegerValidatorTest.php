@@ -193,7 +193,7 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($return->status);
 
-        $parameters = $return->errorObject->getParameters();
+        $parameters = $return->exception->getParameters();
 
         $this->assertEquals('multipleOf', $parameters[0]['failure']);
     }

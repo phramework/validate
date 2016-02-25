@@ -130,7 +130,7 @@ class AnyOf extends \Phramework\Validate\BaseValidator
         }
 
         //error
-        $return->errorObject = new IncorrectParametersException([
+        $return->exception = new IncorrectParametersException([
             [
                 'type' => static::getType(),
                 'failure' => $this->anyOfProperty

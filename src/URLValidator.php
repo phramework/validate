@@ -66,7 +66,7 @@ class URLValidator extends \Phramework\Validate\StringValidator
             if (filter_var($value, FILTER_VALIDATE_URL) === false) {
                 //error
                 $return->status = false;
-                $return->errorObject = new IncorrectParametersException([
+                $return->exception = new IncorrectParametersException([
                     [
                         'type' => static::getType(),
                         'failure' => 'format'

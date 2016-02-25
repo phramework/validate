@@ -170,8 +170,9 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
             if (!empty($missingProperties)) {
                 //error, missing properties
-                $return->errorObject = new MissingParametersException(
-                    $missingProperties
+                $return->exception = new MissingParametersException(
+                    $missingProperties,
+                    $this->source
                 );
                 return $return;
             }
@@ -266,11 +267,11 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
 
             if (!empty($missingDependencies)) {
-                $return->errorObject = new MissingParametersException($missingDependencies);
+                $return->exception = new MissingParametersException($missingDependencies);
             }elseif (!empty($missingObjects)) {
-                $return->errorObject = new MissingParametersException($missingObjects);
+                $return->exception = new MissingParametersException($missingObjects);
             } else {
-                $return->errorObject = new IncorrectParametersException($errorObject);
+                $return->exception = new IncorrectParametersException($errorObject);
             }
 
             return $return;
@@ -287,7 +288,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
 
             if (!empty($foundAdditionalProperties)) {
-                $return->errorObject = new IncorrectParametersException([[
+                $return->exception = new IncorrectParametersException([[
                     'type' => static::getType(),
                     'failure' => 'additionalProperties',
                     'properties' => $foundAdditionalProperties
@@ -305,7 +306,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         return $this->validateCommon($value, $return);
 
         err:
-        $return->errorObject = new IncorrectParametersException([
+        $return->exception = new IncorrectParametersException([
             'type' => static::getType(),
             'failure' => $failure
         ]);

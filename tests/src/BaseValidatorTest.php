@@ -500,7 +500,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($return->status);
 
-        $parameters = $return->errorObject->getParameters();
+        $parameters = $return->exception->getParameters();
 
         $this->assertSame('not', $parameters[0]['failure']);
 

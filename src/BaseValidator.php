@@ -16,9 +16,11 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Exceptions\IncorrectParametersException;
-use \Phramework\Exceptions\MissingParametersException;
-use Symfony\Component\Config\Definition\Exception\Exception;
+use Phramework\Exceptions\IncorrectParameterException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\MissingParametersException;
+use Phramework\Exceptions\Source\ISource;
+use Phramework\Exceptions\Source\Pointer;
 
 /**
  * BaseValidator, every validator **MUST** extend this class
@@ -35,6 +37,11 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  */
 abstract class BaseValidator
 {
+    /**
+     * @var ISource
+     */
+    protected $source = null;
+
     /**
      * @var callable|null
      */
@@ -179,10 +186,10 @@ abstract class BaseValidator
 
             $return->status = false;
             //Error
-            $return->errorObject = new IncorrectParametersException([[
-                'type' => static::getType(),
-                'failure' => 'enum'
-            ]]);
+            $return->exception = new IncorrectParameterException(
+                'enum',
+                $this->source
+            );
         }
 
         return $return;
@@ -190,8 +197,8 @@ abstract class BaseValidator
 
     /**
      * Common helper method to validate against "not" keyword
-     * @param  mixed $value Value to validate
-     * @param  mixed $value Parsed value from previous validators
+     * @param  mixed $value       Value to validate
+     * @param  mixed $parsedValue Parsed value from previous validators
      * @return ValidateResult
      * @throws \Exception
      */
@@ -217,11 +224,10 @@ abstract class BaseValidator
             if ($validateNot->status === true) {
                 //Error
                 $return->status = false;
-
-                $return->errorObject = new IncorrectParametersException([[
-                    'type' => static::getType(),
-                    'failure' => 'not'
-                ]]);
+                $return->exception = new IncorrectParameterException(
+                    'not',
+                    $this->source
+                );
 
                 return $return;
             }
@@ -435,6 +441,25 @@ abstract class BaseValidator
     }
 
     /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param ISource|null $source
+     * @return $this
+     */
+    public function setSource(ISource $source)
+    {
+        $this->source = $source;
+
+        return $this;
+    }
+
+    /**
      * This method use this validator to parse data from $value argument
      * and return a clean object
      * @param  mixed $value Input value to validate
@@ -447,7 +472,7 @@ abstract class BaseValidator
         $validateResult = $this->validate($value);
 
         if (!$validateResult->status) {
-            throw $validateResult->errorObject;
+            throw $validateResult->exception;
         }
 
         $typeCastedValue = $validateResult->value;

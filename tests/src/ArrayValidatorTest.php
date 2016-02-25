@@ -133,7 +133,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($return->status);
         $this->assertInstanceOf(
             \Phramework\Exceptions\IncorrectParametersException::class,
-            $return->errorObject
+            $return->exception
         );
     }
 

@@ -125,7 +125,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
         $return = $validator->validate([1]);
 
-        $parameters = $return->errorObject->getParameters();
+        $parameters = $return->exception->getParameters();
 
         $this->assertEquals('anyOf', $parameters[0]['failure']);
 
@@ -138,7 +138,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
         $return = $validator->validate([1]);
 
-        $parameters = $return->errorObject->getParameters();
+        $parameters = $return->exception->getParameters();
 
         $this->assertEquals('allOf', $parameters[0]['failure']);
 
@@ -151,7 +151,7 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
         $return = $validator->validate([1]);
 
-        $parameters = $return->errorObject->getParameters();
+        $parameters = $return->exception->getParameters();
 
         $this->assertEquals('oneOf', $parameters[0]['failure']);
     }

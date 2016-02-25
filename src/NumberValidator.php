@@ -131,7 +131,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
         //Apply all rules
         if (!is_numeric($value) || filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
             //error
-            $return->errorObject = new IncorrectParametersException([
+            $return->exception = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'type'
@@ -143,7 +143,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             )
         ) {
             //error
-            $return->errorObject = new IncorrectParametersException([
+            $return->exception = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'maximum'
@@ -155,7 +155,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             )
         ) {
             //error
-            $return->errorObject = new IncorrectParametersException([
+            $return->exception = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'minimum'
@@ -165,14 +165,14 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             && fmod((float)$value, (float)$this->multipleOf) != 0
         ) {
             //error
-            $return->errorObject = new IncorrectParametersException([
+            $return->exception = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'multipleOf'
                 ]
             ]);
         } else {
-            $return->errorObject = null;
+            $return->exception = null;
             //Set status to success
             $return->status = true;
             //Type cast

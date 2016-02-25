@@ -327,10 +327,10 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(
             \Phramework\Exceptions\MissingParametersException::class,
-            $return->errorObject
+            $return->exception
         );
 
-        $parameters = $return->errorObject->getParameters();
+        $parameters = $return->exception->getParameters();
 
         $this->assertContains('key', $parameters);
 
@@ -359,7 +359,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(
             \Phramework\Exceptions\MissingParametersException::class,
-            $return->errorObject
+            $return->exception
         );
     }
     /**
@@ -384,10 +384,10 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         
         $this->assertInstanceOf(
             'Phramework\\Exceptions\\IncorrectParametersException',
-            $return->errorObject
+            $return->exception
         );
 
-        $parameters = $return->errorObject->getParameters();
+        $parameters = $return->exception->getParameters();
 
         $this->assertEquals('additionalProperties', $parameters[0]['failure']);
     }

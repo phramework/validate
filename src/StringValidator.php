@@ -16,8 +16,8 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Models\Filter;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\IncorrectParameterException;
+use Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * String validator
@@ -92,30 +92,24 @@ class StringValidator extends \Phramework\Validate\BaseValidator
 
         if (!is_string($value)) {
             //error
-            $return->errorObject = new IncorrectParametersException([
-                [
-                    'type' => static::getType(),
-                    'failure' => 'type'
-                ]
-            ]);
+            $return->exception = new IncorrectParameterException(
+                'type',
+                $this->source
+            );
         } elseif (mb_strlen($value) < $this->minLength) {
             //error
-            $return->errorObject = new IncorrectParametersException([
-                [
-                    'type' => static::getType(),
-                    'failure' => 'minLength'
-                ]
-            ]);
+            $return->exception = new IncorrectParameterException(
+                'minLength',
+                $this->source
+            );
         } elseif ($this->maxLength !== null
             && mb_strlen($value) > $this->maxLength
         ) {
             //error
-            $return->errorObject = new IncorrectParametersException([
-                [
-                    'type' => static::getType(),
-                    'failure' => 'maxLength'
-                ]
-            ]);
+            $return->exception = new IncorrectParameterException(
+                'maxLength',
+                $this->source
+            );
         } elseif ($this->pattern !== null
             && filter_var(
                 $value,
@@ -126,14 +120,12 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             ) === false
         ) {
             //error
-            $return->errorObject = new IncorrectParametersException([
-                [
-                    'type' => static::getType(),
-                    'failure' => 'pattern'
-                ]
-            ]);
+            $return->exception = new IncorrectParameterException(
+                'pattern',
+                $this->source
+            );
         } else {
-            $return->errorObject = null;
+            $return->exception = null;
             //Set status to success
             $return->status = true;
 

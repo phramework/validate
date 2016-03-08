@@ -33,7 +33,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  * @property array enum
  * @property BaseValidator not
  */
-abstract class BaseValidator
+abstract class BaseValidator implements \JsonSerializable
 {
     /**
      * @var callable|null
@@ -787,5 +787,10 @@ abstract class BaseValidator
         }
 
         return $object;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

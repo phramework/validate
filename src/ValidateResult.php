@@ -22,7 +22,7 @@ namespace Phramework\Validate;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class ValidateResult
+class ValidateResult implements \JsonSerializable
 {
     /**
      * @var mixed
@@ -49,5 +49,10 @@ class ValidateResult
         $this->value  = $value;
         $this->status = $status;
         $this->errorObject = $errorObject;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }

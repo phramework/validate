@@ -30,7 +30,8 @@ use \Phramework\Models\Filter;
  * @property boolean $uniqueItems If true, only unique array items are allowed
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @see http://json-schema.org/latest/json-schema-validation.html#anchor36 Validation keywords for arrays
+ * @see http://json-schema.org/latest/json-schema-validation.html#anchor36
+ * Validation keywords for arrays
  * @since 0.0.0
  */
 class ArrayValidator extends \Phramework\Validate\BaseValidator

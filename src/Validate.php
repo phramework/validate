@@ -94,7 +94,8 @@ class Validate
     /**
      * This type allows only specific values
      *
-     * when used in model an array named values MUST be set for example `'values' => [1, 2, 'abc']`
+     * when used in model an array named values MUST be set for example
+     * `'values' => [1, 2, 'abc']`
      */
     const TYPE_ENUM = 'enum';
     const TYPE_JSON = 'json';

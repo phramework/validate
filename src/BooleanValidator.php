@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@
 namespace Phramework\Validate;
 
 use Phramework\Exceptions\IncorrectParameterException;
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\Result\Result;
 
 /**
  * Boolean validator
@@ -35,7 +34,11 @@ class BooleanValidator extends \Phramework\Validate\BaseValidator
      */
     protected static $type = 'boolean';
 
-    public function __construct($default = null)
+    /**
+     * BooleanValidator constructor.
+     * @param bool|null $default
+     */
+    public function __construct(bool $default = null)
     {
         parent::__construct();
 
@@ -46,13 +49,13 @@ class BooleanValidator extends \Phramework\Validate\BaseValidator
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      * @uses filter_var with filter FILTER_VALIDATE_BOOLEAN
      * @see https://secure.php.net/manual/en/filter.filters.validate.php
      */
     public function validate($value)
     {
-        $return = new ValidateResult($value, false);
+        $return = new Result($value, false);
 
         $filterValue = filter_var($value, FILTER_VALIDATE_BOOLEAN, [
             'flags' => FILTER_NULL_ON_FAILURE
@@ -62,6 +65,7 @@ class BooleanValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->exception = new IncorrectParameterException(
                 'type',
+                null,
                 $this->source
             );
         } else {
@@ -69,8 +73,9 @@ class BooleanValidator extends \Phramework\Validate\BaseValidator
 
             //Set status to success
             $return->status = true;
+
             //Type cast
-            $return->value = $filterValue;
+            $return->value = (bool) $filterValue;
         }
 
         return $this->validateCommon($value, $return);

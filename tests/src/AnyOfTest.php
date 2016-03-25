@@ -16,14 +16,14 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new AnyOf([
+        $this->object = new AnyOf(
             new IntegerValidator(),
             new ArrayValidator(
                 1,
                 10,
                 new IntegerValidator()
             )
-        ]);
+        );
     }
 
     /**
@@ -69,23 +69,14 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $validator = new AnyOf([
+        $validator = new AnyOf(
             new StringValidator(),
             new ArrayValidator(
                 1,
                 10,
                 new StringValidator()
             )
-        ]);
-    }
-
-    /**
-     * @covers Phramework\Validate\AnyOf::__construct
-     * @expectedException Exception
-     */
-    public function testConstructFailure()
-    {
-        $validator = new AnyOf(['{"type": "integer"}']);
+        );
     }
 
     /**
@@ -118,42 +109,37 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     {
         //any
 
-        $validator = new AnyOf([
+        $validator = new AnyOf(
             new StringValidator(),
             new IntegerValidator()
-        ]);
+        );
 
         $return = $validator->validate([1]);
 
-        $parameters = $return->exception->getParameters();
-
-        $this->assertEquals('anyOf', $parameters[0]['failure']);
+        $this->assertEquals('anyOf', $return->exception->getFailure());
 
         //all
 
-        $validator = new AllOf([
+        $validator = new AllOf(
             new StringValidator(),
             new IntegerValidator()
-        ]);
+        );
 
         $return = $validator->validate([1]);
 
-        $parameters = $return->exception->getParameters();
-
-        $this->assertEquals('allOf', $parameters[0]['failure']);
+        $this->assertEquals('allOf', $return->exception->getFailure());
 
         //one
 
-        $validator = new OneOf([
+        $validator = new OneOf(
             new StringValidator(),
             new IntegerValidator()
-        ]);
+        );
 
         $return = $validator->validate([1]);
 
-        $parameters = $return->exception->getParameters();
 
-        $this->assertEquals('oneOf', $parameters[0]['failure']);
+        $this->assertEquals('oneOf', $return->exception->getFailure());
     }
 
     /**

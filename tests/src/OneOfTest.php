@@ -16,15 +16,23 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new OneOf([
+        $this->object = new OneOf(
             new IntegerValidator(-999, -1),
             new NumberValidator(10, 30),
             new UnsignedIntegerValidator(),
-            new ObjectValidator(['a' => new IntegerValidator()], ['a'], true, 0, 1),
+            new ObjectValidator(
+                (object) [
+                    'a' => new IntegerValidator()
+                ],
+                ['a'],
+                true,
+                0,
+                1
+            ),
             new ArrayValidator(2, 2, new IntegerValidator()),
             new StringValidator(2, 4),
             new StringValidator(3, 6)
-        ]);
+        );
     }
 
     /**
@@ -68,23 +76,14 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $validator = new OneOf([
+        $validator = new OneOf(
             new StringValidator(),
             new ArrayValidator(
                 1,
                 10,
                 new StringValidator()
             )
-        ]);
-    }
-
-    /**
-     * @covers Phramework\Validate\OneOf::__construct
-     * @expectedException Exception
-     */
-    public function testConstructFailure()
-    {
-        $validator = new OneOf(['{"type": "integer"}']);
+        );
     }
 
     /**

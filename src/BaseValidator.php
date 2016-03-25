@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ use Phramework\Exceptions\IncorrectParametersException;
 use Phramework\Exceptions\MissingParametersException;
 use Phramework\Exceptions\Source\ISource;
 use Phramework\Exceptions\Source\Pointer;
+use Phramework\Validate\Result\Result;
 
 /**
  * BaseValidator, every validator **MUST** extend this class
@@ -68,18 +69,18 @@ abstract class BaseValidator
 
     /**
     * Validate value
-    * @see \Phramework\Validate\ValidateResult for ValidateResult object
+    * @see Result for ValidateResult object
     * @param  mixed $value Input value to validate
-    * @return ValidateResult
+    * @return Result
      */
     abstract public function validate($value);
 
     /**
      * Common helper method to validate against all common keywords
      * @uses validateEnum
-     * @param  mixed $value Value to validate
-     * @param  ValidateResult $validateResult Current ValidateResult status
-     * @return ValidateResult
+     * @param  mixed  $value Value to validate
+     * @param  Result $validateResult Current ValidateResult status
+     * @return Result
      */
     protected function validateCommon($value, $validateResult)
     {
@@ -112,8 +113,8 @@ abstract class BaseValidator
     /**
      * @todo May cause issues when parent validator calls
      * this method and then child type casts the returned value (see number and integer validator)
-     * @param ValidateResult $validateResult
-     * @return ValidateResult
+     * @param Result $validateResult
+     * @return Result
      */
     protected function runValidateCallback($validateResult)
     {
@@ -134,12 +135,12 @@ abstract class BaseValidator
      * @see 5.5.1. enum http://json-schema.org/latest/json-schema-validation.html#anchor75
      * @param  mixed $value Value to validate
      * @param  mixed $value Parsed value from previous validators
-     * @return ValidateResult
+     * @return Result
      * @todo provide support for objects and arrays
      */
     protected function validateEnum($value, $parsedValue)
     {
-        $return = new ValidateResult($parsedValue, false);
+        $return = new Result($parsedValue, false);
 
         //Check if $this->enum is set and it's not null since its optional
         if ($this->enum !== null) {
@@ -188,6 +189,7 @@ abstract class BaseValidator
             //Error
             $return->exception = new IncorrectParameterException(
                 'enum',
+                null,
                 $this->source
             );
         }
@@ -199,12 +201,12 @@ abstract class BaseValidator
      * Common helper method to validate against "not" keyword
      * @param  mixed $value       Value to validate
      * @param  mixed $parsedValue Parsed value from previous validators
-     * @return ValidateResult
+     * @return Result
      * @throws \Exception
      */
     protected function validateNot($value, $parsedValue)
     {
-        $return = new ValidateResult($parsedValue, true);
+        $return = new Result($parsedValue, true);
 
         //Check if $this->not is set and it's not null since its optional
         if ($this->not && $this->not !== null) {
@@ -226,6 +228,7 @@ abstract class BaseValidator
                 $return->status = false;
                 $return->exception = new IncorrectParameterException(
                     'not',
+                    null,
                     $this->source
                 );
 
@@ -570,7 +573,7 @@ abstract class BaseValidator
             $property = BaseValidator::createFromObject($property);
         }
 
-        $validator = new $class($object->{$indexProperty});
+        $validator = new $class(...$object->{$indexProperty});
 
         return $validator;
     }

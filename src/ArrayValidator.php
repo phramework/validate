@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
-use \Phramework\Models\Filter;
+use Phramework\Exceptions\IncorrectParameterException;
+use Phramework\Validate\Result\Result;
 
 /**
  * Array validator
@@ -61,22 +60,24 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
      * @throws \Exception
      */
     public function __construct(
-        $minItems = 0,
-        $maxItems = null,
+        int $minItems = 0,
+        int $maxItems = null,
         $items = null,
-        $uniqueItems = false
+        bool $uniqueItems = false
     ) {
         parent::__construct();
 
         if (is_array($items)) {
-            throw new \Exception('Array for attribute "items" are not supported yet');
+            throw new \Exception(
+                'Array for attribute "items" are not supported yet'
+            );
         }
 
-        if (!is_int($minItems) || $minItems < 0) {
+        if ($minItems < 0) {
             throw new \Exception('minItems must be positive integer');
         }
 
-        if (($maxItems !== null && (!is_int($maxItems)) || $maxItems < $minItems)) {
+        if ($maxItems !== null &&  $maxItems < $minItems) {
             throw new \Exception('maxItems must be positive integer');
         }
 
@@ -101,43 +102,40 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      * @todo incomplete
      */
     public function validate($value)
     {
-        $return = new ValidateResult($value, false);
+        $return = new Result($value, false);
 
         if (!is_array($value)) {
             $return->exception = 'properties validation';
             //error
-            $return->exception = new IncorrectParametersException([
-                [
-                    'type' => static::getType(),
-                    'failure' => 'type'
-                ]
-            ]);
+            $return->exception = new IncorrectParameterException(
+                'type',
+                null,
+                $this->source
+            );
             return $return;
         } else {
             $propertiesCount = count($value);
 
             if ($propertiesCount < $this->minItems) {
                 //error
-                $return->exception = new IncorrectParametersException(
-                    [
-                        'type' => static::getType(),
-                        'failure' => 'minItems'
-                    ]
+                $return->exception = new IncorrectParameterException(
+                    'minItems',
+                    null,
+                    $this->source
                 );
                 return $return;
             } elseif ($this->maxItems !== null
                 && $propertiesCount > $this->maxItems
             ) {
-                $return->exception = new IncorrectParametersException(
-                    [
-                        'type' => static::getType(),
-                        'failure' => 'maxItems'
-                    ]
+                $return->exception = new IncorrectParameterException(
+                    'maxItems',
+                    null,
+                    $this->source
                 );
                 //error
                 return $return;
@@ -151,21 +149,23 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                 $validateItems = $this->items->validate($v);
 
                 if (!$validateItems->status) {
-                    $errorItems[$k] = $validateItems->exception->getParameters()[0];
+                    //$errorItems[$k] = $validateItems->exception->getParameters()[0];
+                    $errorItems[] = $k;
                 } else {
                     $value[$k] = $validateItems->value;
                 }
             }
 
             if (!empty($errorItems)) {
-                $return->exception = new IncorrectParametersException(
-                    [
-                        'type' => static::getType(),
-                        'failure' => 'items',
-                        'items' => [
-                            $errorItems
-                        ]
-                    ]
+                //@todo or add all into a IncorrectParametersException
+                //'items' => [
+                // $errorItems
+                //        ]
+                // 
+                $return->exception = new IncorrectParameterException(
+                    'items',
+                    null,
+                    $this->source
                 );
                 return $return;
             }
@@ -173,11 +173,10 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
 
         //Check if contains duplicate items
         if ($this->uniqueItems && count($value) !== count(array_unique($value))) {
-            $return->exception = new IncorrectParametersException(
-                [
-                    'type' => static::getType(),
-                    'failure' => 'uniqueItems'
-                ]
+            $return->exception = new IncorrectParameterException(
+                'uniqueItems',
+                null,
+                $this->source
             );
             return $return;
         }

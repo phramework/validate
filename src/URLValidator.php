@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\Result\Result;
+use Phramework\Exceptions\IncorrectParameterException;
 
 /**
  * URL validator
@@ -39,9 +39,14 @@ class URLValidator extends \Phramework\Validate\StringValidator
      */
     protected static $type = 'url';
 
+    /**
+     * URLValidator constructor.
+     * @param int      $minLength
+     * @param int|null $maxLength
+     */
     public function __construct(
-        $minLength = 0,
-        $maxLength = null
+        int $minLength = 0,
+        int $maxLength = null
     ) {
         parent::__construct(
             $minLength,
@@ -54,7 +59,7 @@ class URLValidator extends \Phramework\Validate\StringValidator
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @see https://secure.php.net/manual/en/filter.filters.validate.php
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      */
     public function validate($value)
     {
@@ -66,12 +71,12 @@ class URLValidator extends \Phramework\Validate\StringValidator
             if (filter_var($value, FILTER_VALIDATE_URL) === false) {
                 //error
                 $return->status = false;
-                $return->exception = new IncorrectParametersException([
-                    [
-                        'type' => static::getType(),
-                        'failure' => 'format'
-                    ]
-                ]);
+
+                $return->exception = new IncorrectParameterException(
+                    'format',
+                    null,
+                    $this->source
+                );
             }
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 namespace Phramework\Validate;
-
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * Username validator
@@ -39,21 +36,35 @@ class UsernameValidator extends \Phramework\Validate\StringValidator
      */
     protected static $type = 'username';
 
+    /**
+     * @var string
+     */
     protected static $usernamePattern = '/^[A-Za-z0-9_\.]{3,32}$/';
 
+    /**
+     * @param string $pattern
+     */
     public static function setUsernamePattern($pattern)
     {
         static::$usernamePattern = $pattern;
     }
 
-    public static function getUsernamePattern()
+    /**
+     * @return string
+     */
+    public static function getUsernamePattern() : string
     {
         return static::$usernamePattern;
     }
 
+    /**
+     * UsernameValidator constructor.
+     * @param int      $minLength
+     * @param int|null $maxLength
+     */
     public function __construct(
-        $minLength = 0,
-        $maxLength = null
+        int $minLength = 0,
+        int $maxLength = null
     ) {
         parent::__construct(
             $minLength,

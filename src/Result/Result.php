@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Validate;
+namespace Phramework\Validate\Result;
 
 /**
  * Helper class, contains the result of validator's validation
@@ -22,7 +22,7 @@ namespace Phramework\Validate;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class ValidateResult
+class Result
 {
     /**
      * @var mixed
@@ -44,10 +44,13 @@ class ValidateResult
      * @param boolean         $status    *[Optional]*
      * @param \Exception|null $exception *[Optional]*
      */
-    public function __construct($value, $status = false, $exception = null)
-    {
-        $this->value  = $value;
-        $this->status = $status;
+    public function __construct(
+        $value,
+        bool $status = false,
+        \Exception $exception = null
+    ) {
+        $this->value     = $value;
+        $this->status    = $status;
         $this->exception = $exception;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ namespace Phramework\Validate;
 
 use Phramework\Exceptions\IncorrectParameterException;
 use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\Result\Result;
 
 /**
  * String validator
@@ -57,10 +58,10 @@ class StringValidator extends \Phramework\Validate\BaseValidator
      * @throws \Exception
      */
     public function __construct(
-        $minLength = 0,
-        $maxLength = null,
-        $pattern = null,
-        $raw = false
+        int $minLength = 0,
+        int $maxLength = null,
+        string $pattern = null,
+        bool $raw = false
     ) {
         parent::__construct();
 
@@ -82,25 +83,27 @@ class StringValidator extends \Phramework\Validate\BaseValidator
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      * @uses https://secure.php.net/manual/en/function.is-string.php
      * @uses filter_var with FILTER_VALIDATE_REGEXP for pattern
      */
     public function validate($value)
     {
-        $return = new ValidateResult($value, false);
+        $return = new Result($value, false);
 
         if (!is_string($value)) {
             //error
             $return->exception = new IncorrectParameterException(
                 'type',
+                null,
                 $this->source
             );
         } elseif (mb_strlen($value) < $this->minLength) {
             //error
             $return->exception = new IncorrectParameterException(
                 'minLength',
-                $this->source
+                null,
+                $this->getSource()
             );
         } elseif ($this->maxLength !== null
             && mb_strlen($value) > $this->maxLength
@@ -108,6 +111,7 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->exception = new IncorrectParameterException(
                 'maxLength',
+                null,
                 $this->source
             );
         } elseif ($this->pattern !== null
@@ -122,10 +126,12 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             //error
             $return->exception = new IncorrectParameterException(
                 'pattern',
+                null,
                 $this->source
             );
         } else {
             $return->exception = null;
+            
             //Set status to success
             $return->status = true;
 

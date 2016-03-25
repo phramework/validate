@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
+use Phramework\Validate\Result\Result;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
@@ -43,19 +43,19 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
     protected static $type = 'unsignedinteger';
 
     /**
-     * @param integer|null minimum
-     * @param integer|null maximum
-     * @param boolean|null exclusiveMinimum
-     * @param boolean|null exclusiveMaximum
-     * @param integer multipleOf
+     * @param int $minimum
+     * @param int|null $maximum
+     * @param int|null $exclusiveMinimum
+     * @param bool|null $exclusiveMaximum
+     * @param int $multipleOf
      * @throws \Exception
      */
     public function __construct(
-        $minimum = 0,
-        $maximum = null,
-        $exclusiveMinimum = null,
-        $exclusiveMaximum = null,
-        $multipleOf = 1
+        int $minimum = 0,
+        int $maximum = null,
+        bool $exclusiveMinimum = null,
+        bool $exclusiveMaximum = null,
+        int $multipleOf = 1
     ) {
         if ($minimum < 0) {
             throw new \Exception('Minimum cannot be negative');

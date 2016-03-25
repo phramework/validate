@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
-use \Phramework\Exceptions\MissingParametersException;
+use Phramework\Validate\Result\Result;
+use Phramework\Exceptions\IncorrectParameterException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\MissingParametersException;
 
 /**
  * Object validator
@@ -68,19 +69,23 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @throws \Exception
      */
     public function __construct(
-        $properties = [],
-        $required = [],
+        \stdClass $properties = null,
+        array $required = [],
         $additionalProperties = null,
-        $minProperties = 0,
-        $maxProperties = null,
-        $dependencies = null
+        int $minProperties = 0,
+        int $maxProperties = null,
+        \stdClass $dependencies = null
     ) {
         parent::__construct();
 
-        //Work with objects
-        if (is_array($properties)) {
-            $properties = (object)$properties;
+        if ($properties === null) {
+            $properties = new \stdClass();
         }
+
+        //Work with objects
+        /*if (is_array($properties)) {
+            $properties = (object)$properties;
+        }*/
 
         if (!is_int($minProperties) || $minProperties < 0) {
             throw new \Exception('minProperties must be positive integer');
@@ -122,18 +127,20 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  object $value Value to validate
-     * @return ValidateResult
+     * @return Result
      * @todo clean up failure of recursive objects
+     * @todo
      */
     public function validate($value)
     {
-        $return = new ValidateResult($value, false);
+        $return = new Result($value, false);
         $failure = null;
 
         /*if (is_array($this->properties)) {
             $this->properties = (object)$this->properties;
         }*/
 
+        $details = null;
         if (!is_object($value)) {
             $failure = 'type';
             //error
@@ -212,15 +219,15 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 $overallPropertyStatus = $overallPropertyStatus && $propertyValidateResult->status;
 
                 if (!$propertyValidateResult->status) {
-                    if (!$propertyValidateResult->errorObject) {
+                    if (!$propertyValidateResult->exception) {
                         $errorObjects[$key] = [];
                     } else {
-                        switch (get_class($propertyValidateResult->errorObject)) {
+                        switch (get_class($propertyValidateResult->exception)) {
                             case MissingParametersException::class:
-                                $missingObjects[$key] = $propertyValidateResult->errorObject->getParameters();
+                                $missingObjects[$key] = $propertyValidateResult->exception->getParameters();
                                 break;
                             case IncorrectParametersException::class:
-                                $errorObjects[$key] = $propertyValidateResult->errorObject->getParameters();
+                                $errorObjects[$key] = $propertyValidateResult->exception->getParameters();
                                 break;
                             default:
                                 $errorObjects[$key] = [];
@@ -243,35 +250,50 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             $errorObject = [];
 
             if (!empty($errorObjects)) {
-                $errorObject[] = [
-                 'type' => static::getType(),
-                 'failure' => 'properties',
-                 'properties' => $errorObjects
-                ];
+                $errorObject[] =  new IncorrectParameterException(
+                    'properties',
+                    null,
+                    $this->getSource()
+                );
+                 //'properties' => $errorObjects
+
             }
 
             if (!empty($missingObjects)) {
-                $errorObject[] = [
-                 'type' => static::getType(),
-                 'failure' => 'missing',
-                 'properties' => $missingObjects
-                ];
+                $errorObject[] =  new IncorrectParameterException(
+                    'missing',
+                    null,
+                    $this->getSource()
+                );
+
+                // 'properties' => $missingObjects
+
             }
 
             if (!empty($missingDependencies)) {
-                $errorObject[] = [
-                    'type' => static::getType(),
-                    'failure' => 'dependencies',
-                    'properties' => $missingDependencies
-                ];
+                //todo source
+                //todo use //'properties' => $missingDependencies
+                $errorObject[] = new IncorrectParameterException(
+                    'dependencies',
+                    null,
+                    $this->getSource()
+                );
             }
 
             if (!empty($missingDependencies)) {
-                $return->exception = new MissingParametersException($missingDependencies);
+                $return->exception = new MissingParametersException(
+                    $missingDependencies,
+                    $this->getSource()
+                );
             }elseif (!empty($missingObjects)) {
-                $return->exception = new MissingParametersException($missingObjects);
+                $return->exception = new MissingParametersException(
+                    $missingObjects,
+                    $this->getSource()
+                );
             } else {
-                $return->exception = new IncorrectParametersException($errorObject);
+                $return->exception = new IncorrectParametersException(
+                    ...$errorObject
+                );
             }
 
             return $return;
@@ -288,11 +310,12 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
 
             if (!empty($foundAdditionalProperties)) {
-                $return->exception = new IncorrectParametersException([[
-                    'type' => static::getType(),
-                    'failure' => 'additionalProperties',
-                    'properties' => $foundAdditionalProperties
-                ]]);
+                $return->exception = new IncorrectParameterException(
+                    'additionalProperties',
+                    null,
+                    $this->getSource()
+                );
+                //todo 'properties' => $foundAdditionalProperties
                 return $return;
             }
         }
@@ -306,10 +329,11 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         return $this->validateCommon($value, $return);
 
         err:
-        $return->exception = new IncorrectParametersException([
-            'type' => static::getType(),
-            'failure' => $failure
-        ]);
+        $return->exception = new IncorrectParameterException(
+            $failure,
+            $details,
+            $this->source
+        );
 
         return $this->validateCommon($value, $return);
     }
@@ -338,6 +362,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * Add properties to this object validator
      * @param array||object $properties [description]
      * @throws \Exception If properties is not an array
+     * @return $this
      */
     public function addProperties($properties)
     {
@@ -358,10 +383,12 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
     /**
      * Add a property to this object validator
+     * @param string $key
      * @param BaseValidator $property
      * @throws \Exception If property key exists
+     * @return $this
      */
-    public function addProperty($key, BaseValidator $property)
+    public function addProperty(string $key, BaseValidator $property)
     {
         if (property_exists($this->properties, $key)) {
             throw new \Exception('Property key exists');

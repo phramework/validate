@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\Result\Result;
 
 /**
  * Validates successfully if it validates successfully against all schema defined in allOf attribute
@@ -45,7 +44,7 @@ class AllOf extends \Phramework\Validate\AnyOf
     protected $anyOfProperty = 'allOf';
 
     /**
-     * @param array $allOf
+     * @param BaseValidator[] $allOf
      * @throws \Exception
      * @example
      * ```php
@@ -62,16 +61,16 @@ class AllOf extends \Phramework\Validate\AnyOf
      * ```
      */
     public function __construct(
-        array $allOf
+        BaseValidator ...$allOf
     ) {
-        parent::__construct($allOf);
+        parent::__construct(...$allOf);
     }
 
     /**
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      * @uses $requiredCountOfAnyOf
      * @uses \Phramework\Validate\AnyOf::validate
      */

@@ -16,11 +16,11 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new AllOf([
+        $this->object = new AllOf(
             new IntegerValidator(),
             new UnsignedIntegerValidator(),
             new NumberValidator()
-        ]);
+        );
     }
 
     /**
@@ -66,23 +66,14 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $validator = new AllOf([
+        $validator = new AllOf(
             new StringValidator(),
             new ArrayValidator(
                 1,
                 10,
                 new StringValidator()
             )
-        ]);
-    }
-
-    /**
-     * @covers Phramework\Validate\AllOf::__construct
-     * @expectedException Exception
-     */
-    public function testConstructFailure()
-    {
-        $validator = new AllOf(['{"type": "integer"}']);
+        );
     }
 
     /**

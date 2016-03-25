@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
+use Phramework\Validate\Result\Result;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
@@ -45,7 +45,7 @@ class OneOf extends \Phramework\Validate\AnyOf
     protected $anyOfProperty = 'oneOf';
 
     /**
-     * @param array $oneOf
+     * @param BaseValidator[] $oneOf
      * @throws \Exception
      * @example
      * ```php
@@ -64,16 +64,16 @@ class OneOf extends \Phramework\Validate\AnyOf
      * ```
      */
     public function __construct(
-        array $oneOf
+        BaseValidator ...$oneOf
     ) {
-        parent::__construct($oneOf);
+        parent::__construct(...$oneOf);
     }
 
     /**
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      * @uses $requiredCountOfAnyOf
      * @uses \Phramework\Validate\AnyOf::validate
      */

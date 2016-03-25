@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\Result\Result;
 
 /**
  * Enum validator
@@ -27,6 +26,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
+ * @property bool validateType
  */
 class EnumValidator extends \Phramework\Validate\BaseValidator
 {
@@ -60,10 +60,10 @@ class EnumValidator extends \Phramework\Validate\BaseValidator
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      */
     public function validate($value)
     {
-        return $this->validateCommon($value, new ValidateResult($value, true));
+        return $this->validateCommon($value, new Result($value, true));
     }
 }

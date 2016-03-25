@@ -57,17 +57,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
      * @covers Phramework\Validate\ArrayValidator::__construct
      * @expectedException Exception
      */
-    public function testConstructFailure2()
-    {
-        $validator = new ArrayValidator(
-            'a'
-        );
-    }
-
-    /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     * @expectedException Exception
-     */
     public function testConstructFailure3()
     {
         $validator = new ArrayValidator(
@@ -132,7 +121,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($return->status);
         $this->assertInstanceOf(
-            \Phramework\Exceptions\IncorrectParametersException::class,
+            \Phramework\Exceptions\IncorrectParameterException::class,
             $return->exception
         );
     }
@@ -306,9 +295,9 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = (new ArrayValidator())
             ->setValidateCallback(
             /**
-             * @param ValidateResult $validateResult
+             * @param Result        $validateResult
              * @param BaseValidator $validator
-             * @return ValidateResult
+             * @return Result
              */
                 function ($validateResult, $validator) use ($value) {
                     $validateResult->value = $value;

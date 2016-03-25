@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
+use Phramework\Validate\Result\Result;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
@@ -52,11 +52,11 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
      * @throws \Exception
      */
     public function __construct(
-        $minimum = null,
-        $maximum = null,
-        $exclusiveMinimum = null,
-        $exclusiveMaximum = null,
-        $multipleOf = 1
+        int $minimum = null,
+        int $maximum = null,
+        bool $exclusiveMinimum = null,
+        bool $exclusiveMaximum = null,
+        int $multipleOf = 1
     ) {
         if ($minimum !== null && !is_int($minimum)) {
             throw new \Exception('Minimum must be integer');
@@ -82,7 +82,7 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
     /**
      * Validate value
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      */
     public function validate($value)
     {
@@ -90,7 +90,7 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
 
         //Apply correct integer type
         if ($return->status) {
-            $return->value = (int)$return->value;
+            $return->value = (int) $return->value;
         }
 
         return $this->validateCommon($value, $return);

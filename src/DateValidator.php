@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\Result\Result;
+use \Phramework\Exceptions\IncorrectParameterException;
 
 /**
  * Date validator
@@ -49,7 +49,7 @@ class DateValidator extends \Phramework\Validate\StringValidator
      * Validate value, validates as SQL date or SQL date
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      * @todo set errorObject
      */
     public function validate($value)
@@ -72,12 +72,12 @@ class DateValidator extends \Phramework\Validate\StringValidator
         }
 
         $return->status = false;
-        $return->exception = new IncorrectParametersException([
-            [
-                'type' => static::getType(),
-                'failure' => 'format'
-            ]
-        ]);
+
+        $return->exception = new IncorrectParameterException(
+            'format',
+            null,
+            $this->source
+        );
 
         return $return;
     }

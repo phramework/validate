@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 - 2016 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
-use \Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\Result\Result;
+use Phramework\Exceptions\IncorrectParameterException;
 
 /**
  * Validates successfully if it validates successfully against at least one schema defined in anyOf attribute
@@ -40,7 +40,7 @@ class AnyOf extends \Phramework\Validate\BaseValidator
     ];
 
     /**
-     * @param array $anyOf
+     * @param BaseValidator[] $anyOf
      * @throws \Exception
      * @example
      * ```php
@@ -60,18 +60,18 @@ class AnyOf extends \Phramework\Validate\BaseValidator
      * ```
      */
     public function __construct(
-        array $anyOf
+        BaseValidator ...$anyOf
     ) {
         parent::__construct();
 
-        foreach ($anyOf as $validator) {
+        /*foreach ($anyOf as $validator) {
             if (!($validator instanceof \Phramework\Validate\BaseValidator)) {
                 throw new \Exception(sprintf(
                     'Items of %s parameter MUST be instances of Phramework\Validate\BaseValidator',
                     $this->anyOfProperty
                 ));
             }
-        }
+        }*/
 
         $this->{$this->anyOfProperty} = $anyOf;
     }
@@ -93,13 +93,13 @@ class AnyOf extends \Phramework\Validate\BaseValidator
      * Validate value
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * @return Result
      * @uses $requiredCountOfAnyOf
      * @uses $anyOfProperty
      */
     public function validate($value)
     {
-        $return = new ValidateResult($value, false);
+        $return = new Result($value, false);
         //validator ->
         //return    ->
         $successValidated = [];
@@ -130,12 +130,11 @@ class AnyOf extends \Phramework\Validate\BaseValidator
         }
 
         //error
-        $return->exception = new IncorrectParametersException([
-            [
-                'type' => static::getType(),
-                'failure' => $this->anyOfProperty
-            ]
-        ]);
+        $return->exception = new IncorrectParameterException(
+            $this->anyOfProperty,
+            null,
+            $this->source
+        );
 
         unset($successValidated);
 

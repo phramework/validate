@@ -183,7 +183,7 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
         $validator->enum = ['aa', 'bb'];
 
         $return = $validator->validate('cc');
-
+        
         $this->assertFalse(
             $return->status,
             'Expect false since "cc" is not in enum array'

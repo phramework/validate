@@ -36,7 +36,7 @@ int(0)
 
 ```php
 $validationModel = new ObjectValidator(
-    [
+    (object) [
         'name' => new StringValidator(2, 30),
         'city' => new StringValidator(2, 30)
     ],

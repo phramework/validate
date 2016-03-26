@@ -55,7 +55,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     ];
 
     /**
-     * @param object                $properties
+     * @param \stdClass             $properties
      * *[Optional]* Properties
      * @param string[]              $required
      * *[Optional]* Required properties keys
@@ -65,7 +65,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * *[Optional]* Default is 0
      * @param integer               $maxProperties
      * *[Optional]* Default is null
-     * @param object|null           $dependencies
+     * @param \stdClass|null        $dependencies
      * @throws \Exception
      */
     public function __construct(
@@ -339,6 +339,32 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     }
 
     /**
+     * Override base set source in order to set source for object's properties,
+     * works only of Pointer source
+     * @param ISource $source
+     * @return $this
+     */
+    public function setSource(ISource $source)
+    {
+        parent::setSource($source);
+
+        if (get_class($source) == Pointer::class) {
+            foreach ($this->properties as $key => &$property) {
+                $propertySource = $property->getSource();
+
+                if ($propertySource === null) {
+                    $property->setSource(
+                        new Pointer(
+                            $source->getPath() . '/' . $key
+                        )
+                    );
+                }
+            }
+        }
+        return $this;
+    }
+
+    /**
      * This method use this validator to parse data from $value argument
      * and return a clean object
      * @param  array|object $value Input value to validate
@@ -363,6 +389,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @param array||object $properties [description]
      * @throws \Exception If properties is not an array
      * @return $this
+     * @todo apply source if property's source is null
      */
     public function addProperties($properties)
     {
@@ -387,6 +414,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @param BaseValidator $property
      * @throws \Exception If property key exists
      * @return $this
+     * @todo apply source if property's source is null
      */
     public function addProperty(string $key, BaseValidator $property)
     {

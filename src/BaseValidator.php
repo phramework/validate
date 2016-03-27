@@ -512,7 +512,7 @@ abstract class BaseValidator
     /**
      * Register a custom validator for a type
      * @param  string $type      Type's name, `x-` SHOULD be used for custom types
-     * @param  string $className Validator's full classname.
+     * @param  string $className Validator's full classn ame.
      * All validators MUST extend `BaseValidator` class
      * @example
      * ```php

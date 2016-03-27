@@ -439,18 +439,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers ::addProperty
-      * @expectedException Exception
-     */
-    public function testAddPropertyFailure()
-    {
-        $property = new ObjectValidator();
-        $this->object->addProperty('new', $property);
-
-        $this->object->addProperty('new', $property); //With same key
-    }
-
-    /**
      * @covers ::getType
      */
     public function testGetType()

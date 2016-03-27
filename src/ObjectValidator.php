@@ -344,6 +344,25 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     }
 
     /**
+     * Add source to child properties
+     * @param BaseValidator $property
+     * @param string        $key
+     */
+    protected function expandSource(BaseValidator &$property, string $key)
+    {
+        if (get_class($this->getSource()) == Pointer::class) {
+            //If it does not have a source already
+            if ($property->getSource() === null) {
+                $property->setSource(
+                    new Pointer(
+                        $this->getSource()->getPath() . '/' . $key
+                    )
+                );
+            }
+        }
+    }
+
+    /**
      * Override base set source in order to set source for object's properties,
      * works only of Pointer source
      * @param ISource $source
@@ -353,19 +372,10 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     {
         parent::setSource($source);
 
-        if (get_class($source) == Pointer::class) {
-            foreach ($this->properties as $key => &$property) {
-                $propertySource = $property->getSource();
-
-                if ($propertySource === null) {
-                    $property->setSource(
-                        new Pointer(
-                            $source->getPath() . '/' . $key
-                        )
-                    );
-                }
-            }
+        foreach ($this->properties as $key => &$property) {
+            $this->expandSource($property, $key);
         }
+
         return $this;
     }
 
@@ -394,7 +404,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @param array||object $properties [description]
      * @throws \Exception If properties is not an array
      * @return $this
-     * @todo apply source if property's source is null
      */
     public function addProperties($properties)
     {
@@ -414,18 +423,15 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     }
 
     /**
-     * Add a property to this object validator
+     * Add a property to this object validator, if key exists it will overwrite
      * @param string $key
      * @param BaseValidator $property
-     * @throws \Exception If property key exists
      * @return $this
-     * @todo apply source if property's source is null
      */
     public function addProperty(string $key, BaseValidator $property)
     {
-        if (property_exists($this->properties, $key)) {
-            throw new \Exception('Property key exists');
-        }
+        //expand source
+        $this->expandSource($property, $key);
 
         //Add this key, value to
         $this->properties->{$key} = $property;

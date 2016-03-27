@@ -350,9 +350,11 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($return->status);
 
         $this->assertInstanceOf(
-            \Phramework\Exceptions\MissingParametersException::class,
+            \Phramework\Exceptions\IncorrectParametersException::class,
             $return->exception
         );
+
+        $this->markTestIncomplete('Test internal exceptions');
     }
     /**
      * @covers ::validate

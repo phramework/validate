@@ -22,7 +22,7 @@
   "require": {
     "php": ">=7",
     "ext-json": "*",
-    "phramework/exceptions": "dev-master#e8e4070e7399abb5dbf2b08fb1ab969a21b766fa"
+    "phramework/exceptions": "^1.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "5.*",

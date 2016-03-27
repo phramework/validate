@@ -16,6 +16,8 @@
  */
 namespace Phramework\Validate;
 
+use Phramework\Exceptions\Source\ISource;
+use Phramework\Exceptions\Source\Pointer;
 use Phramework\Validate\Result\Result;
 use Phramework\Exceptions\IncorrectParameterException;
 use Phramework\Exceptions\IncorrectParametersException;
@@ -223,14 +225,17 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                         $errorObjects[$key] = [];
                     } else {
                         switch (get_class($propertyValidateResult->exception)) {
-                            case MissingParametersException::class:
-                                $missingObjects[$key] = $propertyValidateResult->exception->getParameters();
-                                break;
+                            //case MissingParametersException::class:
+                               // $missingObjects[$key] = $propertyValidateResult->exception->getParameters();
+                                //break;
+                            case IncorrectParameterException::class:
+                                //$errorObjects[$key] = $propertyValidateResult->exception;
                             case IncorrectParametersException::class:
-                                $errorObjects[$key] = $propertyValidateResult->exception->getParameters();
-                                break;
+                                //$errorObjects[$key] = $propertyValidateResult->exception;
+                                //$errorObjects[$key] = $propertyValidateResult->exception->getParameters();
+                                //break;
                             default:
-                                $errorObjects[$key] = [];
+                                $errorObjects[$key] = $propertyValidateResult->exception;
                         }
                     }
                 }
@@ -244,12 +249,12 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         }
 
         if (!$overallPropertyStatus) {
-            $return->status = $overallPropertyStatus;
+            $return->status = false;
 
-            //error
-            $errorObject = [];
+//            //error
+//            $errorObject = [];
 
-            if (!empty($errorObjects)) {
+            /*if (!empty($errorObjects)) {
                 $errorObject[] =  new IncorrectParameterException(
                     'properties',
                     null,
@@ -257,9 +262,9 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 );
                  //'properties' => $errorObjects
 
-            }
+            }*/
 
-            if (!empty($missingObjects)) {
+            /*if (!empty($missingObjects)) {
                 $errorObject[] =  new IncorrectParameterException(
                     'missing',
                     null,
@@ -268,9 +273,9 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
                 // 'properties' => $missingObjects
 
-            }
+            }*/
 
-            if (!empty($missingDependencies)) {
+            /*if (!empty($missingDependencies)) {
                 //todo source
                 //todo use //'properties' => $missingDependencies
                 $errorObject[] = new IncorrectParameterException(
@@ -278,7 +283,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                     null,
                     $this->getSource()
                 );
-            }
+            }*/
 
             if (!empty($missingDependencies)) {
                 $return->exception = new MissingParametersException(
@@ -292,7 +297,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 );
             } else {
                 $return->exception = new IncorrectParametersException(
-                    ...$errorObject
+                    ...array_values($errorObjects)
                 );
             }
 

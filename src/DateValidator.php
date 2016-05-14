@@ -25,6 +25,8 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * validate that the value is a number and then applies additional rules
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
+ * @property string formatMinimum
+ * @property string formatMaximum
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.1.0
@@ -38,11 +40,24 @@ class DateValidator extends \Phramework\Validate\StringValidator
     protected static $type = 'date';
 
     /**
-     * @todo add options for only date, or only time
+     * @param string $formatMinimum
+     * @param string $formatMaximum
+     * @example
+     * ```php
+     * new DateValidator(
+     *     '2000-10-12',
+     *     '2020-10-12'
+     * );
+     * ```
      */
-    public function __construct()
-    {
+    public function __construct(
+        string $formatMinimum = null,
+        string $formatMaximum = null
+    ) {
         parent::__construct();
+
+        $this->formatMinimum = $formatMinimum;
+        $this->formatMaximum = $formatMaximum;
     }
 
     /**
@@ -64,6 +79,24 @@ class DateValidator extends \Phramework\Validate\StringValidator
             $matches
         ))) {
             if (checkdate($matches[2], $matches[3], $matches[1])) {
+                $timestamp = strtotime($value);
+
+                //validate formatMinimum
+                if ($this->formatMinimum !== null
+                    && $timestamp < strtotime($this->formatMinimum)
+                ) {
+                    $failure = 'formatMinimum';
+                    goto error;
+                }
+
+                //validate formatMaximum
+                if ($this->formatMaximum !== null
+                    && $timestamp > strtotime($this->formatMaximum)
+                ) {
+                    $failure = 'formatMaximum';
+                    goto error;
+                }
+
                 //Set status to success
                 $return->status = true;
 
@@ -71,11 +104,14 @@ class DateValidator extends \Phramework\Validate\StringValidator
             }
         }
 
+        $failure = 'failure';
+
+        error:
         $return->status = false;
         $return->errorObject = new IncorrectParametersException([
             [
                 'type' => static::getType(),
-                'failure' => 'format'
+                'failure' => $failure
             ]
         ]);
 

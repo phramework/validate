@@ -75,6 +75,58 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\DatetimeValidator::validate
+     */
+    public function testFormatMinimumSuccess()
+    {
+        $validator = new DatetimeValidator(
+            '2000-10-12 12:00:00'
+        );
+
+        $validator->parse('2000-10-12 12:00:01');
+    }
+
+    /**
+     * @covers Phramework\Validate\DatetimeValidator::validate
+     * @expectedException \Exception
+     */
+    public function testFormatMinimumFailure()
+    {
+        $validator = new DatetimeValidator(
+            '2000-10-12 12:00:00'
+        );
+
+        $validator->parse('2000-10-11 12:00:00');
+    }
+
+    /**
+     * @covers Phramework\Validate\DatetimeValidator::validate
+     */
+    public function testFormatMinimumMaximumSuccess()
+    {
+        $validator = new DatetimeValidator(
+            '2000-10-12 12:00:00',
+            '2000-10-12 12:01:00'
+        );
+
+        $validator->parse('2000-10-12 12:00:01');
+    }
+
+    /**
+     * @covers Phramework\Validate\DatetimeValidator::validate
+     * @expectedException \Exception
+     */
+    public function testFormatMaximumFailure()
+    {
+        $validator = new DatetimeValidator(
+            null,
+            '2000-10-12 12:00:00'
+        );
+
+        $validator->parse('2000-10-13 12:00:00');
+    }
+
+    /**
      * @dataProvider validateFailureProvider
      * @covers Phramework\Validate\DatetimeValidator::validate
      */

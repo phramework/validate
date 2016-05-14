@@ -267,7 +267,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
             if (!empty($missingDependencies)) {
                 $return->errorObject = new MissingParametersException($missingDependencies);
-            }elseif (!empty($missingObjects)) {
+            } elseif (!empty($missingObjects)) {
                 $return->errorObject = new MissingParametersException($missingObjects);
             } else {
                 $return->errorObject = new IncorrectParametersException($errorObject);

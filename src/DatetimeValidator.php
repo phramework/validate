@@ -23,8 +23,8 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * Datetime validator
  * @uses \Phramework\Validate\String As base implementation's rules to
  * validate that the value is a number and then applies additional rules
- * @property integer $minLength Minimum number of its characters, default is 0
- * @property integer|null $maxLength Maximum number of its characters
+ * @property string formatMinimum
+ * @property string formatMaximum
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
@@ -40,11 +40,24 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
     protected static $type = 'date-time';
 
     /**
-     * @todo add options for only date, or only time
+     * @param string $formatMinimum
+     * @param string $formatMaximum
+     * @example
+     * ```php
+     * new DatetimeValidator(
+     *     '2000-10-12 12:00:00',
+     *     '2020-10-12 12:00:00'
+     * );
+     * ```
      */
-    public function __construct()
-    {
+    public function __construct(
+        string $formatMinimum = null,
+        string $formatMaximum = null
+    ) {
         parent::__construct();
+
+        $this->formatMinimum = $formatMinimum;
+        $this->formatMaximum = $formatMaximum;
     }
 
     /**
@@ -67,6 +80,24 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
             $matches
         ))) {
             if (checkdate($matches[2], $matches[3], $matches[1])) {
+                $timestamp = strtotime($value);
+
+                //validate formatMinimum
+                if ($this->formatMinimum !== null
+                    && $timestamp < strtotime($this->formatMinimum)
+                ) {
+                    $failure = 'formatMinimum';
+                    goto error;
+                }
+
+                //validate formatMaximum
+                if ($this->formatMaximum !== null
+                    && $timestamp > strtotime($this->formatMaximum)
+                ) {
+                    $failure = 'formatMaximum';
+                    goto error;
+                }
+
                 //Set status to success
                 $return->status = true;
 
@@ -74,11 +105,14 @@ class DatetimeValidator extends \Phramework\Validate\StringValidator
             }
         }
 
+        $failure = 'failure';
+
+        error:
         $return->status = false;
         $return->errorObject = new IncorrectParametersException([
             [
                 'type' => static::getType(),
-                'failure' => 'format'
+                'failure' => $failure
             ]
         ]);
 

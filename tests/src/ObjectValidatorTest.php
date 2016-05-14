@@ -608,7 +608,8 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::validate
      */
-    public function testValidateSetDefault() {
+    public function testValidateSetDefault()
+    {
         $validator = (new ObjectValidator(
             (object) [
                 'name'            => new StringValidator(),
@@ -653,7 +654,8 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::validate
      */
-    public function testValidateSetDefaultNull() {
+    public function testValidateSetDefaultNull()
+    {
         $validator = (new ObjectValidator(
             (object) [
                 'name' => new StringValidator()

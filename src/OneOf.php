@@ -20,7 +20,8 @@ use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
- * Validates successfully if it validates successfully against exactly one schema defined in oneOf attribute
+ * Validates successfully if it validates successfully against exactly one
+ * schema defined in oneOf attribute
  * @property array oneOf
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>

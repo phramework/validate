@@ -258,7 +258,15 @@ abstract class BaseValidator implements \JsonSerializable
         'format',
         'enum',
         'validateType', //non standard attribute, can be used in combination with enum
-        'not'
+        'not',
+        /**
+         * @link https://github.com/json-schema/json-schema/wiki/formatMinimum-%28v5-proposal%29
+         */
+        'formatMinimum',
+        /**
+         * @link https://github.com/json-schema/json-schema/wiki/formatMinimum-%28v5-proposal%29
+         */
+        'formatMaximum'
     ];
 
     public $default;

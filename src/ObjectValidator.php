@@ -172,7 +172,10 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
          * @return bool
          * @throws \Exception When an unknown function is set
          */
-        $evaluate = function (\stdClass $propertyValues, array $expression) {
+        $evaluate = function (
+            \stdClass $propertyValues,
+            array $expression
+        ) use (&$evaluate) {
             $functions = (object) [
                 /**
                  * @return bool
@@ -181,7 +184,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                     string $operator,
                     string $propertyKey,
                     array  $memberValues
-                ) use ($propertyValues, &$functions) {
+                ) use ($propertyValues) {
                     if (!property_exists($propertyValues, $propertyKey)) {
                         return false;
                     }
@@ -189,10 +192,30 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                     $propertyValue = $propertyValues->{$propertyKey};
 
                     return in_array($propertyValue, $memberValues);
+                },
+                'or' => function (
+                    string $operator,
+                    array ...$list
+                ) use ($propertyValues, &$evaluate) {
+                    return array_reduce(
+                        $list,
+                        function (
+                            bool $carry,
+                            array $item
+                        ) use ($propertyValues, $evaluate)  {
+                            return $carry || $evaluate($propertyValues, $item);
+                        },
+                        false
+                    );
                 }
             ];
 
             $functionKey = $expression[0];
+
+            //is atom (bool)
+            if (is_bool($functionKey)) {
+                return $functionKey;
+            }
 
             if (!isset($functions->{$functionKey})) {
                 throw new \Exception(

@@ -708,4 +708,44 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->markTestIncomplete();
     }
+
+    public function testXVisibilityOR()
+    {
+        print_r(['or']);
+        $validator = new ObjectValidator(
+            (object)[
+                'field1' => new EnumValidator(
+                    ['yes', 'no', 'dk']
+                ),
+                'field2' => new StringValidator(),
+            ],
+            ['field1', 'field2'],
+            false,
+            0,
+            null,
+            null,
+            (object)[
+                'field2' => [
+                    'or',
+                    [
+                        'member',
+                        'field1',
+                        ['yes']
+                    ],
+                    [
+                        'member',
+                        'field1',
+                        ['dk']
+                    ]
+                ]
+            ]
+        );
+
+        $result = $validator->parse((object)[
+            'field1' => 'no',
+            'field2' => 'dk'
+        ]);
+
+        var_dump($result);
+    }
 }

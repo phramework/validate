@@ -2,6 +2,7 @@
 
 namespace Phramework\Validate;
 
+use Phramework\Exceptions\IncorrectParameterException;
 use Phramework\Exceptions\IncorrectParametersException;
 
 /**
@@ -681,7 +682,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         //Expect exception
         $this->expectException(
-            IncorrectParametersException::class
+            IncorrectParameterException::class
         );
             
         $result = $validator->parse((object) [
@@ -730,7 +731,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         //Expect exception
         $this->expectException(
-            IncorrectParametersException::class
+            IncorrectParameterException::class
         );
 
         $result = $validator->parse((object) [

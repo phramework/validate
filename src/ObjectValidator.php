@@ -53,21 +53,24 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         'required',
         'properties',
         'additionalProperties',
-        'dependencies'
+        'dependencies',
+        'x-visibility'
     ];
 
     /**
      * @param \stdClass             $properties
-     * *[Optional]* Properties
+     * Properties
      * @param string[]              $required
-     * *[Optional]* Required properties keys
+     * Required properties keys
      * @param object|boolean|null   $additionalProperties
-     * *[Optional]* Default is null
+     * Default is null
      * @param integer               $minProperties
-     * *[Optional]* Default is 0
+     * Default is 0
      * @param integer               $maxProperties
-     * *[Optional]* Default is null
+     * Default is null
      * @param \stdClass|null        $dependencies
+     * @param \stdClass|null        $xVisibility
+     * x-visibility directive https://github.com/phramework/validate/issues/19
      * @throws \Exception
      */
     public function __construct(
@@ -80,11 +83,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $xVisibility = null
     ) {
         parent::__construct();
-
-        //Work with objects
-        /*if (is_array($properties)) {
-            $properties = (object)$properties;
-        }*/
 
         if (!is_int($minProperties) || $minProperties < 0) {
             throw new \Exception('minProperties must be positive integer');
@@ -127,7 +125,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $this->minProperties = $minProperties;
         $this->maxProperties = $maxProperties;
 
-        $this->properties = $properties;
+        $this->properties = $properties ?? new \stdClass();
         $this->required = $required;
         $this->additionalProperties = $additionalProperties;
         $this->dependencies = $dependencies;
@@ -269,11 +267,14 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                     //if is defined and evaluation is false throw exception
                     if (!$evaluation && isset($value->{$propertyKey})) {
 
-                        $return->errorObject = new IncorrectParametersException([
-                            'type' => static::getType(),
-                            'failure' => 'x-visibility',
-                            'properties' => [$propertyKey]
-                        ]);
+                        $return->exception = new IncorrectParameterException(
+                            'x-visibility',
+                            'Property defined although x-visibility criteria are not met',
+                            $this->expandPointerSource(
+                                $this->getSource(),
+                                $propertyKey
+                            )
+                        );
 
                         return $return;
                     }
@@ -297,7 +298,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 //error, missing properties
                 $return->exception = new MissingParametersException(
                     $missingProperties,
-                    $this->source
+                    $this->getSource()
                 );
                 return $return;
             }
@@ -475,6 +476,23 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                     )
                 );
             }
+        }
+    }
+
+    /**
+     * @todo
+     * Expand source
+     * @param ISource       $source
+     * @param string        $key
+     * @return ISource
+     */
+    protected function expandPointerSource(ISource $source = null, string $key)
+    {
+        if (get_class($source) == Pointer::class) {
+            //If it does not have a source already
+           return new Pointer(
+                $source->getPath() . '/' . $key
+           );
         }
     }
 

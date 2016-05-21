@@ -161,13 +161,14 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                 //@todo or add all into a IncorrectParametersException
                 //'items' => [
                 // $errorItems
-                //        ]
-                // 
+                //]
+                //
                 $return->exception = new IncorrectParameterException(
                     'items',
                     null,
                     $this->source
                 );
+                
                 return $return;
             }
         }

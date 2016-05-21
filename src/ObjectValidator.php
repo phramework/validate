@@ -201,13 +201,19 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 'or' => function (
                     string $operator,
                     array ...$list
-                ) use ($propertyValues, &$evaluate) {
+                ) use (
+                    $propertyValues,
+                    &$evaluate
+                ) {
                     return array_reduce(
                         $list,
                         function (
                             bool $carry,
                             array $item
-                        ) use ($propertyValues, $evaluate)  {
+                        ) use (
+                            $propertyValues,
+                            $evaluate
+                        ) {
                             return $carry || $evaluate($propertyValues, $item);
                         },
                         false
@@ -245,7 +251,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                         [$propertyKey]
                     );
                 } else {
-
                     //evaluate if property is visible
                     $evaluation = $evaluate(
                         $value,
@@ -266,7 +271,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
                     //if is defined and evaluation is false throw exception
                     if (!$evaluation && isset($value->{$propertyKey})) {
-
                         $return->exception = new IncorrectParameterException(
                             'x-visibility',
                             'Property defined although x-visibility criteria are not met',
@@ -407,7 +411,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                     $missingDependencies,
                     $this->getSource()
                 );
-            }elseif (!empty($missingObjects)) {
+            } elseif (!empty($missingObjects)) {
                 $return->exception = new MissingParametersException(
                     $missingObjects,
                     $this->getSource()
@@ -486,13 +490,12 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @param string        $key
      * @return ISource
      */
-    protected function expandPointerSource(ISource $source = null, string $key)
+    protected function expandPointerSource(ISource $source, string $key)
     {
-        if (get_class($source) == Pointer::class) {
-            //If it does not have a source already
-           return new Pointer(
+        if (get_class($source) === Pointer::class) {
+            return new Pointer(
                 $source->getPath() . '/' . $key
-           );
+            );
         }
     }
 

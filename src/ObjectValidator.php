@@ -257,17 +257,13 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                         $expression
                     );
 
-                    /*//remove from required
+                    //remove from required
                     if (!$evaluation) {
-                        var_dump($this->required);
-
                         $this->required = array_diff(
                             $this->required,
                             [$propertyKey]
                         );
-
-                        var_dump($this->required);
-                    }*/
+                    }
 
                     //if is defined and evaluation is false throw exception
                     if (!$evaluation && isset($value->{$propertyKey})) {
@@ -275,8 +271,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                             'x-visibility',
                             'Property defined although x-visibility criteria are not met',
                             $this->expandPointerSource(
-                                $this->getSource(),
-                                $propertyKey
+                                $propertyKey,
+                                $this->getSource()
                             )
                         );
 
@@ -475,8 +471,9 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             //If it does not have a source already
             if ($property->getSource() === null) {
                 $property->setSource(
-                    new Pointer(
-                        $this->getSource()->getPath() . '/' . $key
+                    $this->expandPointerSource(
+                        $key,
+                        $this->getSource()
                     )
                 );
             }
@@ -490,7 +487,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @param string        $key
      * @return ISource
      */
-    protected function expandPointerSource(ISource $source, string $key)
+    public function expandPointerSource(string $key, ISource $source = null)
     {
         if (get_class($source) === Pointer::class) {
             return new Pointer(

@@ -19,7 +19,8 @@ namespace Phramework\Validate;
 use Phramework\Validate\Result\Result;
 
 /**
- * Validates successfully if it validates successfully against all schema defined in allOf attribute
+ * Validates successfully if it validates successfully against all schema
+ * defined in allOf attribute
  * @property array allOf
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>

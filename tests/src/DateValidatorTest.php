@@ -80,6 +80,58 @@ class DateValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\DatetimeValidator::validate
+     */
+    public function testFormatMinimumSuccess()
+    {
+        $validator = new DateValidator(
+            '2000-10-10'
+        );
+
+        $validator->parse('2000-10-11');
+    }
+
+    /**
+     * @covers Phramework\Validate\DatetimeValidator::validate
+     * @expectedException \Exception
+     */
+    public function testFormatMinimumFailure()
+    {
+        $validator = new DateValidator(
+            '2000-10-12'
+        );
+
+        $validator->parse('2000-10-11');
+    }
+
+    /**
+     * @covers Phramework\Validate\DatetimeValidator::validate
+     */
+    public function testFormatMinimumMaximumSuccess()
+    {
+        $validator = new DateValidator(
+            '2000-10-10',
+            '2000-10-12'
+        );
+
+        $validator->parse('2000-10-11');
+    }
+
+    /**
+     * @covers Phramework\Validate\DatetimeValidator::validate
+     * @expectedException \Exception
+     */
+    public function testFormatMaximumFailure()
+    {
+        $validator = new DateValidator(
+            null,
+            '2000-10-10'
+        );
+
+        $validator->parse('2000-10-12');
+    }
+
+    /**
      * @covers Phramework\Validate\DateValidator::createFromJSON
      */
     public function testCreateFromJSON()

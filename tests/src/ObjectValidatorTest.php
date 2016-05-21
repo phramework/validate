@@ -711,7 +711,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testXVisibilityOR()
     {
-        print_r(['or']);
         $validator = new ObjectValidator(
             (object)[
                 'field1' => new EnumValidator(
@@ -724,7 +723,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             0,
             null,
             null,
-            (object)[
+            (object) [
                 'field2' => [
                     'or',
                     [
@@ -741,11 +740,21 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $result = $validator->parse((object)[
-            'field1' => 'no',
-            'field2' => 'dk'
+        $result = $validator->parse((object) [
+            'field1' => 'yes',
+            'field2' => 'asdf'
         ]);
 
-        var_dump($result);
+        //Expect exception
+        $this->expectException(
+            IncorrectParametersException::class
+        );
+
+        $result = $validator->parse((object) [
+            'field1' => 'no',
+            'field2' => 'abcd'
+        ]);
+
+        $this->markTestIncomplete();
     }
 }

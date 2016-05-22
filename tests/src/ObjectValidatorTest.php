@@ -86,7 +86,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__set
      */
     public function testConstruct()
     {
@@ -94,7 +94,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__set
      * @expectedException Exception
      */
     public function testConstructFailure()
@@ -108,7 +108,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__set
      * @expectedException Exception
      */
     public function testConstructFailure1()
@@ -123,7 +123,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__set
      * @expectedException Exception
      */
     public function testConstructFailure2()
@@ -183,6 +183,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
 
         $this->expectException(\Phramework\Exceptions\MissingParametersException::class);
+        
         $validator->parse((object) [
             'name'            => 'Jane Doe',
             'credit_card'     => '5555-5555-5555-5555', //billing_address is a dependency
@@ -259,11 +260,11 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $parsed = $validationObject->parse(
-            (object)[
+            (object) [
                 'order' => 5,
-                'request' => (object)[
+                'request' => (object) [
                     'url' => 'account/',
-                    'response' => (object)[
+                    'response' => (object) [
                         'statusCode' => 400,
                         'ruleObjects' => ['abc', 'cda']
                     ]
@@ -316,7 +317,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             true
         );
 
-        $return = $validationObject->validate((object)['ok' => 'true']);
+        $return = $validationObject->validate((object) ['ok' => 'true']);
 
         $this->assertFalse($return->status);
 
@@ -343,9 +344,9 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             ['obj']
         );
 
-        $return = $validationObject->validate((object)[
+        $return = $validationObject->validate((object) [
             'ok' => 'true',
-            'obj' => (object)[
+            'obj' => (object) [
                 'ok' => false
             ]
         ]);
@@ -372,7 +373,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $return = $validationObject->validate((object)[
+        $return = $validationObject->validate((object) [
             'key' => '1',
             'additional' => 'true'
         ]);
@@ -456,7 +457,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $input = (object) [
             'weight' => '5',
-            'obj' => (object)[
+            'obj' => (object) [
                 'valid' => 'true',
                 'number' => 10.2,
             ]
@@ -494,10 +495,9 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseFailure()
     {
-        $input = [
+        $input = (object) [
             'weight' => '5',
             'obj' => [
-                //'valid' => 'true',
                 'number' => 10.2,
             ]
         ];
@@ -702,7 +702,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     public function testXVisibilityOR()
     {
         $validator = new ObjectValidator(
-            (object)[
+            (object) [
                 'field1' => new EnumValidator(
                     ['yes', 'no', 'dk']
                 ),
@@ -765,7 +765,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(IncorrectParameterException::class);
 
-        $validator->parse((object)[
+        $validator->parse((object) [
             'i' => 'abcd'
         ]);
     }
@@ -791,7 +791,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(IncorrectParameterException::class);
 
-        $validator->parse((object)[
+        $validator->parse((object) [
             'i' => 'abcd'
         ]);
     }
@@ -835,7 +835,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(IncorrectParameterException::class);
 
-        $validator->parse((object)[
+        $validator->parse((object) [
             'keyword' => 10
         ]);
     }

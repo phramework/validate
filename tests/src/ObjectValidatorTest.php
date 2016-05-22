@@ -769,4 +769,45 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             'i' => 'abcd'
         ]);
     }
+
+    public function testPatternPropertiesFromJSON()
+    {
+        $schema = '{
+          "type": "object",
+          "properties": {
+            "builtin": { "type": "number" }
+          },
+          "patternProperties": {
+            "^S_": { "type": "string" },
+            "^I_": { "type": "integer" }
+          },
+          "additionalProperties": { "type": "string" }
+        }';
+
+        $validator = BaseValidator::createFromJSON($schema);
+
+        $validator->parse((object) [
+            'builtin' => 10
+        ]);
+
+        $validator->parse((object) [
+            'keyword' => "a string"
+        ]);
+
+
+        $validator->parse((object) [
+            'S_tring' => "a string"
+        ]);
+
+
+        $validator->parse((object) [
+            'I_nteger' => 10
+        ]);
+
+        $this->expectException(IncorrectParameterException::class);
+
+        $validator->parse((object)[
+            'keyword' => 10
+        ]);
+    }
 }

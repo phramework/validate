@@ -650,7 +650,7 @@ abstract class BaseValidator implements \JsonSerializable
         ) as $attribute) {
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
-                if ($attribute == 'properties') {
+                if ($attribute == 'properties' || $attribute == 'patternProperties') {
                     //get properties as array
                     $properties = $object->{$attribute};
 

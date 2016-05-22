@@ -42,6 +42,17 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Phramework\Validate\ArrayValidator::__construct
+     */
+    public function testConstruct2()
+    {
+        new ArrayValidator(
+            1,
+            null
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::__construct
      * @expectedException Exception
      */
     public function testConstructFailure1()

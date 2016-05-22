@@ -155,7 +155,9 @@ abstract class BaseValidator implements \JsonSerializable
                 }
 
                 if ($value == $v) {
-                    if ($this->validateType && ($valueType = gettype($value)) !== ($vType = gettype($v))) {
+                    if ($this->validateType
+                        && ($valueType = gettype($value)) !== ($vType = gettype($v))
+                    ) {
                         continue;
                     }
 

@@ -24,9 +24,9 @@ use Phramework\Validate\Result\Result;
  * @property BaseValidator|BaseValidator[]|null $items If it is an object,
  * this object MUST be a valid JSON Schema. If it is an array, items of this
  * array MUST be objects, and each of these objects MUST be a valid JSON Schema.
- * @property integer $minItems Minimum number of items
- * @property integer $maxItems Maximum number of items
- * @property boolean $uniqueItems If true, only unique array items are allowed
+ * @property int $minItems Minimum number of items
+ * @property int $maxItems Maximum number of items
+ * @property bool $uniqueItems If true, only unique array items are allowed
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor36
@@ -50,6 +50,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
     ];
 
     /**
+     * Create new array validator
      * @param integer                                $minItems
      *     *[Optional]* Default is 0
      * @param integer|null                           $maxItems
@@ -59,6 +60,17 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
      * @param Boolean                                $uniqueItems
      *     *[Optional]*
      * @throws \Exception
+     * @example
+     * ```php
+     * //Pick one or two of the available colors
+     * new ArrayValidator(
+     *     1,
+     *     2,
+     *     new EnumValidator(
+     *         ['blue', 'green', 'red']
+     *     )
+     * );
+     * ```
      */
     public function __construct(
         int $minItems = 0,
@@ -67,31 +79,6 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         bool $uniqueItems = false
     ) {
         parent::__construct();
-
-        if (is_array($items)) {
-            throw new \Exception(
-                'Array for attribute "items" are not supported yet'
-            );
-        }
-
-        if ($minItems < 0) {
-            throw new \Exception('minItems must be positive integer');
-        }
-
-        if ($maxItems !== null &&  $maxItems < $minItems) {
-            throw new \Exception('maxItems must be positive integer');
-        }
-
-        if ($items !== null && !is_subclass_of(
-            $items,
-            BaseValidator::class,
-            true
-        )) {
-            throw new \Exception(sprintf(
-                'Property "items" MUST extend "%s"',
-                BaseValidator::class
-            ));
-        }
 
         $this->minItems = $minItems;
         $this->maxItems = $maxItems;
@@ -193,13 +180,57 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         return $this->validateCommon($value, $return);
     }
 
+    public function __set($key, $value)
+    {
+        switch ($key) {
+            case 'minItems':
+                if (!is_int($value) || $value < 0) {
+                    throw new \Exception('"minItems" must be positive integer');
+                }
+                break;
+            case 'maxItems':
+                if ($value !== null) {
+                    if (!is_int($value) || $value < 0) {
+                        throw new \Exception(
+                            '"maxItems" must be positive integer'
+                        );
+                    } elseif ($value < $this->minItems) {
+                        throw new \Exception(
+                            '"maxItems" must be greater or equal to "minItems'
+                        );
+                    }
+                }
+                break;
+            case 'items':
+                if (is_array($value)) {
+                    throw new \Exception(
+                        'Array for attribute "items" are not supported yet'
+                    );
+                }
+
+                if ($value !== null && !is_subclass_of(
+                    $value,
+                    BaseValidator::class,
+                    true
+                )) {
+                    throw new \Exception(sprintf(
+                        '"items" MUST extend "%s"',
+                        BaseValidator::class
+                    ));
+                }
+        }
+
+        return parent::__set($key, $value);
+    }
+
     /**
+     * Compare two arrays, return true if they are equal
      * @param  array $a
      * @param  array $b
      * @return boolean
      * @since 0.4.0
      */
-    public static function equals($a, $b)
+    public static function equals(array $a, array $b)
     {
         return (
             is_array($a)

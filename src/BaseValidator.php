@@ -192,7 +192,7 @@ abstract class BaseValidator implements \JsonSerializable
             $return->exception = new IncorrectParameterException(
                 'enum',
                 'Given value is not defined an accepted enum value list',
-                $this->source
+                $this->getSource()
             );
         }
 
@@ -510,6 +510,7 @@ abstract class BaseValidator implements \JsonSerializable
         'object'            => ObjectValidator::class,
         'email'             => EmailValidator::class,
         'username'          => UsernameValidator::class,
+        'null'              => NullValidator::class,
     ];
 
     /**

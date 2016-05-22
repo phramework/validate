@@ -210,7 +210,6 @@ abstract class BaseValidator implements \JsonSerializable
 
         //Check if $this->not is set and it's not null since its optional
         if ($this->not && $this->not !== null) {
-
             $validateNot = $this->not->validate($value);
 
             if ($validateNot->status === true) {
@@ -334,7 +333,7 @@ abstract class BaseValidator implements \JsonSerializable
     {
         switch ($key) {
             case 'not':
-                if (!is_subclass_of(
+                if ($value !== null && !is_subclass_of(
                     $value,
                     BaseValidator::class,
                     true
@@ -344,7 +343,7 @@ abstract class BaseValidator implements \JsonSerializable
                         BaseValidator::class
                     ));
                 }
-            break;
+                break;
         }
 
         if (!array_key_exists($key, $this->attributes)) {
@@ -387,18 +386,7 @@ abstract class BaseValidator implements \JsonSerializable
      * @throws \Exception
      */
     public function setNot(BaseValidator $not = null)
-    {/*
-        if ($not !== null && !is_subclass_of(
-            $not,
-            BaseValidator::class,
-            true
-        )) {
-            throw new \Exception(sprintf(
-                'Property "not" MUST extend "%s"',
-                BaseValidator::class
-            ));
-        }*/
-
+    {
         $this->not = $not;
 
         return $this;

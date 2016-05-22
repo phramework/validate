@@ -29,12 +29,12 @@ use Phramework\Validate\Result\Result;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
- * @property string title
- * @property string description
- * @property mixed default
- * @property string format
- * @property array enum
- * @property BaseValidator not
+ * @property string $title
+ * @property string $description
+ * @property mixed  $default
+ * @property string $format
+ * @property array  $enum
+ * @property BaseValidator $not
  */
 abstract class BaseValidator implements \JsonSerializable
 {
@@ -189,7 +189,7 @@ abstract class BaseValidator implements \JsonSerializable
             //Error
             $return->exception = new IncorrectParameterException(
                 'enum',
-                null,
+                'Given value is not defined an accepted enum value list',
                 $this->source
             );
         }
@@ -210,17 +210,6 @@ abstract class BaseValidator implements \JsonSerializable
 
         //Check if $this->not is set and it's not null since its optional
         if ($this->not && $this->not !== null) {
-            if (!is_subclass_of(
-                $this->not,
-                BaseValidator::class,
-                true
-            )) {
-                throw new \Exception(sprintf(
-                    'Property "not" MUST extend "%s"',
-                    BaseValidator::class
-                ));
-            }
-
             $validateNot = $this->not->validate($value);
 
             if ($validateNot->status === true) {
@@ -342,6 +331,21 @@ abstract class BaseValidator implements \JsonSerializable
      */
     public function __set($key, $value)
     {
+        switch ($key) {
+            case 'not':
+                if ($value !== null && !is_subclass_of(
+                    $value,
+                    BaseValidator::class,
+                    true
+                )) {
+                    throw new \Exception(sprintf(
+                        'Property "not" MUST extend "%s"',
+                        BaseValidator::class
+                    ));
+                }
+                break;
+        }
+
         if (!array_key_exists($key, $this->attributes)) {
             throw new \Exception(sprintf(
                 'Unknown key "%s" to set',
@@ -358,7 +362,7 @@ abstract class BaseValidator implements \JsonSerializable
      * @param string $title
      * @return $this
      */
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
         $this->title = $title;
 
@@ -369,7 +373,7 @@ abstract class BaseValidator implements \JsonSerializable
      * @param array|null $enum
      * @return $this
      */
-    public function setEnum($enum)
+    public function setEnum(array $enum = null)
     {
         $this->enum = $enum;
 
@@ -381,19 +385,8 @@ abstract class BaseValidator implements \JsonSerializable
      * @return $this
      * @throws \Exception
      */
-    public function setNot($not)
+    public function setNot(BaseValidator $not = null)
     {
-        if ($not !== null && !is_subclass_of(
-            $not,
-            BaseValidator::class,
-            true
-        )) {
-            throw new \Exception(sprintf(
-                'Property "not" MUST extend "%s"',
-                BaseValidator::class
-            ));
-        }
-
         $this->not = $not;
 
         return $this;
@@ -403,7 +396,7 @@ abstract class BaseValidator implements \JsonSerializable
      * @param string $description
      * @return $this
      */
-    public function setDescription($description)
+    public function setDescription(string $description = null)
     {
         $this->description = $description;
 
@@ -463,7 +456,7 @@ abstract class BaseValidator implements \JsonSerializable
      * @param ISource|null $source
      * @return $this
      */
-    public function setSource(ISource $source)
+    public function setSource(ISource $source = null)
     {
         $this->source = $source;
 
@@ -637,7 +630,10 @@ abstract class BaseValidator implements \JsonSerializable
         } elseif (($validator = static::createFromObjectForAdditional($object)) !== null) {
             return $validator;
         } elseif (!$isFromBase
-            || (isset($object->type) && !empty($object->type) && $object->type == static::$type)
+            || (isset($object->type)
+                && !empty($object->type)
+                && $object->type == static::$type
+            )
         ) {
             $validator = new static();
         } else {
@@ -654,30 +650,30 @@ abstract class BaseValidator implements \JsonSerializable
         ) as $attribute) {
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
-                if ($attribute == 'properties') {
+                if ($attribute == 'properties' || $attribute == 'patternProperties') {
                     //get properties as array
                     $properties = $object->{$attribute};
 
                     $createdProperties = new \stdClass();
 
                     foreach ($properties as $key => $property) {
-                        //TODO remove
-                        //if (!is_object($property)) {
-                        //    throw new \Exception(sprintf(
-                        //        'Expected object for property value "%s"',
-                        //        $key
-                        //    ));
-                        //}
-
                         $createdProperties->{$key} =
-                        BaseValidator::createFromObject($property);
+                            BaseValidator::createFromObject($property);
                     }
+
                     //push to class
                     $validator->{$attribute} = $createdProperties;
                 } elseif ($attribute == 'items' || $attribute == 'not') {
                     $validator->{$attribute} = BaseValidator::createFromObject(
                         $object->{$attribute}
                     );
+                } elseif ($attribute == 'additionalProperties') {
+                    if (!is_bool($object->{$attribute})) {
+                        //parse additionalProperties schema as BaseValidator
+                        $validator->{$attribute} = BaseValidator::createFromObject(
+                            $object->{$attribute}
+                        );
+                    }
                 } else {
                     //Use attributes value in Validator object
                     $validator->{$attribute} = $object->{$attribute};

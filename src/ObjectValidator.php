@@ -84,42 +84,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     ) {
         parent::__construct();
 
-        if (!is_int($minProperties) || $minProperties < 0) {
-            throw new \Exception('minProperties must be positive integer');
-        }
-
-        if (($maxProperties !== null
-            && (!is_int($maxProperties)) || $maxProperties < $minProperties)
-        ) {
-            throw new \Exception('maxProperties must be positive integer');
-        }
-
-        if ($dependencies == null) {
-            $dependencies = new \stdClass();
-        } else {
-            if (!is_object($dependencies)) {
-                throw new \Exception('dependencies must be object');
-            }
-
-            foreach ($dependencies as $key => $value) {
-                if (!is_array($value)) {
-                    throw new \Exception('dependencies member values must be arrays');
-                }
-            }
-        }
-
-        if ($xVisibility !== null) {
-            if (!is_object($xVisibility)) {
-                throw new \Exception('x-visibility must be object');
-            }
-
-            foreach ($xVisibility as $key => $value) {
-                if (!is_array($value)) {
-                    throw new \Exception('visibility member values must be arrays');
-                }
-            }
-        }
-
         $this->minProperties = $minProperties;
         $this->maxProperties = $maxProperties;
 
@@ -621,6 +585,56 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                     throw new \Exception(
                         'Only bool and BaseValidator instances are allowed for "additionalProperties"'
                     );
+                }
+                break;
+            case 'minProperties':
+                if (!is_int($value) || $value < 0) {
+                    throw new \Exception('"minProperties" must be positive integer');
+                }
+                break;
+            case 'maxProperties':
+                if ($value !== null) {
+                    if (!is_int($value) || $value < 0) {
+                        throw new \Exception(
+                            '"maxProperties" must be positive integer'
+                        );
+                    } elseif ($value < $this->minProperties) {
+                        throw new \Exception(
+                            '"maxProperties" must be greater or equal to "minProperties'
+                        );
+                    }
+                }
+                break;
+            case 'dependencies':
+                if ($value == null) {
+                    $value = new \stdClass();
+                } else {
+                    if (!is_object($value)) {
+                        throw new \Exception('"dependencies" must be object');
+                    }
+
+                    foreach ($value as $k => $v) {
+                        if (!is_array($v)) {
+                            throw new \Exception(
+                                '"dependencies" member values must be arrays'
+                            );
+                        }
+                    }
+                }
+                break;
+            case 'xVisibility':
+                if ($value !== null) {
+                    if (!is_object($value)) {
+                        throw new \Exception('"x-visibility" must be object');
+                    }
+
+                    foreach ($value as $k => $v) {
+                        if (!is_array($v)) {
+                            throw new \Exception(
+                                '"x-visibility" member values must be arrays'
+                            );
+                        }
+                    }
                 }
                 break;
         }

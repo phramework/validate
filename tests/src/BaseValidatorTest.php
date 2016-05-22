@@ -675,7 +675,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Phramework\Validate\BaseValidator::setNot
-     * @expectedException Exception
+     * @expectedException \TypeError
      */
     public function testSetNotFailure()
     {

@@ -463,7 +463,7 @@ abstract class BaseValidator implements \JsonSerializable
      * @param ISource|null $source
      * @return $this
      */
-    public function setSource(ISource $source)
+    public function setSource(ISource $source = null)
     {
         $this->source = $source;
 
@@ -678,6 +678,13 @@ abstract class BaseValidator implements \JsonSerializable
                     $validator->{$attribute} = BaseValidator::createFromObject(
                         $object->{$attribute}
                     );
+                } elseif ($attribute == 'additionalProperties') {
+                    if (!is_bool($object->{$attribute})) {
+                        //parse additionalProperties schema as BaseValidator
+                        $validator->{$attribute} = BaseValidator::createFromObject(
+                            $object->{$attribute}
+                        );
+                    }
                 } else {
                     //Use attributes value in Validator object
                     $validator->{$attribute} = $object->{$attribute};

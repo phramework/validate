@@ -30,7 +30,7 @@ use Phramework\Exceptions\MissingParametersException;
  * @property string[]       $required Required properties keys
  * @property object         $dependencies Dependencies
  * @property object $properties Properties
- * @property object|boolean|null $additionalProperties
+ * @property BaseValidator|boolean $additionalProperties
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor53
@@ -62,7 +62,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * Properties
      * @param string[]              $required
      * Required properties keys
-     * @param object|boolean|null   $additionalProperties
+     * @param BaseValidator|boolean   $additionalProperties
      * Default is null
      * @param integer               $minProperties
      * Default is 0
@@ -76,7 +76,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     public function __construct(
         \stdClass $properties = null,
         array $required = [],
-        $additionalProperties = null,
+        $additionalProperties = true,
         int $minProperties = 0,
         int $maxProperties = null,
         \stdClass $dependencies = null,
@@ -88,12 +88,10 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             throw new \Exception('minProperties must be positive integer');
         }
 
-        if (($maxProperties !== null && (!is_int($maxProperties)) || $maxProperties < $minProperties)) {
+        if (($maxProperties !== null
+            && (!is_int($maxProperties)) || $maxProperties < $minProperties)
+        ) {
             throw new \Exception('maxProperties must be positive integer');
-        }
-
-        if ($additionalProperties !== null && !is_bool($additionalProperties)) {
-            throw new \Exception('For now only boolean values supported for "additionalProperties"');
         }
 
         if ($dependencies == null) {
@@ -125,8 +123,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $this->minProperties = $minProperties;
         $this->maxProperties = $maxProperties;
 
-        $this->properties = $properties ?? new \stdClass();
-        $this->required = $required;
+        $this->properties = $properties;
+        $this->required   = $required;
         $this->additionalProperties = $additionalProperties;
         $this->dependencies = $dependencies;
         $this->{'x-visibility'} = $xVisibility;
@@ -422,9 +420,10 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         }
 
         //Check if additionalProperties are set
-        if ($this->additionalProperties === false) {
+        if ($this->additionalProperties !== true) {
             $foundAdditionalProperties = [];
 
+            //Search for value properties not defined in validator properties
             foreach ($valueProperties as $key => $property) {
                 if (!property_exists($this->properties, $key)) {
                     $foundAdditionalProperties[] = $key;
@@ -432,13 +431,41 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
 
             if (!empty($foundAdditionalProperties)) {
-                $return->exception = new IncorrectParameterException(
-                    'additionalProperties',
-                    null,
-                    $this->getSource()
-                );
-                //todo 'properties' => $foundAdditionalProperties
-                return $return;
+                if ($this->additionalProperties === false) {
+                    $return->exception = new IncorrectParameterException(
+                        'additionalProperties',
+                        'additional properties found: ' . implode(',', $foundAdditionalProperties),
+                        $this->getSource()
+                    );
+
+                    //todo 'properties' => $foundAdditionalProperties
+                    return $return;
+                } else {
+                    //validate against $additionalProperties
+                    foreach ($foundAdditionalProperties as $key) {
+                        $this->additionalProperties->setSource(
+                            $this->expandPointerSource($key, $this->getSource())
+                        );
+
+                        $propertyValidateResult = $this->additionalProperties->validate(
+                            $value->{$key}
+                        );
+
+                        //todo
+                        if ($propertyValidateResult->status === false) {
+                            $return->exception = $propertyValidateResult->exception;
+                            /*$return->exception = new IncorrectParametersException(
+                                new IncorrectParameterException(
+
+                                ),
+                                $propertyValidateResult->exception
+                            )*/
+                            return $return;
+                        }
+
+                        $value->{$key} = $propertyValidateResult->value;
+                    }
+                }
             }
         }
 
@@ -494,6 +521,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 $source->getPath() . '/' . $key
             );
         }
+        
+        return $source;
     }
 
     /**
@@ -502,7 +531,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      * @param ISource $source
      * @return $this
      */
-    public function setSource(ISource $source)
+    public function setSource(ISource $source = null)
     {
         parent::setSource($source);
 
@@ -571,5 +600,31 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $this->properties->{$key} = $property;
 
         return $this;
+    }
+    
+    public function __set($key, $value)
+    {
+        switch ($key) {
+            case 'properties':
+                if ($value === null) {
+                    $value = new \stdClass();
+                }
+
+                if (!is_object($value)) {
+                    throw new \Exception('"properties" must be object');
+                }
+                break;
+            case 'additionalProperties':
+                if (!is_bool($value)
+                    && !is_subclass_of($value, BaseValidator::class)
+                ) {
+                    throw new \Exception(
+                        'Only bool and BaseValidator instances are allowed for "additionalProperties"'
+                    );
+                }
+                break;
+        }
+        
+        return parent::__set($key, $value);
     }
 }

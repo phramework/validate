@@ -2,8 +2,10 @@
 
 namespace Phramework\Validate;
 
+use Phramework\Exceptions\Exception;
 use Phramework\Exceptions\IncorrectParameterException;
 use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\Source\Pointer;
 
 /**
  * @coversDefaultClass Phramework\Validate\ObjectValidator
@@ -22,8 +24,8 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $properties = (object) [
-            'str' => new \Phramework\Validate\StringValidator(2, 4),
-            'ok' => new \Phramework\Validate\BooleanValidator(),
+            'str' => new StringValidator(2, 4),
+            'ok'  => new BooleanValidator(),
         ];
 
         $this->object = new ObjectValidator(
@@ -47,9 +49,9 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     {
         //input
         return [
-            [(object)['ok' => true, 'str2' => 'my str']],
-            [(object)['ok' => 'true', 'okk' => '123']],
-            [(object)['ok' => false, 'okk' => 'xyz' ]],
+            [(object) ['ok' => true, 'str2' => 'my str']],
+            [(object) ['ok' => 'true', 'okk' => '123']],
+            [(object) ['ok' => false, 'okk' => 'xyz' ]],
         ];
     }
 
@@ -60,12 +62,12 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
             [1], //not an array or object
             [['ok']], //`ok` is not an object key
             [['abc']],
-            [(object)['str' => 'my strxxxxxxxxxxx', 'ok' => false]],
-            [(object)['str' => 'my str', 'okk' => false]],
-            [(object)(['okk' => 'hello'])], //because missing ok
+            [(object) ['str' => 'my strxxxxxxxxxxx', 'ok' => false]],
+            [(object) ['str' => 'my str', 'okk' => false]],
+            [(object) (['okk' => 'hello'])], //because missing ok
             [['ok'=> 'omg', 'okk' => '2']], //because of ok is not boolean
-            [(object)['ok' => 'true', 'str' => 'my str', 'okk' => '123']], //maxProperties
-            [(object)['ok' => 'true']] //minProperties
+            [(object) ['ok' => 'true', 'str' => 'my str', 'okk' => '123']], //maxProperties
+            [(object) ['ok' => 'true']] //minProperties
         ];
     }
 
@@ -86,7 +88,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new ObjectValidator(
             (object) [],
             [],
-            null,
+            true,
             -1
         );
     }
@@ -100,7 +102,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new ObjectValidator(
             (object) [],
             [],
-            null,
+            true,
             2,
             1
         );
@@ -115,25 +117,9 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new ObjectValidator(
             (object) [],
             [],
-            [],
+            [new IntegerValidator()], //does not accept arrays
             1,
             2
-        );
-    }
-
-    /**
-     * @todo MUST be remove when BaseValidator are supported for "additionalProperties"
-     * @covers ::__construct
-     * @expectedException Exception
-     */
-    public function testConstructFailure3()
-    {
-        $validator = new ObjectValidator(
-            (object) [
-                'obj' => new IntegerValidator()
-            ],
-            ['obj'],
-            new IntegerValidator()
         );
     }
 
@@ -740,5 +726,47 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->markTestIncomplete();
+    }
+    
+    public function testValidateAdditionalProperties()
+    {
+        $validator = (new ObjectValidator(
+            null,
+            [],
+            new IntegerValidator()
+        ))->setSource(new Pointer(''));
+
+        $validator->parse((object) [
+            'i' => 10
+        ]);
+
+        $this->expectException(IncorrectParameterException::class);
+
+        $validator->parse((object)[
+            'i' => 'abcd'
+        ]);
+    }
+
+    public function testAdditionalPropertiesFromJSON()
+    {
+        $schema = '{
+          "type": "object",
+          "properties": {},
+          "additionalProperties": {
+            "type": "number"
+          }
+        }';
+
+        $validator = BaseValidator::createFromJSON($schema);
+
+        $validator->parse((object) [
+            'i' => 10
+        ]);
+
+        $this->expectException(IncorrectParameterException::class);
+
+        $validator->parse((object)[
+            'i' => 'abcd'
+        ]);
     }
 }

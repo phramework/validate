@@ -477,7 +477,11 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateEnumException3()
     {
-        $validator = (new ObjectValidator());
+        $validator = (new ObjectValidator(
+            null,
+            [],
+            true
+        ));
 
         $validator->enum = new \stdClass();
 

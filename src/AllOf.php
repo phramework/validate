@@ -49,10 +49,10 @@ class AllOf extends \Phramework\Validate\AnyOf
      * @throws \Exception
      * @example
      * ```php
-     * $validator = new AllOf([
+     * $validator = new AllOf(
      *     new IntegerValidator(),
      *     new EnumValidator([2, 4, 8])
-     * ]);
+     * );
      *
      * //Will parse successfully
      * $parsed = $validator->parse(8);

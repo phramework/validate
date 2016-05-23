@@ -45,14 +45,14 @@ class AnyOf extends \Phramework\Validate\BaseValidator
      * @throws \Exception
      * @example
      * ```php
-     * $validator = new AnyOf([
+     * $validator = new AnyOf(
      *     new IntegerValidator(),
      *     new ArrayValidator(
      *         1,
      *         4,
      *         new IntegerValidator()
      *     )
-     * ]);
+     * );
      *
      * //Will parse successfully both
      *

@@ -50,10 +50,10 @@ class OneOf extends \Phramework\Validate\AnyOf
      * @throws \Exception
      * @example
      * ```php
-     * $validator = new OneOf([
+     * $validator = new OneOf(
      *     new IntegerValidator(0, 7),
      *     new NumberValidator(5, 10)
-     * ]);
+     * );
      *
      * //Will parse successfully both
      *

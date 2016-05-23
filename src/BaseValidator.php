@@ -828,4 +828,21 @@ abstract class BaseValidator implements \JsonSerializable
     {
         return $this->toArray();
     }
+
+    /**
+     * Clone all validator attributes, support deep copy
+     * @since 1.0.0
+     */
+    public function __clone()
+    {
+        $attributes = array_merge(
+            $this::getTypeAttributes(),
+            $this::$commonAttributes
+        );
+        foreach ($attributes as $attribute) {
+            if (is_object($this->{$attribute})) {
+                $this->{$attribute} = clone $this->{$attribute};
+            }
+        }
+    }
 }

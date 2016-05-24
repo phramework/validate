@@ -50,7 +50,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         'required',
         'properties',
         'additionalProperties',
-        'dependencies'
+        'dependencies',
+        'x-visibility'
     ];
 
     /**
@@ -73,7 +74,8 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $additionalProperties = null,
         $minProperties = 0,
         $maxProperties = null,
-        $dependencies = null
+        $dependencies = null,
+        $xVisibility = null
     ) {
         parent::__construct();
 
@@ -103,11 +105,22 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
             foreach ($dependencies as $key => $value) {
                 if (!is_array($value)) {
-                    throw new \Exception('dependencies members must be arrays');
+                    throw new \Exception('dependencies member values must be arrays');
                 }
             }
         }
 
+        if ($xVisibility !== null) {
+            if (!is_object($xVisibility)) {
+                throw new \Exception('x-visibility must be object');
+            }
+
+            foreach ($xVisibility as $key => $value) {
+                if (!is_array($value)) {
+                    throw new \Exception('visibility member values must be arrays');
+                }
+            }
+        }
 
         $this->minProperties = $minProperties;
         $this->maxProperties = $maxProperties;
@@ -116,6 +129,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         $this->required = $required;
         $this->additionalProperties = $additionalProperties;
         $this->dependencies = $dependencies;
+        $this->{'x-visibility'} = $xVisibility;
     }
 
     /**
@@ -129,10 +143,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
     {
         $return = new ValidateResult($value, false);
         $failure = null;
-
-        /*if (is_array($this->properties)) {
-            $this->properties = (object)$this->properties;
-        }*/
 
         if (!is_object($value)) {
             $failure = 'type';
@@ -154,6 +164,114 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             $failure = 'maxProperties';
             //error
             goto err;
+        }
+
+        /**
+         * @param \stdClass $propertyValues
+         * @param array $expression
+         * @return bool
+         * @throws \Exception When an unknown function is set
+         */
+        $evaluate = function (
+            \stdClass $propertyValues,
+            array $expression
+        ) use (&$evaluate) {
+            $functions = (object) [
+                /**
+                 * @return bool
+                 */
+                'member' => function (
+                    string $operator,
+                    string $propertyKey,
+                    array  $memberValues
+                ) use ($propertyValues) {
+                    if (!property_exists($propertyValues, $propertyKey)) {
+                        return false;
+                    }
+
+                    $propertyValue = $propertyValues->{$propertyKey};
+
+                    return in_array($propertyValue, $memberValues);
+                },
+                'or' => function (
+                    string $operator,
+                    array ...$list
+                ) use ($propertyValues, &$evaluate) {
+                    return array_reduce(
+                        $list,
+                        function (
+                            bool $carry,
+                            array $item
+                        ) use ($propertyValues, $evaluate)  {
+                            return $carry || $evaluate($propertyValues, $item);
+                        },
+                        false
+                    );
+                }
+            ];
+
+            $functionKey = $expression[0];
+
+            //is atom (bool)
+            if (is_bool($functionKey)) {
+                return $functionKey;
+            }
+
+            if (!isset($functions->{$functionKey})) {
+                throw new \Exception(
+                    'Unknown function "%s"',
+                    $functionKey
+                );
+            }
+
+            $function = $functions->{$functionKey};
+
+            return $function(...$expression);
+        };
+
+        //validate x-visibility
+        if ($this->{'x-visibility'} !== null) {
+            $xVisibility = $this->{'x-visibility'};
+
+            foreach ($xVisibility as $propertyKey => $expression) {
+                if (!property_exists($value, $propertyKey)) {
+                    $this->required = array_diff(
+                        $this->required,
+                        [$propertyKey]
+                    );
+                } else {
+
+                    //evaluate if property is visible
+                    $evaluation = $evaluate(
+                        $value,
+                        $expression
+                    );
+
+                    /*//remove from required
+                    if (!$evaluation) {
+                        var_dump($this->required);
+
+                        $this->required = array_diff(
+                            $this->required,
+                            [$propertyKey]
+                        );
+
+                        var_dump($this->required);
+                    }*/
+
+                    //if is defined and evaluation is false throw exception
+                    if (!$evaluation && isset($value->{$propertyKey})) {
+
+                        $return->errorObject = new IncorrectParametersException([
+                            'type' => static::getType(),
+                            'failure' => 'x-visibility',
+                            'properties' => [$propertyKey]
+                        ]);
+
+                        return $return;
+                    }
+                }
+            }
         }
 
         //Check if required properties are set and find if any of them are missing
@@ -266,11 +384,17 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
 
             if (!empty($missingDependencies)) {
-                $return->errorObject = new MissingParametersException($missingDependencies);
+                $return->errorObject = new MissingParametersException(
+                    $missingDependencies
+                );
             } elseif (!empty($missingObjects)) {
-                $return->errorObject = new MissingParametersException($missingObjects);
+                $return->errorObject = new MissingParametersException(
+                    $missingObjects
+                );
             } else {
-                $return->errorObject = new IncorrectParametersException($errorObject);
+                $return->errorObject = new IncorrectParametersException(
+                    $errorObject
+                );
             }
 
             return $return;

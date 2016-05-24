@@ -2,6 +2,8 @@
 
 namespace Phramework\Validate;
 
+use Phramework\Exceptions\IncorrectParametersException;
+
 /**
  * @coversDefaultClass Phramework\Validate\ObjectValidator
  */
@@ -665,5 +667,94 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         $parsed = $validator->parse((object) []);
 
         $this->assertNull($parsed);
+    }
+
+    public function testXVisibility()
+    {
+        $validator = new ObjectValidator(
+            (object) [
+                'field1' => new EnumValidator(
+                    ['yes', 'no']
+                ),
+                'field2' => new StringValidator(),
+            ],
+            ['field1', 'field2'],
+            false,
+            0,
+            null,
+            null,
+            (object) [
+                'field2' => [
+                    'member',
+                    'field1',
+                    ['yes']
+                ]
+            ]
+        );
+
+        $result = $validator->parse((object) [
+            'field1' => 'no'
+        ]);
+
+        //Expect exception
+        $this->expectException(
+            IncorrectParametersException::class
+        );
+            
+        $result = $validator->parse((object) [
+            'field1' => 'no',
+            'field2' => 'abcd'
+        ]);
+
+        $this->markTestIncomplete();
+    }
+
+    public function testXVisibilityOR()
+    {
+        $validator = new ObjectValidator(
+            (object)[
+                'field1' => new EnumValidator(
+                    ['yes', 'no', 'dk']
+                ),
+                'field2' => new StringValidator(),
+            ],
+            ['field1', 'field2'],
+            false,
+            0,
+            null,
+            null,
+            (object) [
+                'field2' => [
+                    'or',
+                    [
+                        'member',
+                        'field1',
+                        ['yes']
+                    ],
+                    [
+                        'member',
+                        'field1',
+                        ['dk']
+                    ]
+                ]
+            ]
+        );
+
+        $result = $validator->parse((object) [
+            'field1' => 'yes',
+            'field2' => 'asdf'
+        ]);
+
+        //Expect exception
+        $this->expectException(
+            IncorrectParametersException::class
+        );
+
+        $result = $validator->parse((object) [
+            'field1' => 'no',
+            'field2' => 'abcd'
+        ]);
+
+        $this->markTestIncomplete();
     }
 }

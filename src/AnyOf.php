@@ -106,7 +106,13 @@ class AnyOf extends \Phramework\Validate\BaseValidator
         $successValidated = [];
 
         foreach ($this->{$this->anyOfProperty} as $validator) {
-            $validatorReturn = $validator->validate($value);
+            if (is_object($value)) {
+                $valueCopy = clone $value;
+            } else {
+                $valueCopy = $value;
+            }
+
+            $validatorReturn = $validator->validate($valueCopy);
 
             if ($validatorReturn->status) {
                 //push to successValidated list
@@ -127,7 +133,7 @@ class AnyOf extends \Phramework\Validate\BaseValidator
         ) {
             //Use first in list
             $return = $successValidated[0]->return;
-            return $this->validateCommon($value, $return);
+            return $this->validateCommon($valueCopy, $return);
         }
 
         //error

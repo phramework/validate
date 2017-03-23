@@ -193,16 +193,48 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
                     return in_array($propertyValue, $memberValues);
                 },
+                /**
+                 * @return bool
+                 * @since 0.10.0
+                 */
+                'subset' => function (
+                    string $operator,
+                    array  $subsetValues,
+                    string $propertyKey
+                ) use ($propertyValues) {
+                    if (!property_exists($propertyValues, $propertyKey)) {
+                        return false;
+                    }
+
+                    $propertyValue = $propertyValues->{$propertyKey};
+
+                    if (!is_array($propertyValue)) {
+                        $propertyValue = [$propertyValue];
+                    }
+
+                    $propertyValue = array_unique($propertyValue);
+                    $subsetValues  = array_unique($subsetValues);
+
+                    $intersect = array_intersect($propertyValue, $subsetValues);
+
+                    return count($subsetValues) === count($intersect);
+                },
                 'or' => function (
                     string $operator,
                     array ...$list
-                ) use ($propertyValues, &$evaluate) {
+                ) use (
+                    $propertyValues,
+                    &$evaluate
+                ) {
                     return array_reduce(
                         $list,
                         function (
                             bool $carry,
                             array $item
-                        ) use ($propertyValues, $evaluate)  {
+                        ) use (
+                            $propertyValues,
+                            $evaluate
+                        ) {
                             return $carry || $evaluate($propertyValues, $item);
                         },
                         false
@@ -218,10 +250,10 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
             }
 
             if (!isset($functions->{$functionKey})) {
-                throw new \Exception(
+                throw new \Exception(sprintf(
                     'Unknown function "%s"',
                     $functionKey
-                );
+                ));
             }
 
             $function = $functions->{$functionKey};
@@ -240,7 +272,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                         [$propertyKey]
                     );
                 } else {
-
                     //evaluate if property is visible
                     $evaluation = $evaluate(
                         $value,
@@ -261,7 +292,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
                     //if is defined and evaluation is false throw exception
                     if (!$evaluation && isset($value->{$propertyKey})) {
-
                         $return->errorObject = new IncorrectParametersException([
                             'type' => static::getType(),
                             'failure' => 'x-visibility',

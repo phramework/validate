@@ -712,7 +712,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     public function testXVisibilityOR()
     {
         $validator = new ObjectValidator(
-            (object)[
+            (object) [
                 'field1' => new EnumValidator(
                     ['yes', 'no', 'dk']
                 ),
@@ -756,5 +756,108 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->markTestIncomplete();
+    }
+
+    public function testXVisibilitySubset()
+    {
+        $validator = new ObjectValidator(
+            (object) [
+                'array' => new ArrayValidator(
+                    0,
+                    4,
+                    new EnumValidator([
+                        'a',
+                        'b',
+                        'c',
+                        '1'
+                    ]),
+                    true
+                ),
+                'strA'  => new StringValidator(),
+                'strAB' => new StringValidator(),
+                'int'   => new IntegerValidator()
+            ],
+            ['array'],
+            false,
+            0,
+            null,
+            null,
+            (object) [
+                'strA' => [
+                    'subset',
+                    ['a'],
+                    'array'
+                ],
+                'strAB' => [
+                    'subset',
+                    ['a', 'b'],
+                    'array'
+                ],
+                'int' => [
+                    'subset',
+                    ['1'],
+                    'array'
+                ]
+            ]
+        );
+
+        //#0
+        $result = $validator->validate((object) [
+            'array' => []
+        ]);
+
+        $this->assertTrue($result->status);
+
+        //#1
+        $result = $validator->validate((object) [
+            'array' => [],
+            'strA'   => 'aaaa'
+        ]);
+
+        $this->assertFalse($result->status);
+
+        //#2
+        $result = $validator->validate((object) [
+            'array' => ['a'],
+            'strA'   => 'aaaa'
+        ]);
+
+        $this->assertTrue($result->status);
+
+        //#3
+        $result = $validator->validate((object) [
+            'array' => ['a'],
+            'strA'   => 'aaaa',
+            'int'   => 5
+        ]);
+
+        $this->assertFalse($result->status);
+
+        //#4
+        $result = $validator->validate((object) [
+            'array' => ['a', '1'],
+            'strA'   => 'aaaa',
+            'int'   => 5
+        ]);
+
+        $this->assertTrue($result->status);
+
+        //#5
+        $result = $validator->validate((object) [
+            'array' => ['a', '1'],
+            'strA'   => 'aaaa',
+            'strAB'   => 'aabbaa'
+        ]);
+
+        $this->assertFalse($result->status);
+
+        //#6
+        $result = $validator->validate((object) [
+            'array' => ['a', 'b'],
+            'strA'   => 'aaaa',
+            'strAB'   => 'aabbaa'
+        ]);
+
+        $this->assertTrue($result->status);
     }
 }

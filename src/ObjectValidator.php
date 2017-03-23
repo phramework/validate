@@ -222,13 +222,19 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                 'or' => function (
                     string $operator,
                     array ...$list
-                ) use ($propertyValues, &$evaluate) {
+                ) use (
+                    $propertyValues,
+                    &$evaluate
+                ) {
                     return array_reduce(
                         $list,
                         function (
                             bool $carry,
                             array $item
-                        ) use ($propertyValues, $evaluate)  {
+                        ) use (
+                            $propertyValues,
+                            $evaluate
+                        ) {
                             return $carry || $evaluate($propertyValues, $item);
                         },
                         false
@@ -266,7 +272,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
                         [$propertyKey]
                     );
                 } else {
-
                     //evaluate if property is visible
                     $evaluation = $evaluate(
                         $value,
@@ -287,7 +292,6 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
 
                     //if is defined and evaluation is false throw exception
                     if (!$evaluation && isset($value->{$propertyKey})) {
-
                         $return->errorObject = new IncorrectParametersException([
                             'type' => static::getType(),
                             'failure' => 'x-visibility',

@@ -173,7 +173,9 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         }
 
         //Check if contains duplicate items
-        if ($this->uniqueItems && count($value) !== count(array_unique($value))) {
+        if ($this->uniqueItems
+            && count($value) !== count(array_unique($value, SORT_REGULAR))
+        ) {
             $return->errorObject = new IncorrectParametersException(
                 [
                     'type' => static::getType(),

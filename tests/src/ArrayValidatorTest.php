@@ -158,9 +158,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::validate
-     */
     public function testValidateItems()
     {
         $validator = new ArrayValidator(
@@ -185,6 +182,30 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($return->status, 'Since we have maxItems "2"');
 
         $return = $validator->validate(['one', 'not a valid value']);
+        $this->assertFalse($return->status);
+    }
+
+    public function testValidateUniqueObject()
+    {
+        $validator = new ArrayValidator(
+            1,
+            2,
+            new ObjectValidator(
+                (object) [
+                    'value' => new EnumValidator(['1', '2'], true),
+                ],
+                ['value'],
+                false
+            ),
+            true
+        );
+
+        $return = $validator->validate([
+            (object) ['value' => '1'],
+            (object) ['value' => '1'],
+            (object) ['value' => '2'],
+        ]);
+
         $this->assertFalse($return->status);
     }
 

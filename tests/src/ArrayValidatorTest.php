@@ -161,6 +161,33 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\ArrayValidator::validate
      */
+    public function testValidateUniqueObject()
+    {
+        $validator = new ArrayValidator(
+            1,
+            2,
+            new ObjectValidator(
+                (object) [
+                    'value' => new EnumValidator(['1', '2'], true),
+                ],
+                ['value'],
+                false
+            ),
+            true
+        );
+
+        $return = $validator->validate([
+            (object) ['value' => '1'],
+            (object) ['value' => '1'],
+            (object) ['value' => '2'],
+        ]);
+
+        $this->assertFalse($return->status);
+    }
+
+    /**
+     * @covers Phramework\Validate\ArrayValidator::validate
+     */
     public function testValidateItems()
     {
         $validator = new ArrayValidator(

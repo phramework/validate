@@ -28,7 +28,7 @@
     "phpunit/phpunit": "5.*",
     "squizlabs/php_codesniffer": "*",
     "apigen/apigen": "^4.1",
-    "satooshi/php-coveralls": "dev-master",
+    "satooshi/php-coveralls": "^2.0.0",
     "codacy/coverage": "^1.0"
   },
   "minimum-stability": "dev",

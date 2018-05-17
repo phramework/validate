@@ -487,6 +487,7 @@ abstract class BaseValidator implements \JsonSerializable
         'object'            => ObjectValidator::class,
         'email'             => EmailValidator::class,
         'username'          => UsernameValidator::class,
+        'UUIDv4'            => UUIDv4Validator::class,
     ];
 
     /**

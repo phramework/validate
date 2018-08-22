@@ -77,11 +77,6 @@ composer update
 composer test
 composer lint
 ```
-### Generate documentation
-
-```bash
-composer doc
-```
 
 ## License
 Copyright 2015 - 2016 Xenofon Spafaridis

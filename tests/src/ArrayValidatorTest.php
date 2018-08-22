@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ArrayValidatorTest extends TestCase
 {
 
     /**

@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class DateValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DateValidatorTest extends TestCase
 {
 
     /**

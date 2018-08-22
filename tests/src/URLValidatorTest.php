@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class URLValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class URLValidatorTest extends TestCase
 {
 
     /**

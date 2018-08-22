@@ -2,12 +2,13 @@
 
 namespace Phramework\Validate;
 
+use PHPUnit\Framework\TestCase;
 use Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * @coversDefaultClass Phramework\Validate\ObjectValidator
  */
-class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
+class ObjectValidatorTest extends TestCase
 {
     /**
      * @var ObjectValidator

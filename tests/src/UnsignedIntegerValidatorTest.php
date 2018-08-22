@@ -134,25 +134,4 @@ class UnsignedIntegerValidatorTest extends TestCase
     {
         $this->assertEquals('unsignedinteger', $this->object->getType());
     }
-
-    /**
-     * @covers Phramework\Validate\UnsignedIntegerValidator::setValidateCallback
-     */
-    public function testSetValidateCallback()
-    {
-        $value = 5;
-
-        $validator = (new UnsignedIntegerValidator())
-            ->setValidateCallback(function ($validateResult, $validator) {
-                $validateResult->value = null;
-
-                return $validateResult;
-            });
-
-        $this->assertInstanceOf(UnsignedIntegerValidator::class, $validator);
-
-        $parsed = $validator->parse($value);
-
-        $this->assertNull($parsed);
-    }
 }

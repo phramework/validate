@@ -406,7 +406,6 @@ class BaseValidatorTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\BaseValidator::validateEnum
      */
     public function testValidateEnum()
     {
@@ -445,7 +444,6 @@ class BaseValidatorTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\BaseValidator::validateEnum
      */
     public function testValidateEnumArray()
     {

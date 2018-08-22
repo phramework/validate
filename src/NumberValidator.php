@@ -108,9 +108,13 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
      */
     public function validate($value)
     {
-        $return = $this->validateNumber($value);
+        $return = $this->validateCommon($value, new ValidateResult($value, true));
 
-        return $this->validateCommon($return->value, $return);
+        if ($return->status === false) {
+            return $return;
+        }
+
+        return $this->validateNumber($return->value);
     }
 
     /**

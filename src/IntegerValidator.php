@@ -80,19 +80,12 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
     }
 
     /**
-     * Validate value
-     * @param  mixed $value Value to validate
-     * @return ValidateResult
+     * Override parent casting to cast as integer
+     * @since 0.10.3
+     * @return int
      */
-    public function validate($value)
+    public function cast($value)
     {
-        $return = parent::validateNumber($value);
-
-        //Apply correct integer type
-        if ($return->status) {
-            $return->value = (int)$return->value;
-        }
-
-        return $this->validateCommon($value, $return);
+        return (int) $value;
     }
 }

@@ -108,9 +108,13 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
      */
     public function validate($value)
     {
-        $return = $this->validateNumber($value);
+        $return = $this->validateCommon($value, new ValidateResult($value, true));
 
-        return $this->validateCommon($return->value, $return);
+        if ($return->status === false) {
+            return $return;
+        }
+
+        return $this->validateNumber($return->value);
     }
 
     /**
@@ -176,9 +180,18 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             //Set status to success
             $return->status = true;
             //Type cast
-            $return->value  = (float)($value);
+            $return->value  = $this->cast($value);
         }
 
         return $return;
+    }
+
+    /**
+     * @since 0.10.3
+     * @return float
+     */
+    public function cast($value)
+    {
+        return (float) $value;
     }
 }

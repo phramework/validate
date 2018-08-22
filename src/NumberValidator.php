@@ -176,9 +176,18 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             //Set status to success
             $return->status = true;
             //Type cast
-            $return->value  = (float)($value);
+            $return->value  = $this->cast($value);
         }
 
         return $return;
+    }
+
+    /**
+     * @since 0.10.3
+     * @return float
+     */
+    public function cast($value)
+    {
+        return (float) $value;
     }
 }

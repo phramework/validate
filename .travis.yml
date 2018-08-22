@@ -15,5 +15,5 @@ script:
  - find tests/ -name '*.php' -print0 | xargs -0 -L 1 php -l
  - phpunit
 after_script:
- - php vendor/bin/-v
+ - php vendor/bin/php-coveralls -v
  - php vendor/bin/codacycoverage clover build/logs/clover.xml

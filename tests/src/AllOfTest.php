@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class AllOfTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AllOfTest extends TestCase
 {
 
     /**

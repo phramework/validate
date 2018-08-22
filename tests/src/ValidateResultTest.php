@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class ValidateResultTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ValidateResultTest extends TestCase
 {
 
     /**
@@ -22,7 +24,7 @@ class ValidateResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ValidateResult::__construct
+     * @covers \Phramework\Validate\ValidateResult::__construct
      */
     public function testConstruct()
     {

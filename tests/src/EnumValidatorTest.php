@@ -57,9 +57,6 @@ class EnumValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\EnumValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new EnumValidator(
@@ -70,7 +67,6 @@ class EnumValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\EnumValidator::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -82,7 +78,6 @@ class EnumValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\EnumValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -91,9 +86,6 @@ class EnumValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\EnumValidator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -106,9 +98,6 @@ class EnumValidatorTest extends TestCase
         $this->assertInstanceOf(EnumValidator::class, $validationObject);
     }
 
-    /**
-     * @covers Phramework\Validate\EnumValidator::validate
-     */
     public function testCreateFromJSONAndValidate()
     {
         $json = '{
@@ -126,7 +115,6 @@ class EnumValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\EnumValidator::validate
      * @expectedException \Phramework\Exceptions\IncorrectParametersException
      */
     public function testCreateFromJSONAndValidateType()
@@ -142,9 +130,6 @@ class EnumValidatorTest extends TestCase
         $validationObject->parse('1');
     }
 
-    /**
-     * @covers Phramework\Validate\EnumValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('enum', $this->object->getType());

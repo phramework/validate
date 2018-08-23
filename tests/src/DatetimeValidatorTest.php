@@ -21,14 +21,6 @@ class DatetimeValidatorTest extends TestCase
         $this->object = new DatetimeValidator();
     }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-    }
-
     public function validateSuccessProvider()
     {
         //input, expected
@@ -57,16 +49,7 @@ class DatetimeValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::__construct
-     */
-    public function testConstruct()
-    {
-        $validator = new DatetimeValidator();
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\DatetimeValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -76,9 +59,6 @@ class DatetimeValidatorTest extends TestCase
         $this->assertTrue($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
-     */
     public function testFormatMinimumSuccess()
     {
         $validator = new DatetimeValidator(
@@ -89,7 +69,6 @@ class DatetimeValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
      * @expectedException \Exception
      */
     public function testFormatMinimumFailure()
@@ -101,9 +80,6 @@ class DatetimeValidatorTest extends TestCase
         $validator->parse('2000-10-11 12:00:00');
     }
 
-    /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
-     */
     public function testFormatMinimumMaximumSuccess()
     {
         $validator = new DatetimeValidator(
@@ -115,7 +91,6 @@ class DatetimeValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
      * @expectedException \Exception
      */
     public function testFormatMaximumFailure()
@@ -130,7 +105,6 @@ class DatetimeValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\DatetimeValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -139,9 +113,7 @@ class DatetimeValidatorTest extends TestCase
         $this->assertEquals(false, $return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\DatetimeValidator::createFromJSON
-     */
+
     public function testCreateFromJSON()
     {
         $json = '{
@@ -153,9 +125,6 @@ class DatetimeValidatorTest extends TestCase
         $this->assertInstanceOf(DatetimeValidator::class, $validationObject);
     }
 
-    /**
-     * @covers Phramework\Validate\DatetimeValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('date-time', $this->object->getType());

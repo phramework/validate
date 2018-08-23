@@ -39,9 +39,6 @@ class BaseValidatorTest extends TestCase
     {
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::parseStatic
-     */
     public function testParseStatic()
     {
         $this->assertSame(
@@ -62,9 +59,6 @@ class BaseValidatorTest extends TestCase
         $this->assertSame(true, $o->ok);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -83,9 +77,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromJSON
-     */
     public function testCreateFromJSON2()
     {
         $json = '{
@@ -105,9 +96,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromJSON
-     */
     public function testCreateFromJSON3()
     {
         $json = '
@@ -165,9 +153,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromJSON
-     */
     public function testCreateFromJSONNot()
     {
         $json = '{
@@ -190,8 +175,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromJSON
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateFromJSONFailure()
     {
@@ -205,8 +189,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromJSON
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateFromJSONFailure2()
     {
@@ -222,9 +205,6 @@ class BaseValidatorTest extends TestCase
 
 
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::parse
-     */
     public function testParseSuccess()
     {
         $validationObject = new ObjectValidator(
@@ -259,9 +239,6 @@ class BaseValidatorTest extends TestCase
         $this->assertEquals(5.5, $record->obj->not_required);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::parse
-     */
     public function testParseSuccess2()
     {
         $input = '5';
@@ -275,8 +252,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::parse
-     * @expectedException Exception
+     * @expectedException \Exception
      * @todo \Phramework\Exceptions\MissingParametersException
      */
     public function testParseFailure()
@@ -308,8 +284,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::parse
-     * @expectedException Exception
+     * @expectedException \Exception
      * @todo \Phramework\Exceptions\IncorrectParametersException
      */
     public function testParseFailure2()
@@ -341,9 +316,6 @@ class BaseValidatorTest extends TestCase
         $record = $validationObject->parse($input);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new ArrayValidator(
@@ -352,9 +324,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromObject
-     */
     public function testCreateFromObjectTypeless()
     {
         $validator = IntegerValidator::createFromObject((object)[]);
@@ -363,8 +332,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromObject
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateFromObjectTypelessFailure()
     {
@@ -373,7 +341,6 @@ class BaseValidatorTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\BaseValidator::validateCommon
      */
     public function testValidateCommon()
     {
@@ -456,8 +423,7 @@ class BaseValidatorTest extends TestCase
     /**
      * Validate against common enum keyword,
      * expect exception since objects and arrays are not yet supported for enum keyword
-     * @expectedException Exception
-     * @covers Phramework\Validate\BaseValidator::validateEnum
+     * @expectedException \Exception
      */
     public function testValidateEnumException2()
     {
@@ -469,8 +435,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::validateEnum
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testValidateEnumException3()
     {
@@ -483,7 +448,6 @@ class BaseValidatorTest extends TestCase
 
     /**
      * Validate against common not keyword
-     * @covers Phramework\Validate\BaseValidator::validateNot
      */
     public function testValidateNot()
     {
@@ -516,8 +480,7 @@ class BaseValidatorTest extends TestCase
 
     /**
      * Validate against common not keyword
-     * @covers Phramework\Validate\BaseValidator::validateNot
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testValidateNotFailure()
     {
@@ -529,8 +492,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::parse
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testParseFailure3()
     {
@@ -541,9 +503,6 @@ class BaseValidatorTest extends TestCase
         $cleanInput = $validationModel->parse($input);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::__get
-     */
     public function testGet()
     {
         $validator = new IntegerValidator();
@@ -556,8 +515,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::__get
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testGet2()
     {
@@ -566,8 +524,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::__set
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testSetFailure()
     {
@@ -575,18 +532,12 @@ class BaseValidatorTest extends TestCase
         $validator->IM_SURE_THIS_CANT_BE_FOUND = 'value';
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::getType
-     */
     public function testGetType()
     {
         $validator = new IntegerValidator();
         $this->assertEquals('integer', $validator->getType());
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::getTypeAttributes
-     */
     public function testGetTypeAttributes()
     {
         $validator = new IntegerValidator();
@@ -597,9 +548,6 @@ class BaseValidatorTest extends TestCase
         }
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::__set
-     */
     public function testSetSuccess()
     {
         $validator = new IntegerValidator();
@@ -618,9 +566,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::setTitle
-     */
     public function testSetTitle()
     {
         $validator = new IntegerValidator();
@@ -631,9 +576,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::setDescription
-     */
     public function testSetDescription()
     {
         $validator = new IntegerValidator();
@@ -644,9 +586,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::setDefault
-     */
     public function testSetDefault()
     {
         $validator = new IntegerValidator();
@@ -658,9 +597,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::setNot
-     */
     public function testSetNot()
     {
         $validator = new IntegerValidator();
@@ -669,8 +605,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::setNot
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testSetNotFailure()
     {
@@ -679,9 +614,6 @@ class BaseValidatorTest extends TestCase
         $validator->setNot([0, 1]);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::setEnum
-     */
     public function testSetEnum()
     {
         $validator = new IntegerValidator();
@@ -708,9 +640,6 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromArray
-     */
     public function testCreateFromArray()
     {
         $schema = [
@@ -728,8 +657,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateFromObjectForAdditionalFailureNull()
     {
@@ -739,9 +667,6 @@ class BaseValidatorTest extends TestCase
         BaseValidator::createFromObject($object);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromObject
-     */
     public function testCreateFromObject()
     {
         $schema = (object)[
@@ -774,8 +699,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromObject
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateFromObjectFailure()
     {
@@ -787,17 +711,13 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromObject
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateFromObjectFailureNotObject()
     {
         BaseValidator::createFromObject('string');
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::toObject
-     */
     public function testToObject()
     {
         $return = $this->int->toObject();
@@ -809,9 +729,6 @@ class BaseValidatorTest extends TestCase
         $this->assertObjectHasAttribute('maximum', $return);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::toObject
-     */
     public function testToObjec2()
     {
         $return = (new ObjectValidator(
@@ -830,9 +747,6 @@ class BaseValidatorTest extends TestCase
         $this->assertInternalType('object', $return->properties);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::toArray
-     */
     public function testToArray()
     {
         $return = $this->int->toArray();
@@ -844,9 +758,6 @@ class BaseValidatorTest extends TestCase
         $this->assertArrayHasKey('maximum', $return);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::toArray
-     */
     public function testToArray2()
     {
         $return = (new ObjectValidator(
@@ -867,9 +778,6 @@ class BaseValidatorTest extends TestCase
         $this->assertInternalType('array', $return['properties']);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::toJSON
-     */
     public function testToJSON()
     {
         $json = $this->int->toJSON();
@@ -886,9 +794,6 @@ class BaseValidatorTest extends TestCase
         $this->assertObjectHasAttribute('maximum', $jsonObject);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::toJSON
-     */
     public function testToJSON2()
     {
         $validator = new ObjectValidator(
@@ -930,9 +835,6 @@ class BaseValidatorTest extends TestCase
         $this->assertSame(JSON_ERROR_NONE, json_last_error());
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::registerValidator
-     */
     public function testRegisterValidator()
     {
         BaseValidator::registerValidator(
@@ -963,8 +865,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::registerValidator
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testRegisterValidatorFailure()
     {
@@ -975,8 +876,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::registerValidator
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testRegisterValidatorFailure2()
     {
@@ -987,8 +887,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::registerValidator
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testRegisterValidatorFailure3()
     {
@@ -997,17 +896,11 @@ class BaseValidatorTest extends TestCase
             34
         );
     }
-    /**
-     * @covers Phramework\Validate\BaseValidator::runValidateCallback
-     */
     public function testRunValidateCallback()
     {
         (new IntegerValidator())->parse(5);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::setValidateCallback
-     */
     public function testSetValidateCallback()
     {
         $value = 5;
@@ -1034,8 +927,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::setValidateCallback
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testSetValidateFailure1()
     {
@@ -1044,8 +936,7 @@ class BaseValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::runValidateCallback
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testRunValidateCallbackFailure()
     {

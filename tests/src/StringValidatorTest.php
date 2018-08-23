@@ -63,17 +63,13 @@ class StringValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\StringValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new StringValidator();
     }
 
     /**
-     * @covers Phramework\Validate\StringValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure()
     {
@@ -81,8 +77,7 @@ class StringValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\StringValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure2()
     {
@@ -91,7 +86,6 @@ class StringValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\StringValidator::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -102,9 +96,6 @@ class StringValidatorTest extends TestCase
         $this->assertTrue($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\StringValidator::validate
-     */
     public function testValidateSuccessRaw()
     {
         $this->object->raw = true;
@@ -117,7 +108,6 @@ class StringValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\StringValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -128,7 +118,6 @@ class StringValidatorTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\StringValidator::validateEnum
      */
     public function testValidateCommon()
     {
@@ -149,9 +138,6 @@ class StringValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\StringValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('string', $this->object->getType());

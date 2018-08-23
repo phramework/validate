@@ -68,9 +68,6 @@ class BooleanValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\BooleanValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new BooleanValidator();
@@ -78,7 +75,6 @@ class BooleanValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\BooleanValidator::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -91,7 +87,6 @@ class BooleanValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\BooleanValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -102,7 +97,6 @@ class BooleanValidatorTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\BooleanValidator::validateEnum
      */
     public function testValidateCommon()
     {
@@ -123,9 +117,6 @@ class BooleanValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\BooleanValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('boolean', $this->object->getType());

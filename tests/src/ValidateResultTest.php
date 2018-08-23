@@ -23,9 +23,6 @@ class ValidateResultTest extends TestCase
     {
     }
 
-    /**
-     * @covers \Phramework\Validate\ValidateResult::__construct
-     */
     public function testConstruct()
     {
         $validator = new ValidateResult(true, true);

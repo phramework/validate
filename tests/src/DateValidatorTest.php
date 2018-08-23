@@ -50,9 +50,6 @@ class DateValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\DateValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new DateValidator();
@@ -60,7 +57,6 @@ class DateValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\DateValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -72,7 +68,6 @@ class DateValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\DateValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -81,9 +76,6 @@ class DateValidatorTest extends TestCase
         $this->assertEquals(false, $return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
-     */
     public function testFormatMinimumSuccess()
     {
         $validator = new DateValidator(
@@ -94,7 +86,6 @@ class DateValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
      * @expectedException \Exception
      */
     public function testFormatMinimumFailure()
@@ -106,9 +97,6 @@ class DateValidatorTest extends TestCase
         $validator->parse('2000-10-11');
     }
 
-    /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
-     */
     public function testFormatMinimumMaximumSuccess()
     {
         $validator = new DateValidator(
@@ -120,7 +108,6 @@ class DateValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
      * @expectedException \Exception
      */
     public function testFormatMaximumFailure()
@@ -133,9 +120,6 @@ class DateValidatorTest extends TestCase
         $validator->parse('2000-10-12');
     }
 
-    /**
-     * @covers Phramework\Validate\DateValidator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -147,9 +131,6 @@ class DateValidatorTest extends TestCase
         $this->assertInstanceOf(DateValidator::class, $validationObject);
     }
 
-    /**
-     * @covers Phramework\Validate\DateValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('date', $this->object->getType());

@@ -65,9 +65,6 @@ class OneOfTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\OneOf::__construct
-     */
     public function testConstruct()
     {
         $validator = new OneOf([
@@ -81,8 +78,7 @@ class OneOfTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\OneOf::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure()
     {
@@ -91,7 +87,6 @@ class OneOfTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\OneOf::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -104,7 +99,6 @@ class OneOfTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\OneOf::validate
      */
     public function testValidateFailure($input = null)
     {
@@ -113,9 +107,6 @@ class OneOfTest extends TestCase
         $this->assertEquals(false, $return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -157,7 +148,6 @@ class OneOfTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\OneOf::validateEnum
      */
     public function testValidateCommon()
     {
@@ -190,9 +180,6 @@ class OneOfTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\OneOf::getType
-     */
     public function testGetType()
     {
         $this->assertSame(null, $this->object->getType());

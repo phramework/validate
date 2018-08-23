@@ -55,9 +55,6 @@ class UsernameValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\UsernameValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new UsernameValidator();
@@ -65,7 +62,6 @@ class UsernameValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\UsernameValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -77,7 +73,6 @@ class UsernameValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\UsernameValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -86,9 +81,6 @@ class UsernameValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\UsernameValidator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -100,25 +92,16 @@ class UsernameValidatorTest extends TestCase
         $this->assertInstanceOf(UsernameValidator::class, $validationObject);
     }
 
-    /**
-     * @covers Phramework\Validate\UsernameValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('username', $this->object->getType());
     }
 
-    /**
-     * @covers Phramework\Validate\UsernameValidator::setUsernamePattern
-     */
     public function testSetUsernamePattern()
     {
         UsernameValidator::setUsernamePattern('/^[A-Za-z0-9_\.]{3,32}$/');
     }
 
-    /**
-     * @covers Phramework\Validate\UsernameValidator::getUsernamePattern
-     */
     public function testGetUsernamePattern()
     {
         $pattern = '/^[A-Za-z0-9_\.]{3,6}$/';

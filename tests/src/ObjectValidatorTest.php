@@ -63,17 +63,13 @@ class ObjectValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct()
     {
         $validator = new ObjectValidator();
     }
 
     /**
-     * @covers ::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure()
     {
@@ -86,8 +82,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure1()
     {
@@ -101,8 +96,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure2()
     {
@@ -117,8 +111,7 @@ class ObjectValidatorTest extends TestCase
 
     /**
      * @todo MUST be remove when BaseValidator are supported for "additionalProperties"
-     * @covers ::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure3()
     {
@@ -130,8 +123,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure4()
     {
@@ -147,7 +139,6 @@ class ObjectValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers ::validate
      */
     public function testValidateSuccess($input)
     {
@@ -197,9 +188,6 @@ class ObjectValidatorTest extends TestCase
         ]);
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateRecursiveSuccess()
     {
         $validationObject = new ObjectValidator(
@@ -302,7 +290,6 @@ class ObjectValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers ::validate
      */
     public function testValidateFailure($input)
     {
@@ -311,9 +298,6 @@ class ObjectValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateFailureMissing()
     {
         $validationObject = new ObjectValidator(
@@ -365,9 +349,6 @@ class ObjectValidatorTest extends TestCase
             $return->errorObject
         );
     }
-    /**
-     * @covers ::validate
-     */
     public function testValidateFailureAdditionalProperties()
     {
         $validationObject = new ObjectValidator(
@@ -396,8 +377,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-      * @covers ::addProperties
-     */
+      */
     public function testAddPropertiesSuccess()
     {
         $originalPropertiesCount = count(get_object_vars(
@@ -414,8 +394,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-      * @covers ::addProperties
-      * @expectedException Exception
+       * @expectedException \Exception
      */
     public function testAddPropertiesFailure()
     {
@@ -424,8 +403,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-     * @covers ::addProperties
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testAddPropertiesFailure2()
     {
@@ -433,8 +411,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-      * @covers ::addProperty
-     */
+      */
     public function testAddPropertySuccess()
     {
         $key = 'my_key';
@@ -447,8 +424,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-      * @covers ::addProperty
-      * @expectedException Exception
+       * @expectedException \Exception
      */
     public function testAddPropertyFailure()
     {
@@ -458,17 +434,11 @@ class ObjectValidatorTest extends TestCase
         $this->object->addProperty('new', $property); //With same key
     }
 
-    /**
-     * @covers ::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('object', $this->object->getType());
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testParseSuccess()
     {
         $input = (object)[
@@ -505,8 +475,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-     * @covers ::parse
-     * @expectedException Exception
+     * @expectedException \Exception
      * @todo \Phramework\Exceptions\MissingParametersException
      */
     public function testParseFailure()
@@ -539,8 +508,7 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-     * @covers ::parse
-     * @expectedException Exception
+     * @expectedException \Exception
      * @todo \Phramework\Exceptions\IncorrectParametersException
      */
     public function testParseFailure2()
@@ -572,9 +540,6 @@ class ObjectValidatorTest extends TestCase
         $record = $validationObject->parse($input);
     }
 
-    /**
-     * @covers ::setValidateCallback
-     */
     public function testSetValidateCallback()
     {
         $value = 10;
@@ -608,9 +573,6 @@ class ObjectValidatorTest extends TestCase
         $this->assertNull($parsed);
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateSetDefault()
     {
         $validator = (new ObjectValidator(
@@ -654,9 +616,6 @@ class ObjectValidatorTest extends TestCase
         $this->assertSame(1, $parsed->address->floor);
     }
 
-    /**
-     * @covers ::validate
-     */
     public function testValidateSetDefaultNull()
     {
         $validator = (new ObjectValidator(

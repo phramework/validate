@@ -28,9 +28,6 @@ class ArrayValidatorTest extends TestCase
     {
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new ArrayValidator(
@@ -43,8 +40,7 @@ class ArrayValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure1()
     {
@@ -56,8 +52,7 @@ class ArrayValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure2()
     {
@@ -67,8 +62,7 @@ class ArrayValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure3()
     {
@@ -79,8 +73,7 @@ class ArrayValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure4()
     {
@@ -114,7 +107,6 @@ class ArrayValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\ArrayValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -126,7 +118,6 @@ class ArrayValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\ArrayValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -139,9 +130,6 @@ class ArrayValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::validate
-     */
     public function testValidateUnique()
     {
         $validator = new ArrayValidator(
@@ -160,9 +148,6 @@ class ArrayValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::validate
-     */
     public function testValidateUniqueObject()
     {
         $validator = new ArrayValidator(
@@ -187,9 +172,6 @@ class ArrayValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::validate
-     */
     public function testValidateItems()
     {
         $validator = new ArrayValidator(
@@ -217,9 +199,6 @@ class ArrayValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -268,17 +247,11 @@ class ArrayValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('array', $this->object->getType());
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::equals
-     */
     public function testEquals()
     {
         $this->assertTrue(
@@ -325,9 +298,6 @@ class ArrayValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\ArrayValidator::setValidateCallback
-     */
     public function testSetValidateCallback()
     {
         $value = [1, 2];

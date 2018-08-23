@@ -61,9 +61,6 @@ class IntegerValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\IntegerValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new IntegerValidator(
@@ -73,8 +70,7 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\IntegerValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure()
     {
@@ -84,8 +80,7 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\IntegerValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure2()
     {
@@ -96,8 +91,7 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\IntegerValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure3()
     {
@@ -111,7 +105,6 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\IntegerValidator::createFromJSON
      * @dataProvider validateSuccessProvider
      */
     public function testCreateFromJSON($input, $expected)
@@ -162,7 +155,6 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\IntegerValidator::validate
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)
@@ -171,7 +163,6 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\IntegerValidator::validate
      * @dataProvider validateFailureProvider
      */
     public function testValidateFailure($input)
@@ -185,9 +176,6 @@ class IntegerValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\NumberValidator::validate
-     */
     public function testValidateFailureMultipleOf()
     {
         $validator = new IntegerValidator(null, null, null, null, 2);
@@ -202,7 +190,6 @@ class IntegerValidatorTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\IntegerValidator::validateEnum
      */
     public function testValidateCommon()
     {
@@ -223,9 +210,6 @@ class IntegerValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\IntegerValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('integer', $this->object->getType());

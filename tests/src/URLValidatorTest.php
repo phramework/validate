@@ -54,9 +54,6 @@ class URLValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\URLValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new URLValidator();
@@ -64,7 +61,6 @@ class URLValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\URLValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -76,7 +72,6 @@ class URLValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\URLValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -85,9 +80,6 @@ class URLValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\URLValidator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -111,9 +103,6 @@ class URLValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\URLValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('url', $this->object->getType());

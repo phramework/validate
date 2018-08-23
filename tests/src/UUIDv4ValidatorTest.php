@@ -57,9 +57,6 @@ class UUIDv4ValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \Phramework\Validate\UUIDv4Validator::__construct
-     */
     public function testConstruct()
     {
         $validator = new UUIDv4Validator();
@@ -67,7 +64,6 @@ class UUIDv4ValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers \Phramework\Validate\UUIDv4Validator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -79,7 +75,6 @@ class UUIDv4ValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers \Phramework\Validate\UUIDv4Validator::validate
      */
     public function testValidateFailure($input)
     {
@@ -88,9 +83,6 @@ class UUIDv4ValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers \Phramework\Validate\UUIDv4Validator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -102,9 +94,6 @@ class UUIDv4ValidatorTest extends TestCase
         $this->assertInstanceOf(UUIDv4Validator::class, $validationObject);
     }
 
-    /**
-     * @covers \Phramework\Validate\UUIDv4Validator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('UUIDv4', $this->object->getType());

@@ -66,9 +66,6 @@ class AnyOfTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\AnyOf::__construct
-     */
     public function testConstruct()
     {
         $validator = new AnyOf([
@@ -82,8 +79,7 @@ class AnyOfTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AnyOf::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure()
     {
@@ -92,7 +88,6 @@ class AnyOfTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\AnyOf::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -113,9 +108,6 @@ class AnyOfTest extends TestCase
         $this->assertEquals($expected, $return->value);
     }
 
-    /**
-     * @covers Phramework\Validate\AnyOf::validate
-     */
     public function testValidateSuccessFailureTypes()
     {
         //any
@@ -160,7 +152,6 @@ class AnyOfTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\AnyOf::validate
      */
     public function testValidateFailure($input = null)
     {
@@ -169,9 +160,6 @@ class AnyOfTest extends TestCase
         $this->assertEquals(false, $return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromObject
-     */
     public function testCreateFromObject()
     {
         $object = (object)json_decode('{
@@ -194,9 +182,6 @@ class AnyOfTest extends TestCase
 
         $this->assertInternalType('array', $validator->anyOf);
     }
-    /**
-     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
-     */
     public function testCreateFromObjectForAdditional()
     {
         $json = '{
@@ -235,7 +220,6 @@ class AnyOfTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\AnyOf::validateEnum
      */
     public function testValidateCommon()
     {
@@ -268,9 +252,6 @@ class AnyOfTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\AnyOf::getType
-     */
     public function testGetType()
     {
         $this->assertSame(null, $this->object->getType());

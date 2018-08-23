@@ -55,9 +55,6 @@ class EmailValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\EmailValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new EmailValidator();
@@ -65,7 +62,6 @@ class EmailValidatorTest extends TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\EmailValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -77,7 +73,6 @@ class EmailValidatorTest extends TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\EmailValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -86,9 +81,6 @@ class EmailValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\EmailValidator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -100,9 +92,6 @@ class EmailValidatorTest extends TestCase
         $this->assertInstanceOf(EmailValidator::class, $validationObject);
     }
 
-    /**
-     * @covers Phramework\Validate\EmailValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('email', $this->object->getType());

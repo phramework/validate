@@ -64,9 +64,6 @@ class NumberValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\NumberValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new NumberValidator(
@@ -76,8 +73,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure1()
     {
@@ -88,8 +84,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure2()
     {
@@ -100,8 +95,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure3()
     {
@@ -113,8 +107,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure4()
     {
@@ -127,8 +120,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure5()
     {
@@ -142,8 +134,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure6()
     {
@@ -154,7 +145,6 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::createFromJSON
      * @dataProvider validateSuccessProvider
      */
     public function testCreateFromJSON($input, $expected)
@@ -205,7 +195,6 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::validate
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)
@@ -214,7 +203,6 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::validateNumber
      * @dataProvider validateSuccessProvider
      */
     public function testValidateNumberSuccess($input, $expected)
@@ -223,7 +211,6 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\NumberValidator::validateNumber
      * @dataProvider validateFailureProvider
      */
     public function testValidateNumberFailure($input)
@@ -233,9 +220,6 @@ class NumberValidatorTest extends TestCase
         $this->assertFalse($return->status);
     }
 
-    /**
-     * @covers Phramework\Validate\NumberValidator::validateNumber
-     */
     public function testValidateFailureMultipleOf()
     {
         $validator = new NumberValidator(null, null, null, null, 2);
@@ -248,7 +232,6 @@ class NumberValidatorTest extends TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\NumberValidator::validateEnum
      */
     public function testValidateCommon()
     {
@@ -269,9 +252,6 @@ class NumberValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @covers Phramework\Validate\NumberValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('number', $this->object->getType());

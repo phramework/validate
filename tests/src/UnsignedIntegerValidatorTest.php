@@ -24,14 +24,6 @@ class UnsignedIntegerValidatorTest extends TestCase
         $this->object = new UnsignedIntegerValidator(10, 1000, true);
     }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-    }
-
     public function validateSuccessProvider()
     {
         //input, expected
@@ -56,9 +48,6 @@ class UnsignedIntegerValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers Phramework\Validate\UnsignedIntegerValidator::__construct
-     */
     public function testConstruct()
     {
         $validator = new UnsignedIntegerValidator(
@@ -68,8 +57,7 @@ class UnsignedIntegerValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\UnsignedIntegerValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure()
     {
@@ -91,7 +79,6 @@ class UnsignedIntegerValidatorTest extends TestCase
     }
 
     /**
-     * @covers Phramework\Validate\UnsignedIntegerValidator::validate
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)
@@ -99,9 +86,6 @@ class UnsignedIntegerValidatorTest extends TestCase
         $this->validateSuccess($this->object, $input, $expected);
     }
 
-    /**
-     * @covers Phramework\Validate\UnsignedIntegerValidator::createFromJSON
-     */
     public function testCreateFromJSON()
     {
         $json = '{
@@ -113,9 +97,6 @@ class UnsignedIntegerValidatorTest extends TestCase
         $this->assertInstanceOf(UnsignedIntegerValidator::class, $validationObject);
     }
 
-    /**
-     * @covers Phramework\Validate\UnsignedIntegerValidator::createFromJSON
-     */
     public function testCreateFromJSONAlias()
     {
         $json = '{
@@ -127,9 +108,6 @@ class UnsignedIntegerValidatorTest extends TestCase
         $this->assertInstanceOf(UnsignedIntegerValidator::class, $validationObject);
     }
 
-    /**
-     * @covers Phramework\Validate\UnsignedIntegerValidator::getType
-     */
     public function testGetType()
     {
         $this->assertEquals('unsignedinteger', $this->object->getType());

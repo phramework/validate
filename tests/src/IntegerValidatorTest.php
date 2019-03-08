@@ -191,4 +191,16 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('integer', $this->object->getType());
     }
+
+    public function testForOverflow()
+    {
+        $value = PHP_INT_MAX;
+
+        $validator = new IntegerValidator();
+
+        $parsed = $validator
+            ->parse($value);
+
+        $this->assertSame($value, $parsed);
+    }
 }

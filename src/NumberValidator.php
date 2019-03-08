@@ -108,9 +108,13 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
      */
     public function validate($value)
     {
-        $return = $this->validateNumber($value);
+        $return = $this->validateCommon($value, new ValidateResult($value, true));
 
-        return $this->validateCommon($return->value, $return);
+        if ($return->status === false) {
+            return $return;
+        }
+
+        return $this->validateNumber($return->value);
     }
 
     /**
@@ -156,7 +160,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             $return->exception = new IncorrectParameterException(
                 'minimum',
                 null,
-                $this->getSource()
+                $this->source
             );
         } elseif ($this->multipleOf !== null
             && fmod((float)$value, (float)$this->multipleOf) != 0
@@ -174,9 +178,14 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
             $return->status = true;
 
             //Type cast
-            $return->value  = (float) $value;
+            $return->value = $this->cast($value);
         }
 
         return $return;
+    }
+
+    protected function cast($value)
+    {
+        return (float) $value;
     }
 }

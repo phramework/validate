@@ -67,32 +67,32 @@ stdClass Object
 
 ### Validating an array of enum strings
 
-```
+```php
     /*
      * A validator that allows you to pick one or two colors between blue, green and red
      */
     $colorsValidator = new ArrayValidator(
-        $minItems = 1,
-        $maxItems = 2,
-        $items = (new StringValidator())
+        1, //minItems
+        2, //maxItems
+        (new StringValidator()) //items
             ->setEnum([
                 'blue',
                 'green',
-                'red'
+                'red',
             ]),
-        $uniqueColors = true
+        true //unique items
     );
 
     /*
      * $parsedOneItem will be validated successfully
      */
-    $parsedOneItem = $colorsValidator->parse(['blue']); // will be [blue]
+    $parsedOneItem = $colorsValidator->parse(['blue']); //will be [blue]
 
 
     /*
      * $parsedTwoItems will be validated successfully
      */
-    $parsedTwoItems = $colorsValidator->parse(['blue', 'red']); // will be [blue, red]
+    $parsedTwoItems = $colorsValidator->parse(['blue', 'red']); //will be [blue, red]
 
     /*
      * $resultOfZeroItemsStatus cannot be validated true the validator requires minItems of 1
@@ -117,9 +117,11 @@ stdClass Object
      * with failure maxItems because validator requires maxItems 2
      */
     $colorsValidator
-        ->parse(
-            ['blue', 'green', 'red']
-        );
+        ->parse([
+            'blue',
+            'green',
+            'red'
+        ]);
 ```
 
 

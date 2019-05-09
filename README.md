@@ -19,9 +19,9 @@ require './vendor/autoload.php';
 
 use \Phramework\Validate\IntegerValidator;
 
-$validationModel = new IntegerValidator(-1, 1);
+$validator = new IntegerValidator(-1, 1);
 
-$value = $validationModel->parse('0');
+$value = $validator->parse('0');
 
 var_dump($value);
 ```
@@ -35,21 +35,23 @@ int(0)
 ### Parse an object of strings
 
 ```php
-$validationModel = new ObjectValidator(
+$personalInformationValidator = new ObjectValidator(
     (object) [
         'name' => new StringValidator(2, 30),
-        'city' => new StringValidator(2, 30)
+        'city' => new StringValidator(2, 30),
+        'age' => new IntegerValidator(1, 200),
     ],
-    ['name', 'city'], //required properties
+    ['name', 'city', 'age'], //required properties
     false //no additional properties allowed
 );
 
-$value = $validationModel->parse((object) [
-    'name' => 'Xenofon',
-    'city' => 'Thessaloniki'
+$personalInformation = $validationModel->parse((object) [
+    'name' => 'Jane Doe',
+    'city' => 'Athens',
+    'age' => 28
 ]);
 
-print_r($value);
+print_r($personalInformation);
 ```
 
 The above example will output:
@@ -57,10 +59,71 @@ The above example will output:
 ```
 stdClass Object
 (
-    [name] => Xenofon
-    [city] => Thessaloniki
+    [name] => Jane Doe
+    [city] => Athens,
+    [age] => 28
 )
 ```
+
+### Validating an array of enum strings
+
+```php
+    /*
+     * A validator that allows you to pick one or two colors between blue, green and red
+     */
+    $colorsValidator = new ArrayValidator(
+        1, //minItems
+        2, //maxItems
+        (new StringValidator()) //items
+            ->setEnum([
+                'blue',
+                'green',
+                'red',
+            ]),
+        true //unique items
+    );
+
+    /*
+     * $parsedOneItem will be validated successfully
+     */
+    $parsedOneItem = $colorsValidator->parse(['blue']); //will be [blue]
+
+
+    /*
+     * $parsedTwoItems will be validated successfully
+     */
+    $parsedTwoItems = $colorsValidator->parse(['blue', 'red']); //will be [blue, red]
+
+    /*
+     * $resultOfZeroItemsStatus cannot be validated true the validator requires minItems of 1
+     */
+    $resultOfZeroItemsStatus = $colorsValidator->validate([]);
+    $resultOfZeroItemsStatus->getStatus(); // will be false because validation failed
+    /** @var \Phramework\Exceptions\IncorrectParameterException $exception in this case */
+    $exception = $resultOfZeroItemsStatus->getException();
+    $exception->getFailure(); // will be minItems
+
+    /*
+     * $resultOfIncorrectItemsStatus cannot be validated true because "yellow" is not an allowed item
+     */
+    $resultOfIncorrectItemsStatus = $colorsValidator->validate(['yellow']);
+    $resultOfIncorrectItemsStatus->getStatus(); // will be false because validation failed
+    /** @var \Phramework\Exceptions\IncorrectParameterException $exception in this case */
+    $exception = $resultOfIncorrectItemsStatus->getException();
+    $exception->getFailure(); // will be items
+
+    /*
+     * Following will throw \Phramework\Exceptions\IncorrectParameterException
+     * with failure maxItems because validator requires maxItems 2
+     */
+    $colorsValidator
+        ->parse([
+            'blue',
+            'green',
+            'red'
+        ]);
+```
+
 
 Check [wiki](https://github.com/phramework/validate/wiki) for more examples.
 
@@ -84,7 +147,7 @@ composer doc
 ```
 
 ## License
-Copyright 2015-2016 Xenofon Spafaridis
+Copyright 2015-2019 Xenofon Spafaridis
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

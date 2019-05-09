@@ -16,6 +16,8 @@
  */
 namespace Phramework\Validate\Result;
 
+use Exception;
+
 /**
  * Helper class, contains the result of validator's validation
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
@@ -52,5 +54,23 @@ class Result
         $this->value     = $value;
         $this->status    = $status;
         $this->exception = $exception;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function getStatus(): bool
+    {
+        return $this->status;
+    }
+
+    public function getException(): ?Exception
+    {
+        return $this->exception;
     }
 }

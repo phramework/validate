@@ -69,7 +69,7 @@ abstract class BaseValidator implements \JsonSerializable
 
     /**
     * Validate value
-    * @see Result for ValidateResult object
+    * @see Result for Result object
     * @param  mixed $value Input value to validate
     * @return Result
      */
@@ -79,7 +79,7 @@ abstract class BaseValidator implements \JsonSerializable
      * Common helper method to validate against all common keywords
      * @uses validateEnum
      * @param  mixed  $value Value to validate
-     * @param  Result $validateResult Current ValidateResult status
+     * @param  Result $validateResult Current Result status
      * @return Result
      */
     protected function validateCommon($value, $validateResult)
@@ -607,11 +607,11 @@ abstract class BaseValidator implements \JsonSerializable
                 $className = self::$validatorRegistry[$object->type];
                 $validator = new $className();
             /*} elseif (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
-                //if already loaded
+            //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type;
                 $validator = new $className();
             } elseif (class_exists(__NAMESPACE__ . '\\' . $object->type . 'Validator')) {
-                //if already loaded
+            //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type . 'Validator';
                 $validator = new $className();*/
             } else {

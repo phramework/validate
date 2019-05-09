@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ArrayValidatorTest extends TestCase
 {
 
     /**
@@ -27,7 +29,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
      */
     public function testConstruct()
     {
@@ -41,7 +42,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
      */
     public function testConstruct2()
     {
@@ -52,8 +52,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure1()
     {
@@ -65,8 +64,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure3()
     {
@@ -77,8 +75,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure4()
     {
@@ -112,7 +109,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\ArrayValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -124,7 +120,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\ArrayValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -138,7 +133,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::validate
      */
     public function testValidateUnique()
     {
@@ -210,7 +204,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::createFromJSON
      */
     public function testCreateFromJSON()
     {
@@ -261,7 +254,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::getType
      */
     public function testGetType()
     {
@@ -269,7 +261,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::equals
      */
     public function testEquals()
     {
@@ -318,7 +309,6 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\ArrayValidator::setValidateCallback
      */
     public function testSetValidateCallback()
     {

@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class URLValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class URLValidatorTest extends TestCase
 {
 
     /**
@@ -53,7 +55,6 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\URLValidator::__construct
      */
     public function testConstruct()
     {
@@ -62,7 +63,6 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\URLValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -74,7 +74,6 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\URLValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -84,7 +83,6 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\URLValidator::createFromJSON
      */
     public function testCreateFromJSON()
     {
@@ -110,7 +108,6 @@ class URLValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\URLValidator::getType
      */
     public function testGetType()
     {

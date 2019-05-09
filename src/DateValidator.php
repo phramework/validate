@@ -62,7 +62,7 @@ class DateValidator extends \Phramework\Validate\StringValidator
 
     /**
      * Validate value, validates as SQL date or SQL date
-     * @see \Phramework\Validate\ValidateResult for ValidateResult object
+     * @see \Phramework\Validate\Result for Result object
      * @param  mixed $value Value to validate
      * @return Result
      * @todo set errorObject

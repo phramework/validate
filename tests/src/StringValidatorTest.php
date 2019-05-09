@@ -14,6 +14,7 @@
 
 namespace Phramework\Validate;
 
+use PHPUnit\Framework\TestCase;
 use Phramework\Exceptions\IncorrectParameterException;
 use Phramework\Exceptions\Source\ISource;
 use Phramework\Exceptions\Source\Pointer;
@@ -22,7 +23,7 @@ use Phramework\Exceptions\Source\Pointer;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  */
-class StringValidatorTest extends \PHPUnit_Framework_TestCase
+class StringValidatorTest extends TestCase
 {
 
     /**
@@ -82,7 +83,6 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\StringValidator::__construct
      */
     public function testConstruct()
     {
@@ -90,8 +90,7 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\StringValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure()
     {
@@ -99,8 +98,7 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\StringValidator::__construct
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure2()
     {
@@ -109,7 +107,6 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\StringValidator::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -121,7 +118,6 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\StringValidator::validate
      */
     public function testValidateSuccessRaw()
     {
@@ -136,7 +132,6 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\StringValidator::validate
      */
     public function testValidateFailure($input, $failure)
     {
@@ -157,7 +152,6 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\StringValidator::validateEnum
      */
     public function testValidateCommonEnum()
     {
@@ -174,7 +168,6 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\StringValidator::validateEnum
      */
     public function testValidateCommonEnumFailure()
     {
@@ -202,7 +195,6 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common not keyword
-     * @covers Phramework\Validate\StringValidator::validateEnum
      */
     public function testValidateCommonNotFailure()
     {
@@ -226,7 +218,6 @@ class StringValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\StringValidator::getType
      */
     public function testGetType()
     {

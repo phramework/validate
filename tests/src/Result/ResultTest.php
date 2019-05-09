@@ -16,12 +16,14 @@
  */
 namespace Phramework\Validate\Result;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @coversDefaultClass Phramework\Validate\Result\Result
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  */
-class ResultTest extends \PHPUnit_Framework_TestCase
+class ResultTest extends TestCase
 {
 
     /**
@@ -41,7 +43,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__construct
      */
     public function testConstruct()
     {

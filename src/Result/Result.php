@@ -64,17 +64,11 @@ class Result
         return $this->value;
     }
 
-    /**
-     * @return bool
-     */
     public function getStatus(): bool
     {
         return $this->status;
     }
 
-    /**
-     * @return Exception|null
-     */
     public function getException(): ?Exception
     {
         return $this->exception;

@@ -72,9 +72,9 @@ stdClass Object
      * A validator that allows you to pick one or two colors between blue, green and red
      */
     $colorsValidator = new ArrayValidator(
-        1,
-        2,
-        (new StringValidator())
+        $minItems = 1,
+        $maxItems = 2,
+        $items = (new StringValidator())
             ->setEnum([
                 'blue',
                 'green',
@@ -83,32 +83,38 @@ stdClass Object
         $uniqueColors = true
     );
 
+    /*
+     * $parsedOneItem will be validated successfully
+     */
     $parsedOneItem = $colorsValidator->parse(['blue']); // will be [blue]
 
 
+    /*
+     * $parsedTwoItems will be validated successfully
+     */
     $parsedTwoItems = $colorsValidator->parse(['blue', 'red']); // will be [blue, red]
 
-
-    $resultOfZeroItems = $colorsValidator->validate([]);
-    $resultOfZeroItems->getStatus(); // will be false because validation failed
-
-
+    /*
+     * $resultOfZeroItemsStatus cannot be validated true the validator requires minItems of 1
+     */
+    $resultOfZeroItemsStatus = $colorsValidator->validate([]);
+    $resultOfZeroItemsStatus->getStatus(); // will be false because validation failed
     /** @var \Phramework\Exceptions\IncorrectParameterException $exception in this case */
-    $exception = $resultOfZeroItems->getException();
+    $exception = $resultOfZeroItemsStatus->getException();
     $exception->getFailure(); // will be minItems
 
-
-    $resultOfIncorrectItems = $colorsValidator->validate(['yellow']);
-    $resultOfIncorrectItems->getStatus(); // will be false because validation failed
-
+    /*
+     * $resultOfIncorrectItemsStatus cannot be validated true because "yellow" is not an allowed item
+     */
+    $resultOfIncorrectItemsStatus = $colorsValidator->validate(['yellow']);
+    $resultOfIncorrectItemsStatus->getStatus(); // will be false because validation failed
     /** @var \Phramework\Exceptions\IncorrectParameterException $exception in this case */
-    $exception = $resultOfIncorrectItems->getException();
+    $exception = $resultOfIncorrectItemsStatus->getException();
     $exception->getFailure(); // will be items
-
 
     /*
      * Following will throw \Phramework\Exceptions\IncorrectParameterException
-     * with failure maxItems
+     * with failure maxItems because validator requires maxItems 2
      */
     $colorsValidator
         ->parse(

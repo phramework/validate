@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class OneOfTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class OneOfTest extends TestCase
 {
 
     /**
@@ -72,7 +74,6 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\OneOf::__construct
      */
     public function testConstruct()
     {
@@ -88,7 +89,6 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\OneOf::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -101,7 +101,6 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\OneOf::validate
      */
     public function testValidateFailure($input = null)
     {
@@ -111,7 +110,6 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
      */
     public function testCreateFromJSON()
     {
@@ -154,7 +152,6 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\OneOf::validateEnum
      */
     public function testValidateCommon()
     {
@@ -188,7 +185,6 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\OneOf::getType
      */
     public function testGetType()
     {

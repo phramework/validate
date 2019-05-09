@@ -102,13 +102,13 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
 
     /**
      * Validate value
-     * @see \Phramework\Validate\ValidateResult for ValidateResult object
+     * @see \Phramework\Validate\Result for Result object
      * @param  mixed $value Value to validate
      * @return Result
      */
     public function validate($value)
     {
-        $return = $this->validateCommon($value, new ValidateResult($value, true));
+        $return = $this->validateCommon($value, new Result($value, true));
 
         if ($return->status === false) {
             return $return;
@@ -119,7 +119,7 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
 
     /**
      * Validate value, without calling validateCommon
-     * @see \Phramework\Validate\ValidateResult for ValidateResult object
+     * @see \Phramework\Validate\Result for Result object
      * @param  mixed $value Value to validate
      * @return Result
      */

@@ -16,18 +16,17 @@
  */
 namespace Phramework\Validate;
 
+use PHPUnit\Framework\TestCase;
 use Phramework\Exceptions\IncorrectParameterException;
 
 /**
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
- * @coversDefaultClass Phramework\Validate\NullValidator
  */
-class NullValidatorTest extends \PHPUnit_Framework_TestCase
+class NullValidatorTest extends TestCase
 {
     /**
-     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -37,7 +36,6 @@ class NullValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testValidate()
     {
@@ -48,7 +46,6 @@ class NullValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testValidateFailure()
     {
@@ -66,7 +63,6 @@ class NullValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::parse
      */
     public function testParseFromJSON()
     {

@@ -52,7 +52,7 @@ class EmailValidator extends \Phramework\Validate\StringValidator
 
     /**
      * Validate value
-     * @see \Phramework\Validate\ValidateResult for ValidateResult object
+     * @see \Phramework\Validate\Result for Result object
      * @param  mixed $value Value to validate
      * @return Result
      */

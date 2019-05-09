@@ -14,6 +14,7 @@
 
 namespace Phramework\Validate;
 
+use PHPUnit\Framework\TestCase;
 use Phramework\Exceptions\IncorrectParameterException;
 use Phramework\Exceptions\Source\ISource;
 use Phramework\Exceptions\Source\Pointer;
@@ -22,7 +23,7 @@ use Phramework\Exceptions\Source\Pointer;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  */
-class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
+class BooleanValidatorTest extends TestCase
 {
     /**
      * @var BooleanValidator
@@ -85,7 +86,6 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BooleanValidator::__construct
      */
     public function testConstruct()
     {
@@ -94,7 +94,6 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\BooleanValidator::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -107,7 +106,6 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\BooleanValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -128,7 +126,6 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\BooleanValidator::validateEnum
      */
     public function testValidateCommonEnum()
     {
@@ -146,7 +143,6 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\BooleanValidator::validateEnum
      */
     public function testValidateCommonEnumFailure()
     {
@@ -173,7 +169,6 @@ class BooleanValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BooleanValidator::getType
      */
     public function testGetType()
     {

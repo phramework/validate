@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class AnyOfTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AnyOfTest extends TestCase
 {
 
     /**
@@ -65,7 +67,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AnyOf::__construct
      */
     public function testConstruct()
     {
@@ -81,7 +82,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\AnyOf::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -103,7 +103,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AnyOf::validate
      */
     public function testValidateSuccessFailureTypes()
     {
@@ -144,7 +143,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\AnyOf::validate
      */
     public function testValidateFailure($input = null)
     {
@@ -154,7 +152,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromObject
      */
     public function testCreateFromObject()
     {
@@ -179,7 +176,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $validator->anyOf);
     }
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
      */
     public function testCreateFromObjectForAdditional()
     {
@@ -219,7 +215,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\AnyOf::validateEnum
      */
     public function testValidateCommon()
     {
@@ -253,7 +248,6 @@ class AnyOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AnyOf::getType
      */
     public function testGetType()
     {

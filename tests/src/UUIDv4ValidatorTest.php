@@ -2,11 +2,13 @@
 
 namespace Phramework\Validate;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Spafaridis Xenofon <nohponex@gmail.com>
  * @author Nikolopoulos Konstantinos <kosnikolopoulos@gmail.com>
  */
-class UUIDv4ValidatorTest extends \PHPUnit_Framework_TestCase
+class UUIDv4ValidatorTest extends TestCase
 {
     /**
      * @var UUIDv4Validator

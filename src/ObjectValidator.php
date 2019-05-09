@@ -493,7 +493,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      */
     protected function expandSource(BaseValidator &$property, string $key)
     {
-        if (get_class($this->getSource()) == Pointer::class) {
+        if ($this->getSource() !== null && get_class($this->getSource()) == Pointer::class) {
             //If it does not have a source already
             if ($property->getSource() === null) {
                 $property->setSource(
@@ -515,7 +515,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
      */
     public function expandPointerSource(string $key, ISource $source = null)
     {
-        if (get_class($source) === Pointer::class) {
+        if ($source !== null && get_class($source) === Pointer::class) {
             return new Pointer(
                 $source->getPath() . '/' . $key
             );

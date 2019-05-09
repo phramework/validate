@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class AllOfTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AllOfTest extends TestCase
 {
 
     /**
@@ -62,7 +64,6 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AllOf::__construct
      */
     public function testConstruct()
     {
@@ -78,7 +79,6 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\AllOf::validate
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -101,7 +101,6 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\AllOf::validate
      */
     public function testValidateFailure($input = null)
     {
@@ -111,7 +110,6 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\BaseValidator::createFromObjectForAdditional
      */
     public function testCreateFromJSON()
     {
@@ -146,8 +144,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AllOf::toObject
-     * @depends testCreateFromJSON
+      * @depends testCreateFromJSON
      */
     public function testToObject($validator)
     {
@@ -161,8 +158,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AllOf::toArray
-     * @depends testCreateFromJSON
+      * @depends testCreateFromJSON
      */
     public function testToArray($validator)
     {
@@ -176,8 +172,7 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AllOf::toJSON
-     * @depends testCreateFromJSON
+      * @depends testCreateFromJSON
      */
     public function testToJSON($validator)
     {
@@ -192,7 +187,6 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Validate against common enum keyword
-     * @covers Phramework\Validate\AllOf::validateEnum
      */
     public function testValidateCommon()
     {
@@ -220,7 +214,6 @@ class AllOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\AllOf::getType
      */
     public function testGetType()
     {

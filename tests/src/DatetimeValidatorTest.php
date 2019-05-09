@@ -2,7 +2,9 @@
 
 namespace Phramework\Validate;
 
-class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DatetimeValidatorTest extends TestCase
 {
 
     /**
@@ -55,7 +57,6 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::__construct
      */
     public function testConstruct()
     {
@@ -64,7 +65,6 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers Phramework\Validate\DatetimeValidator::validate
      */
     public function testValidateSuccess($input)
     {
@@ -75,7 +75,6 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
      */
     public function testFormatMinimumSuccess()
     {
@@ -87,8 +86,7 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
-     * @expectedException \Exception
+          * @expectedException \Exception
      */
     public function testFormatMinimumFailure()
     {
@@ -100,7 +98,6 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
      */
     public function testFormatMinimumMaximumSuccess()
     {
@@ -113,8 +110,7 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::validate
-     * @expectedException \Exception
+          * @expectedException \Exception
      */
     public function testFormatMaximumFailure()
     {
@@ -128,7 +124,6 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers Phramework\Validate\DatetimeValidator::validate
      */
     public function testValidateFailure($input)
     {
@@ -138,7 +133,6 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::createFromJSON
      */
     public function testCreateFromJSON()
     {
@@ -152,7 +146,6 @@ class DatetimeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\DatetimeValidator::getType
      */
     public function testGetType()
     {

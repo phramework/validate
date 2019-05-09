@@ -16,15 +16,14 @@
  */
 namespace Phramework\Validate;
 
+use PHPUnit\Framework\TestCase;
 use Phramework\Exceptions\Exception;
 use Phramework\Exceptions\IncorrectParameterException;
-use Phramework\Exceptions\IncorrectParametersException;
 use Phramework\Exceptions\Source\Pointer;
 
 /**
- * @coversDefaultClass Phramework\Validate\ObjectValidator
  */
-class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
+class ObjectValidatorTest extends TestCase
 {
     /**
      * @var ObjectValidator
@@ -86,7 +85,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__set
      */
     public function testConstruct()
     {
@@ -94,8 +92,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__set
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure()
     {
@@ -108,8 +105,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__set
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure1()
     {
@@ -123,8 +119,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__set
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testConstructFailure2()
     {
@@ -139,7 +134,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateSuccessProvider
-     * @covers ::validate
      */
     public function testValidateSuccess($input)
     {
@@ -191,7 +185,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testValidateRecursiveSuccess()
     {
@@ -295,7 +288,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validateFailureProvider
-     * @covers ::validate
      */
     public function testValidateFailure($input)
     {
@@ -305,7 +297,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testValidateFailureMissing()
     {
@@ -361,7 +352,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
         $this->markTestIncomplete('Test internal exceptions');
     }
     /**
-     * @covers ::validate
      */
     public function testValidateFailureAdditionalProperties()
     {
@@ -392,7 +382,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers ::addProperties
      */
     public function testAddPropertiesSuccess()
     {
@@ -410,8 +399,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers ::addProperties
-      * @expectedException Exception
+       * @expectedException \Exception
      */
     public function testAddPropertiesFailure()
     {
@@ -420,8 +408,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::addProperties
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testAddPropertiesFailure2()
     {
@@ -429,7 +416,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @covers ::addProperty
      */
     public function testAddPropertySuccess()
     {
@@ -443,7 +429,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getType
      */
     public function testGetType()
     {
@@ -451,7 +436,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::parse
      */
     public function testParseSuccess()
     {
@@ -489,8 +473,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::parse
-     * @expectedException Exception
+     * @expectedException \Exception
      * @todo \Phramework\Exceptions\MissingParametersException
      */
     public function testParseFailure()
@@ -522,8 +505,7 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::parse
-     * @expectedException Exception
+     * @expectedException \Exception
      * @todo \Phramework\Exceptions\IncorrectParametersException
      */
     public function testParseFailure2()
@@ -556,7 +538,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setValidateCallback
      */
     public function testSetValidateCallback()
     {
@@ -592,7 +573,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testValidateSetDefault()
     {
@@ -638,7 +618,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testValidateSetDefaultNull()
     {
@@ -654,7 +633,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testXVisibility()
     {
@@ -697,7 +675,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testXVisibilityOR()
     {
@@ -749,7 +726,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testValidateAdditionalProperties()
     {
@@ -771,7 +747,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testAdditionalPropertiesFromJSON()
     {
@@ -797,7 +772,6 @@ class ObjectValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::validate
      */
     public function testPatternPropertiesFromJSON()
     {

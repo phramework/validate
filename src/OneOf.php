@@ -72,7 +72,7 @@ class OneOf extends \Phramework\Validate\AnyOf
 
     /**
      * Validate value
-     * @see \Phramework\Validate\ValidateResult for ValidateResult object
+     * @see \Phramework\Validate\Result for Result object
      * @param  mixed $value Value to validate
      * @return Result
      * @uses $requiredCountOfAnyOf

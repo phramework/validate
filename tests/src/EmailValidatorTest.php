@@ -56,13 +56,6 @@ class EmailValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new EmailValidator();
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input)

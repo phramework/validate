@@ -57,11 +57,6 @@ class UUIDv4ValidatorTest extends TestCase
         ];
     }
 
-    public function testConstruct()
-    {
-        $validator = new UUIDv4Validator();
-    }
-
     /**
      * @dataProvider validateSuccessProvider
      */

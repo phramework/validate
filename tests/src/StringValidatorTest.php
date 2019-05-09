@@ -83,13 +83,6 @@ class StringValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new StringValidator();
-    }
-
-    /**
      * @expectedException \Exception
      */
     public function testConstructFailure()

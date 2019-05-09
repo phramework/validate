@@ -85,13 +85,6 @@ class ObjectValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new ObjectValidator();
-    }
-
-    /**
      * @expectedException \Exception
      */
     public function testConstructFailure()

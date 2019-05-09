@@ -54,16 +54,6 @@ class UnsignedIntegerValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new UnsignedIntegerValidator(
-            0,
-            1
-        );
-    }
-
-    /**
      * @expectedException \Exception
      */
     public function testConstructFailure()

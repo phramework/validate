@@ -64,20 +64,6 @@ class AllOfTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new AllOf(
-            new StringValidator(),
-            new ArrayValidator(
-                1,
-                10,
-                new StringValidator()
-            )
-        );
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)
@@ -93,7 +79,7 @@ class AllOfTest extends TestCase
                 $this->assertInternalType('integer', $values);
             }
         } else {
-            $this->assertInternalType('integer', $return->value);
+                $this->assertInternalType('integer', $return->value);
         }
 
         $this->assertEquals($expected, $return->value);

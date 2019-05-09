@@ -29,29 +29,6 @@ class ArrayValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new ArrayValidator(
-            1,
-            3,
-            new IntegerValidator(),
-            true,
-            false
-        );
-    }
-
-    /**
-     */
-    public function testConstruct2()
-    {
-        new ArrayValidator(
-            1,
-            null
-        );
-    }
-
-    /**
      * @expectedException \Exception
      */
     public function testConstructFailure1()

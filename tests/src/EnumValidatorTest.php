@@ -61,16 +61,6 @@ class EnumValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new EnumValidator(
-            ['1', '2', 'ok', 5],
-            true
-        );
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)

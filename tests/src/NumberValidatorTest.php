@@ -65,17 +65,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new NumberValidator(
-            0,
-            1
-        );
-    }
-
-    /**
-          * @expectedException TypeError
+      * @expectedException \TypeError
      */
     public function testConstructFailure1()
     {

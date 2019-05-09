@@ -86,13 +86,6 @@ class BooleanValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        new BooleanValidator();
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)

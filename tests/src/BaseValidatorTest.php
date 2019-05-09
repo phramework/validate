@@ -332,16 +332,6 @@ class BaseValidatorTest extends TestCase
 
     /**
      */
-    public function testConstruct()
-    {
-        $validator = new ArrayValidator(
-            1,
-            3
-        );
-    }
-
-    /**
-     */
     public function testCreateFromObjectTypeless()
     {
         $validator = IntegerValidator::createFromObject((object)[]);
@@ -631,17 +621,20 @@ class BaseValidatorTest extends TestCase
         );
     }
 
-    /**
-     */
     public function testSetNot()
     {
         $validator = new IntegerValidator();
 
         $validator->setNot(new EnumValidator([0, 2]));
+
+        $this->assertSame(
+            1,
+            $validator->parse(1)
+        );
     }
 
     /**
-          * @expectedException \TypeError
+     * @expectedException \TypeError
      */
     public function testSetNotFailure()
     {
@@ -952,15 +945,7 @@ class BaseValidatorTest extends TestCase
             34
         );
     }
-    /**
-     */
-    public function testRunValidateCallback()
-    {
-        (new IntegerValidator())->parse(5);
-    }
 
-    /**
-     */
     public function testSetValidateCallback()
     {
         $value = 5;

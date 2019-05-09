@@ -56,13 +56,6 @@ class UsernameValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new UsernameValidator();
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input)
@@ -103,15 +96,6 @@ class UsernameValidatorTest extends TestCase
         $this->assertEquals('username', $this->object->getType());
     }
 
-    /**
-     */
-    public function testSetUsernamePattern()
-    {
-        UsernameValidator::setUsernamePattern('/^[A-Za-z0-9_\.]{3,32}$/');
-    }
-
-    /**
-     */
     public function testGetUsernamePattern()
     {
         $pattern = '/^[A-Za-z0-9_\.]{3,6}$/';

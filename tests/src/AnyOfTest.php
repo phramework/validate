@@ -67,20 +67,6 @@ class AnyOfTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new AnyOf(
-            new StringValidator(),
-            new ArrayValidator(
-                1,
-                10,
-                new StringValidator()
-            )
-        );
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)

@@ -74,20 +74,6 @@ class OneOfTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new OneOf(
-            new StringValidator(),
-            new ArrayValidator(
-                1,
-                10,
-                new StringValidator()
-            )
-        );
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)

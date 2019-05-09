@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 class DateValidatorTest extends TestCase
 {
-
     /**
      * @var DateValidator
      */
@@ -51,13 +50,6 @@ class DateValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new DateValidator();
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input)
@@ -79,18 +71,7 @@ class DateValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testFormatMinimumSuccess()
-    {
-        $validator = new DateValidator(
-            '2000-10-10'
-        );
-
-        $validator->parse('2000-10-11');
-    }
-
-    /**
-          * @expectedException \Exception
+     * @expectedException \Exception
      */
     public function testFormatMinimumFailure()
     {
@@ -101,20 +82,21 @@ class DateValidatorTest extends TestCase
         $validator->parse('2000-10-11');
     }
 
-    /**
-     */
-    public function testFormatMinimumMaximumSuccess()
+    public function testParse()
     {
         $validator = new DateValidator(
             '2000-10-10',
             '2000-10-12'
         );
 
-        $validator->parse('2000-10-11');
+        $this->assertSame(
+            '2000-10-11',
+            $validator->parse('2000-10-11')
+        );
     }
 
     /**
-          * @expectedException \Exception
+     * @expectedException \Exception
      */
     public function testFormatMaximumFailure()
     {

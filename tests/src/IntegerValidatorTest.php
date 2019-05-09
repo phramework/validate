@@ -62,17 +62,7 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new IntegerValidator(
-            0,
-            1
-        );
-    }
-
-    /**
-          * @dataProvider validateSuccessProvider
+     * @dataProvider validateSuccessProvider
      */
     public function testCreateFromJSON($input, $expected)
     {
@@ -122,7 +112,7 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-          * @dataProvider validateSuccessProvider
+     * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)
     {

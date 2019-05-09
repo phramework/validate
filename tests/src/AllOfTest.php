@@ -73,13 +73,13 @@ class AllOfTest extends TestCase
         $this->assertTrue($return->status);
 
         if (is_array($return->value)) {
-            $this->assertInternalType('array', $return->value);
+            $this->assertIsArray($return->value);
 
             foreach ($return->value as $values) {
-                $this->assertInternalType('integer', $values);
+                $this->assertIsInt($values);
             }
         } else {
-                $this->assertInternalType('integer', $return->value);
+                $this->assertIsInt($return->value);
         }
 
         $this->assertEquals($expected, $return->value);
@@ -117,7 +117,7 @@ class AllOfTest extends TestCase
         //Set validator
         $this->object = $validator;
 
-        $this->assertInternalType('array', $validator->allOf);
+        $this->assertIsArray($validator->allOf);
 
         $this->testValidateSuccess(10, 10);
         $this->testValidateSuccess(-1, -1);
@@ -137,10 +137,10 @@ class AllOfTest extends TestCase
         $object = $validator->toObject();
 
         $this->assertObjectHasAttribute('allOf', $object);
-        $this->assertInternalType('array', $object->allOf);
+        $this->assertIsArray($object->allOf);
 
-        $this->assertInternalType('object', $object->allOf[0]);
-        $this->assertInternalType('object', $object->allOf[1]);
+        $this->assertIsObject($object->allOf[0]);
+        $this->assertIsObject($object->allOf[1]);
     }
 
     /**
@@ -151,10 +151,10 @@ class AllOfTest extends TestCase
         $object = $validator->toArray();
 
         $this->assertArrayHasKey('allOf', $object);
-        $this->assertInternalType('array', $object['allOf']);
+        $this->assertIsArray($object['allOf']);
 
-        $this->assertInternalType('array', $object['allOf'][0]);
-        $this->assertInternalType('array', $object['allOf'][1]);
+        $this->assertIsArray($object['allOf'][0]);
+        $this->assertIsArray($object['allOf'][1]);
     }
 
     /**
@@ -164,7 +164,7 @@ class AllOfTest extends TestCase
     {
         $json = $validator->toJSON();
 
-        $this->assertInternalType('string', $json);
+        $this->assertIsString($json);
 
         $object = json_decode($json);
 
@@ -199,10 +199,8 @@ class AllOfTest extends TestCase
         );
     }
 
-    /**
-     */
     public function testGetType()
     {
-        $this->assertSame(null, $this->object->getType());
+        $this->assertNull($this->object->getType());
     }
 }

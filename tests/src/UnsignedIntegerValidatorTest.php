@@ -71,7 +71,7 @@ class UnsignedIntegerValidatorTest extends TestCase
         $return = $object->validate($input);
 
         $this->assertTrue($return->status);
-        $this->assertInternalType('integer', $return->value);
+        $this->assertIsInt($return->value);
         $this->assertSame($expected, $return->value);
     }
 

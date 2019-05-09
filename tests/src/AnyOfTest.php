@@ -76,13 +76,13 @@ class AnyOfTest extends TestCase
         $this->assertTrue($return->status);
 
         if (is_array($return->value)) {
-            $this->assertInternalType('array', $return->value);
+            $this->assertIsArray($return->value);
 
             foreach ($return->value as $values) {
-                $this->assertInternalType('integer', $values);
+                $this->assertIsInt($values);
             }
         } else {
-            $this->assertInternalType('integer', $return->value);
+            $this->assertIsInt($return->value);
         }
 
         $this->assertEquals($expected, $return->value);
@@ -159,7 +159,7 @@ class AnyOfTest extends TestCase
 
         $this->assertInstanceOf(AnyOf::class, $validator);
 
-        $this->assertInternalType('array', $validator->anyOf);
+        $this->assertIsArray($validator->anyOf);
     }
     /**
      */
@@ -183,7 +183,7 @@ class AnyOfTest extends TestCase
 
         $this->assertInstanceOf(AnyOf::class, $validator);
 
-        $this->assertInternalType('array', $validator->anyOf);
+        $this->assertIsArray($validator->anyOf);
 
         //Set validator
         $this->object = $validator;

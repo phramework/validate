@@ -133,7 +133,7 @@ class ObjectValidatorTest extends TestCase
         $return = $this->object->validate($input);
 
         $this->assertTrue($return->status);
-        $this->assertInternalType('object', $return->value);
+        $this->assertIsObject($return->value);
     }
 
     public function testValidateDependencies()
@@ -273,8 +273,7 @@ class ObjectValidatorTest extends TestCase
             $parsed->request->response->default
         );
 
-        $this->assertInternalType(
-            'array',
+        $this->assertIsArray(
             $parsed->request->response->ruleObjects
         );
     }
@@ -457,9 +456,9 @@ class ObjectValidatorTest extends TestCase
 
         $record = $validationObject->parse($input);
 
-        $this->assertInternalType('object', $record);
-        $this->assertInternalType('object', $record->obj);
-        $this->assertInternalType('float', $record->obj->not_required);
+        $this->assertIsObject($record);
+        $this->assertIsObject($record->obj);
+        $this->assertIsFloat($record->obj->not_required);
         $this->assertEquals(5, $record->weight);
         $this->assertTrue($record->obj->valid);
         $this->assertEquals(5.5, $record->obj->not_required);
@@ -589,7 +588,7 @@ class ObjectValidatorTest extends TestCase
         //Use root default
         $parsed = $validator->parse((object) []);
 
-        $this->assertInternalType('object', $parsed->address);
+        $this->assertIsObject($parsed->address);
         $this->assertSame(-1, $parsed->address->floor);
 
         //Use default

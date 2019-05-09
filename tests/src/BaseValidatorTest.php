@@ -56,9 +56,9 @@ class BaseValidatorTest extends TestCase
 
         $o = ObjectValidator::parseStatic(['ok' => true]);
 
-        $this->assertInternalType('object', $o);
+        $this->assertIsObject($o);
         $this->assertObjectHasAttribute('ok', $o);
-        $this->assertSame(true, $o->ok);
+        $this->assertTrue($o->ok);
     }
 
     /**
@@ -130,8 +130,7 @@ class BaseValidatorTest extends TestCase
         $validationObject = ObjectValidator::createFromJSON($json);
 
         $this->assertInstanceOf(ObjectValidator::class, $validationObject);
-        $this->assertInternalType(
-            'object',
+        $this->assertIsObject(
             $validationObject->properties
         );
         $this->assertInstanceOf(
@@ -150,8 +149,7 @@ class BaseValidatorTest extends TestCase
             UnsignedIntegerValidator::class,
             $data->properties->order
         );
-        $this->assertInternalType(
-            'array',
+        $this->assertIsArray(
             $data->properties->type->enum
         );
 
@@ -243,9 +241,9 @@ class BaseValidatorTest extends TestCase
         ];
 
         $record = $validationObject->parse($input);
-        $this->assertInternalType('object', $record);
-        $this->assertInternalType('object', $record->obj);
-        $this->assertInternalType('float', $record->obj->not_required);
+        $this->assertIsObject($record);
+        $this->assertIsObject($record->obj);
+        $this->assertIsFloat($record->obj->not_required);
         $this->assertEquals(5, $record->weight);
         $this->assertTrue($record->obj->valid);
         $this->assertEquals(5.5, $record->obj->not_required);
@@ -261,7 +259,7 @@ class BaseValidatorTest extends TestCase
 
         $cleanInput = $validationModel->parse($input);
 
-        $this->assertInternalType('integer', $cleanInput);
+        $this->assertIsInt($cleanInput);
         $this->assertEquals(5, $cleanInput);
     }
 
@@ -413,7 +411,7 @@ class BaseValidatorTest extends TestCase
 
         $parsed = $validator->parse('111');
 
-        $this->assertInternalType('integer', $parsed);
+        $this->assertIsInt($parsed);
         $this->assertSame(111, $parsed);
     }
 
@@ -557,10 +555,10 @@ class BaseValidatorTest extends TestCase
     public function testGetTypeAttributes()
     {
         $validator = new IntegerValidator();
-        $this->assertInternalType('array', $validator->getTypeAttributes());
+        $this->assertIsArray($validator->getTypeAttributes());
 
         foreach ($validator->getTypeAttributes() as $attribute) {
-            $this->assertInternalType('string', $attribute);
+            $this->assertIsString($attribute);
         }
     }
 
@@ -759,7 +757,7 @@ class BaseValidatorTest extends TestCase
     {
         $return = $this->int->toObject();
 
-        $this->assertInternalType('object', $return);
+        $this->assertIsObject($return);
 
         $this->assertObjectHasAttribute('type', $return);
         $this->assertObjectHasAttribute('minimum', $return);
@@ -777,13 +775,13 @@ class BaseValidatorTest extends TestCase
             ['int']
         ))->toObject();
 
-        $this->assertInternalType('object', $return);
+        $this->assertIsObject($return);
 
         $this->assertObjectHasAttribute('type', $return);
         $this->assertObjectHasAttribute('properties', $return);
         $this->assertObjectHasAttribute('required', $return);
 
-        $this->assertInternalType('object', $return->properties);
+        $this->assertIsObject($return->properties);
     }
 
     /**
@@ -792,7 +790,7 @@ class BaseValidatorTest extends TestCase
     {
         $return = $this->int->toArray();
 
-        $this->assertInternalType('array', $return);
+        $this->assertIsArray($return);
 
         $this->assertArrayHasKey('type', $return);
         $this->assertArrayHasKey('minimum', $return);
@@ -812,13 +810,13 @@ class BaseValidatorTest extends TestCase
             ['int']
         ))->toArray();
 
-        $this->assertInternalType('array', $return);
+        $this->assertIsArray($return);
 
         $this->assertArrayHasKey('type', $return);
         $this->assertArrayHasKey('properties', $return);
         $this->assertArrayHasKey('required', $return);
 
-        $this->assertInternalType('array', $return['properties']);
+        $this->assertIsArray($return['properties']);
     }
 
     /**
@@ -827,7 +825,7 @@ class BaseValidatorTest extends TestCase
     {
         $json = $this->int->toJSON();
 
-        $this->assertInternalType('string', $json);
+        $this->assertIsString($json);
 
         $jsonObject = json_decode($json);
 
@@ -852,7 +850,7 @@ class BaseValidatorTest extends TestCase
 
         $json = $validator->toJSON();
 
-        $this->assertInternalType('string', $json);
+        $this->assertIsString($json);
 
         $jsonObject = json_decode($json);
 
@@ -862,7 +860,7 @@ class BaseValidatorTest extends TestCase
         $this->assertObjectHasAttribute('type', $jsonObject);
         $this->assertObjectHasAttribute('properties', $jsonObject);
 
-        $this->assertInternalType('object', $jsonObject->properties);
+        $this->assertIsObject($jsonObject->properties);
 
         $this->assertObjectHasAttribute('int', $jsonObject->properties);
 
@@ -874,7 +872,7 @@ class BaseValidatorTest extends TestCase
 
         $json = $validator->toJSON();
 
-        $this->assertInternalType('string', $json);
+        $this->assertIsString($json);
 
         $jsonObject = json_decode($json);
 
@@ -967,7 +965,7 @@ class BaseValidatorTest extends TestCase
 
         $parsed = $validator->parse($value);
 
-        $this->assertInternalType('integer', $parsed);
+        $this->assertIsInt($parsed);
         $this->assertSame($value + 1, $parsed);
     }
 

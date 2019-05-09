@@ -92,7 +92,7 @@ class BooleanValidatorTest extends TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertInternalType('boolean', $return->value);
+        $this->assertIsBool($return->value);
         $this->assertEquals($expected, $return->value);
         $this->assertTrue($return->status);
     }

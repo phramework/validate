@@ -91,7 +91,7 @@ class ArrayValidatorTest extends TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertInternalType('array', $return->value);
+        $this->assertIsArray($return->value);
         $this->assertTrue($return->status);
     }
 
@@ -308,7 +308,7 @@ class ArrayValidatorTest extends TestCase
 
         $parsed = $validator->parse(['a', 'b', 'c']);
 
-        $this->assertInternalType('array', $parsed);
+        $this->assertIsArray($parsed);
         $this->assertEquals($value, $parsed);
     }
 }

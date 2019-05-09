@@ -157,7 +157,7 @@ class NumberValidatorTest extends TestCase
         $return = $object->validate($input);
 
         $this->assertTrue($return->status);
-        $this->assertInternalType('float', $return->value);
+        $this->assertIsFloat($return->value);
         $this->assertSame($expected, $return->value);
     }
 

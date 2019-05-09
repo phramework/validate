@@ -121,7 +121,7 @@ class OneOfTest extends TestCase
 
         $this->assertInstanceOf(OneOf::class, $validator);
 
-        $this->assertInternalType('array', $validator->oneOf);
+        $this->assertIsArray($validator->oneOf);
 
         //Set validator
         $this->object = $validator;

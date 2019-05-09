@@ -105,7 +105,7 @@ class StringValidatorTest extends TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertInternalType('string', $return->value);
+        $this->assertIsString($return->value);
         $this->assertEquals($expected, $return->value);
         $this->assertTrue($return->status);
     }
@@ -118,7 +118,7 @@ class StringValidatorTest extends TestCase
 
         $return = $this->object->validate('abx34scd3');
 
-        $this->assertInternalType('string', $return->value);
+        $this->assertIsString($return->value);
         $this->assertEquals('abx34scd3', $return->value);
         $this->assertTrue($return->status);
     }

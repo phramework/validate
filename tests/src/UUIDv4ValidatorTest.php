@@ -57,11 +57,6 @@ class UUIDv4ValidatorTest extends TestCase
         ];
     }
 
-    public function testConstruct()
-    {
-        $validator = new UUIDv4Validator();
-    }
-
     /**
      * @dataProvider validateSuccessProvider
      */
@@ -69,7 +64,7 @@ class UUIDv4ValidatorTest extends TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertInternalType('string', $return->value);
+        $this->assertIsString($return->value);
         $this->assertTrue($return->status);
     }
 

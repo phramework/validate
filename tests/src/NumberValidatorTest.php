@@ -65,17 +65,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new NumberValidator(
-            0,
-            1
-        );
-    }
-
-    /**
-          * @expectedException TypeError
+      * @expectedException \TypeError
      */
     public function testConstructFailure1()
     {
@@ -167,7 +157,7 @@ class NumberValidatorTest extends TestCase
         $return = $object->validate($input);
 
         $this->assertTrue($return->status);
-        $this->assertInternalType('float', $return->value);
+        $this->assertIsFloat($return->value);
         $this->assertSame($expected, $return->value);
     }
 

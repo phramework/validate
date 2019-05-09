@@ -55,20 +55,13 @@ class URLValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new URLValidator();
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input)
     {
         $return = $this->object->validate($input);
 
-        $this->assertInternalType('string', $return->value);
+        $this->assertIsString($return->value);
         $this->assertTrue($return->status);
     }
 

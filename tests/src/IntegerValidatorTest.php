@@ -62,17 +62,7 @@ class IntegerValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new IntegerValidator(
-            0,
-            1
-        );
-    }
-
-    /**
-          * @dataProvider validateSuccessProvider
+     * @dataProvider validateSuccessProvider
      */
     public function testCreateFromJSON($input, $expected)
     {
@@ -117,12 +107,12 @@ class IntegerValidatorTest extends TestCase
         $return = $object->validate($input);
 
         $this->assertTrue($return->status);
-        $this->assertInternalType('integer', $return->value);
+        $this->assertIsInt($return->value);
         $this->assertSame($expected, $return->value);
     }
 
     /**
-          * @dataProvider validateSuccessProvider
+     * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)
     {

@@ -57,13 +57,6 @@ class DatetimeValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new DatetimeValidator();
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input)
@@ -75,18 +68,7 @@ class DatetimeValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testFormatMinimumSuccess()
-    {
-        $validator = new DatetimeValidator(
-            '2000-10-12 12:00:00'
-        );
-
-        $validator->parse('2000-10-12 12:00:01');
-    }
-
-    /**
-          * @expectedException \Exception
+     * @expectedException \Exception
      */
     public function testFormatMinimumFailure()
     {
@@ -97,8 +79,6 @@ class DatetimeValidatorTest extends TestCase
         $validator->parse('2000-10-11 12:00:00');
     }
 
-    /**
-     */
     public function testFormatMinimumMaximumSuccess()
     {
         $validator = new DatetimeValidator(
@@ -106,11 +86,14 @@ class DatetimeValidatorTest extends TestCase
             '2000-10-12 12:01:00'
         );
 
-        $validator->parse('2000-10-12 12:00:01');
+        $this->assertSame(
+            '2000-10-12 12:00:01',
+           $validator->parse('2000-10-12 12:00:01')
+        );
     }
 
     /**
-          * @expectedException \Exception
+     * @expectedException \Exception
      */
     public function testFormatMaximumFailure()
     {

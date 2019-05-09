@@ -54,16 +54,6 @@ class UnsignedIntegerValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new UnsignedIntegerValidator(
-            0,
-            1
-        );
-    }
-
-    /**
      * @expectedException \Exception
      */
     public function testConstructFailure()
@@ -81,7 +71,7 @@ class UnsignedIntegerValidatorTest extends TestCase
         $return = $object->validate($input);
 
         $this->assertTrue($return->status);
-        $this->assertInternalType('integer', $return->value);
+        $this->assertIsInt($return->value);
         $this->assertSame($expected, $return->value);
     }
 

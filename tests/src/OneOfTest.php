@@ -74,20 +74,6 @@ class OneOfTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new OneOf(
-            new StringValidator(),
-            new ArrayValidator(
-                1,
-                10,
-                new StringValidator()
-            )
-        );
-    }
-
-    /**
      * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)
@@ -135,7 +121,7 @@ class OneOfTest extends TestCase
 
         $this->assertInstanceOf(OneOf::class, $validator);
 
-        $this->assertInternalType('array', $validator->oneOf);
+        $this->assertIsArray($validator->oneOf);
 
         //Set validator
         $this->object = $validator;

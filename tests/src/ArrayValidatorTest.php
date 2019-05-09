@@ -29,29 +29,6 @@ class ArrayValidatorTest extends TestCase
     }
 
     /**
-     */
-    public function testConstruct()
-    {
-        $validator = new ArrayValidator(
-            1,
-            3,
-            new IntegerValidator(),
-            true,
-            false
-        );
-    }
-
-    /**
-     */
-    public function testConstruct2()
-    {
-        new ArrayValidator(
-            1,
-            null
-        );
-    }
-
-    /**
      * @expectedException \Exception
      */
     public function testConstructFailure1()
@@ -114,7 +91,7 @@ class ArrayValidatorTest extends TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertInternalType('array', $return->value);
+        $this->assertIsArray($return->value);
         $this->assertTrue($return->status);
     }
 
@@ -331,7 +308,7 @@ class ArrayValidatorTest extends TestCase
 
         $parsed = $validator->parse(['a', 'b', 'c']);
 
-        $this->assertInternalType('array', $parsed);
+        $this->assertIsArray($parsed);
         $this->assertEquals($value, $parsed);
     }
 }

@@ -1,12 +1,19 @@
 language: php
 php:
-  - 7.0
   - 7.1
   - 7.2
+  - 7.3
+  - 7.4
   - nightly
+
+matrix:
+  allow_failures:
+    - php: nightly
+    
 install:
  - composer self-update
- - composer install --no-interaction --dev
+ - composer global require hirak/prestissimo
+ - composer install --no-interaction
 before_script:
   - mkdir -p build/
   - mkdir -p build/logs

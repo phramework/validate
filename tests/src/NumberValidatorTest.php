@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
  */
 class NumberValidatorTest extends TestCase
 {
-
     /**
      * @var NumberValidator
      */
@@ -69,7 +68,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-          * @dataProvider validateSuccessProvider
+     * @dataProvider validateSuccessProvider
      */
     public function testCreateFromJSON($input, $expected)
     {
@@ -82,12 +81,21 @@ class NumberValidatorTest extends TestCase
             "x-extra": "not existing"
         }';
 
+        /** @var NumberValidator $validatorObject */
         $validatorObject = NumberValidator::createFromJSON($json);
 
         $this->assertSame(
             'my number',
             $validatorObject->title,
             'Title must be passed'
+        );
+
+        $this->assertFalse(
+            $validatorObject->exclusiveMaximum
+        );
+
+        $this->assertFalse(
+            $validatorObject->exclusiveMinimum
         );
 
         $this->assertSame(
@@ -194,6 +202,32 @@ class NumberValidatorTest extends TestCase
             null,
             null,
             -1
+        );
+    }
+
+    /**
+     * @expectedException \DomainException
+     */
+    public function testAllowExclusiveMaximumOnlyIfMaximumIsSet()
+    {
+        new NumberValidator(
+            null,
+            null,
+            null,
+            true
+        );
+    }
+
+    /**
+     * @expectedException \DomainException
+     */
+    public function testAllowExclusiveMinimumOnlyIfMinimumIsSet()
+    {
+        new NumberValidator(
+            null,
+            null,
+            true,
+            false
         );
     }
 }

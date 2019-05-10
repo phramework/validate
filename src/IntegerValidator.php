@@ -50,8 +50,8 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
     public function __construct(
         ?int $minimum = null,
         ?int $maximum = null,
-        bool $exclusiveMinimum = null,
-        bool $exclusiveMaximum = null,
+        ?bool $exclusiveMinimum = false,
+        ?bool $exclusiveMaximum = false,
         int $multipleOf = 1
     ) {
         if ($multipleOf !== null && $multipleOf <= 0) {

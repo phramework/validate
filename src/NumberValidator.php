@@ -53,13 +53,15 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
     protected static $type = 'number';
 
     /**
+     * @param bool|null $exclusiveMinimum When null will behave as false
+     * @param bool|null $exclusiveMaximum When null will behave as false
      * @throws \DomainException When minimum is not less than the maximum
      */
     public function __construct(
         ?float $minimum = null,
         ?float $maximum = null,
-        ?bool $exclusiveMinimum = null,
-        ?bool $exclusiveMaximum = null,
+        ?bool $exclusiveMinimum = false,
+        ?bool $exclusiveMaximum = false,
         ?float $multipleOf = null
     ) {
         parent::__construct();
@@ -70,6 +72,14 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
 
         if ($multipleOf !== null && $multipleOf <= 0) {
             throw new \InvalidArgumentException('multipleOf must be a positive number');
+        }
+
+        if ($exclusiveMinimum && $minimum === null) {
+            throw new \DomainException('If "exclusiveMinimum" is set to true, "minimum" MUST also be set');
+        }
+
+        if ($exclusiveMaximum && $maximum === null) {
+            throw new \DomainException('If "exclusiveMaximum" is set to true, "maximum" MUST also be set');
         }
 
         $this->minimum = $minimum;

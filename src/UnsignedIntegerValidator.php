@@ -16,9 +16,6 @@
  */
 namespace Phramework\Validate;
 
-use Phramework\Validate\Result\Result;
-use \Phramework\Exceptions\IncorrectParametersException;
-
 /**
  * UnsignedInteger validator
  * @uses \Phramework\Validate\Integer As base implementation's rules to
@@ -49,8 +46,8 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
     public function __construct(
         int $minimum = 0,
         ?int $maximum = null,
-        bool $exclusiveMinimum = null,
-        bool $exclusiveMaximum = null,
+        ?bool $exclusiveMinimum = false,
+        ?bool $exclusiveMaximum = false,
         ?int $multipleOf = 1
     ) {
         if ($minimum < 0) {

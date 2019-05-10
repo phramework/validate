@@ -49,7 +49,7 @@ class Result
     public function __construct(
         $value,
         bool $status = false,
-        \Exception $exception = null
+        ?\Exception $exception = null
     ) {
         $this->value     = $value;
         $this->status    = $status;

@@ -23,7 +23,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * Integer validator
  * @uses \Phramework\Validate\Number As base implementation's rules to
  * validate that the value is a number and then applies additional rules
- * to validate that this is a interger
+ * to validate that this is a integer
  * @property integer|null minimum
  * @property integer|null maximum
  * @property boolean|null exclusiveMinimum
@@ -52,8 +52,8 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
      * @throws \Exception
      */
     public function __construct(
-        int $minimum = null,
-        int $maximum = null,
+        ?int $minimum = null,
+        ?int $maximum = null,
         bool $exclusiveMinimum = null,
         bool $exclusiveMaximum = null,
         int $multipleOf = 1

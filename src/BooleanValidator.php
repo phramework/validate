@@ -38,8 +38,9 @@ class BooleanValidator extends \Phramework\Validate\BaseValidator
      * BooleanValidator constructor.
      * @param bool|null $default
      */
-    public function __construct(bool $default = null)
-    {
+    public function __construct(
+        ?bool $default = null
+    ) {
         parent::__construct();
 
         $this->default = $default;

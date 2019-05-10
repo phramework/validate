@@ -46,7 +46,7 @@ class EnumValidator extends \Phramework\Validate\BaseValidator
 
     public function __construct(
         array $enum = [],
-        $validateType = false,
+        bool $validateType = false,
         $default = null
     ) {
         parent::__construct();

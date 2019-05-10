@@ -79,7 +79,7 @@ class ObjectValidator extends \Phramework\Validate\BaseValidator
         array $required = [],
         $additionalProperties = true,
         int $minProperties = 0,
-        int $maxProperties = null,
+        ?int $maxProperties = null,
         \stdClass $dependencies = null,
         \stdClass $xVisibility = null,
         \stdClass $patternProperties = null

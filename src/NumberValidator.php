@@ -61,10 +61,10 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
      * @throws \Exception
      */
     public function __construct(
-        float $minimum = null,
-        float $maximum = null,
-        bool $exclusiveMinimum = null,
-        bool $exclusiveMaximum = null,
+        ?float $minimum = null,
+        ?float $maximum = null,
+        ?bool $exclusiveMinimum = null,
+        ?bool $exclusiveMaximum = null,
         float $multipleOf = null
     ) {
         parent::__construct();

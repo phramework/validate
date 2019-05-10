@@ -52,10 +52,10 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
      */
     public function __construct(
         int $minimum = 0,
-        int $maximum = null,
+        ?int $maximum = null,
         bool $exclusiveMinimum = null,
         bool $exclusiveMaximum = null,
-        int $multipleOf = 1
+        ?int $multipleOf = 1
     ) {
         if ($minimum < 0) {
             throw new \Exception('Minimum cannot be negative');

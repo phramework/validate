@@ -12,7 +12,8 @@ matrix:
     
 install:
  - composer self-update
- - composer install --no-interaction --dev
+ - composer global require hirak/prestissimo
+ - composer install --no-interaction
 before_script:
   - mkdir -p build/
   - mkdir -p build/logs

@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
  */
 class IntegerValidatorTest extends TestCase
 {
-
     /**
      * @var IntegerValidator
      */
@@ -187,5 +186,19 @@ class IntegerValidatorTest extends TestCase
             ->parse($value);
 
         $this->assertSame($value, $parsed);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testShouldFailWhenMultipleOfIsNotPositiveInteger()
+    {
+        new IntegerValidator(
+            null,
+            null,
+            null,
+            null,
+            -1
+        );
     }
 }

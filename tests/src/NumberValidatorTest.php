@@ -24,13 +24,6 @@ class NumberValidatorTest extends TestCase
         $this->object = new NumberValidator(-1000, 1000, true);
     }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-    }
 
     public function validateSuccessProvider()
     {
@@ -57,7 +50,7 @@ class NumberValidatorTest extends TestCase
             ['abc'],
             ['+xyz'],
             ['++30'],
-            [-1000], //should fail becaus of exclusiveMinimum
+            [-1000], //should fail because of exclusiveMinimum
             [-10000000],
             [10000000],
             ['-1000000000']
@@ -65,43 +58,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-      * @expectedException \TypeError
-     */
-    public function testConstructFailure1()
-    {
-        $validator = new NumberValidator(
-            'a',
-            1
-        );
-    }
-    
-    /**
-     * @expectedException \Exception
-     */
-    /*public function testConstructFailure3()
-    {
-        $validator = new NumberValidator(
-            1,
-            2,
-            'a'
-        );
-    }*/
-
-    /**
-     * @expectedException \Exception
-     */
-    /*public function testConstructFailure4()
-    {
-        $validator = new NumberValidator(
-            1,
-            2,
-            true,
-            'a'
-        );
-    }*/
-
-    /**
-     * @expectedException \Exception
+     * @expectedException \DomainException
      */
     public function testConstructFailure6()
     {
@@ -162,7 +119,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-          * @dataProvider validateSuccessProvider
+     * @dataProvider validateSuccessProvider
      */
     public function testValidateSuccess($input, $expected)
     {
@@ -170,7 +127,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-          * @dataProvider validateSuccessProvider
+     * @dataProvider validateSuccessProvider
      */
     public function testValidateNumberSuccess($input, $expected)
     {
@@ -178,7 +135,7 @@ class NumberValidatorTest extends TestCase
     }
 
     /**
-          * @dataProvider validateFailureProvider
+     * @dataProvider validateFailureProvider
      */
     public function testValidateNumberFailure($input)
     {
@@ -224,5 +181,19 @@ class NumberValidatorTest extends TestCase
     public function testGetType()
     {
         $this->assertEquals('number', $this->object->getType());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testShouldFailWhenMultipleOfIsNotPositiveNumber()
+    {
+        new NumberValidator(
+            null,
+            null,
+            null,
+            null,
+            -1
+        );
     }
 }

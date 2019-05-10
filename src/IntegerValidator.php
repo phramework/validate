@@ -44,12 +44,8 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
     protected static $type = 'integer';
 
     /**
-     * @param integer|null $minimum
-     * @param integer|null $maximum
-     * @param boolean|null $exclusiveMinimum
-     * @param boolean|null $exclusiveMaximum
-     * @param integer|null $multipleOf
-     * @throws \Exception
+     * @throws \InvalidArgumentException When multipleOf is not positive integer
+     * @throws \DomainException
      */
     public function __construct(
         ?int $minimum = null,
@@ -58,16 +54,8 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
         bool $exclusiveMaximum = null,
         int $multipleOf = 1
     ) {
-        if ($minimum !== null && !is_int($minimum)) {
-            throw new \Exception('Minimum must be integer');
-        }
-
-        if ($maximum !== null && !is_int($maximum)) {
-            throw new \Exception('Maximum must be integer');
-        }
-
-        if (!is_int($multipleOf) || $multipleOf < 0) {
-            throw new \Exception('multipleOf must be a positive integer');
+        if ($multipleOf !== null && $multipleOf <= 0) {
+            throw new \InvalidArgumentException('multipleOf must be a positive integer');
         }
 
         parent::__construct(

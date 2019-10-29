@@ -12,29 +12,17 @@ class DatetimeValidatorTest extends TestCase
      */
     protected $object;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
     protected function setUp()
     {
         $this->object = new DatetimeValidator();
     }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-    }
-
     public function validateSuccessProvider()
     {
-        //input, expected
         return [
             ['2000-10-12 12:00:00'],
-            ['2000-10-12 12:56:00']
+            ['2000-01-12 02:56:00'],
+            ['2000-10-12 00:56:00'],
         ];
     }
 
@@ -52,7 +40,9 @@ class DatetimeValidatorTest extends TestCase
             ['2000-10-12 25:56:00'],
             ['2000-10-12 23:56'],
             ['2000-10-12'],
-            ['2000-10-12 23']
+            ['2000-10-12 23'],
+            ['2000-10-12 0:34:00'],
+            ['2000-1-12 00:34:00'],
         ];
     }
 

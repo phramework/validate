@@ -42,8 +42,29 @@ class StringValidator extends \Phramework\Validate\BaseValidator
         'minLength',
         'maxLength',
         'pattern',
-        'raw' //non standard
+        'raw', //non standard,
+        'format',
+        'formatMaximum', //proposed
+        'formatMinimum' //proposed
     ];
+
+    /**
+     * @param string|null $formatMaximum
+     * Maximum allowed value for specified format
+     */
+    public function setFormatMaximum(string $formatMaximum)
+    {
+        $this->formatMaximum = $formatMaximum;
+    }
+
+    /**
+     * @param string|null $formatMinimum
+     * Minimum allowed value for specified format
+     */
+    public function setFormatMinimum(string $formatMinimum)
+    {
+        $this->formatMinimum = $formatMinimum;
+    }
 
     /**
      * @param integer       $minLength *[Optional]*
@@ -54,13 +75,16 @@ class StringValidator extends \Phramework\Validate\BaseValidator
      *     Regular expression pattern for validating, default is null
      * @param boolean       $raw       *[Optional]*
      *     Keep raw value, don't sanitize value after validation, default is false
+     * @param string        $format    *[Optional]*
+     *     Validate if string is formatted according to specified format
      * @throws \Exception
      */
     public function __construct(
         $minLength = 0,
         $maxLength = null,
         $pattern = null,
-        $raw = false
+        $raw = false,
+        $format = null
     ) {
         parent::__construct();
 
@@ -76,6 +100,9 @@ class StringValidator extends \Phramework\Validate\BaseValidator
         $this->maxLength = $maxLength;
         $this->pattern = $pattern;
         $this->raw = $raw;
+        $this->format = $format;
+        $this->formatMinimum = null;
+        $this->formatMaximum = null;
     }
 
     /**
@@ -89,33 +116,37 @@ class StringValidator extends \Phramework\Validate\BaseValidator
     public function validate($value)
     {
         $return = new ValidateResult($value, false);
+        $errors = [];
 
         if (!is_string($value)) {
             //error
-            $return->errorObject = new IncorrectParametersException([
+            array_push(
+                $errors,
                 [
                     'type' => static::getType(),
                     'failure' => 'type'
                 ]
-            ]);
+            );
         } elseif (mb_strlen($value) < $this->minLength) {
             //error
-            $return->errorObject = new IncorrectParametersException([
+            array_push(
+                $errors,
                 [
                     'type' => static::getType(),
                     'failure' => 'minLength'
                 ]
-            ]);
+            );
         } elseif ($this->maxLength !== null
             && mb_strlen($value) > $this->maxLength
         ) {
             //error
-            $return->errorObject = new IncorrectParametersException([
+            array_push(
+                $errors,
                 [
                     'type' => static::getType(),
                     'failure' => 'maxLength'
                 ]
-            ]);
+            );
         } elseif ($this->pattern !== null
             && filter_var(
                 $value,
@@ -126,12 +157,13 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             ) === false
         ) {
             //error
-            $return->errorObject = new IncorrectParametersException([
+            array_push(
+                $errors,
                 [
                     'type' => static::getType(),
                     'failure' => 'pattern'
                 ]
-            ]);
+            );
         } else {
             $return->errorObject = null;
             //Set status to success
@@ -146,6 +178,37 @@ class StringValidator extends \Phramework\Validate\BaseValidator
                     filter_var($value, FILTER_SANITIZE_STRING)
                 );
             }
+        }
+
+        if ($this->format !== null) {
+            $formatValidator = new Formats\FormatValidator();
+
+            $formatValidator
+                ->validateFormat(
+                    $value,
+                    $this->format,
+                    (object) [
+                        'formatMinimum' => $this->formatMinimum,
+                        'formatMaximum' => $this->formatMaximum,
+                    ]
+                );
+
+            if (!$formatValidator->isValid()) {
+                array_push(
+                    $errors,
+                    [
+                        'type' => static::getType(),
+                        'failure' => $formatValidator->getFailureReason(),
+                    ]
+                );
+            }
+        }
+
+        if (!empty($errors)) {
+            $return->status = false;
+            $return->errorObject = new IncorrectParametersException(
+                $errors
+            );
         }
 
         return $this->validateCommon($value, $return);

@@ -19,7 +19,7 @@ class ObjectValidatorTest extends TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $properties = [
             'str' => new \Phramework\Validate\StringValidator(2, 4),
@@ -33,7 +33,7 @@ class ObjectValidatorTest extends TestCase
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
     }
 

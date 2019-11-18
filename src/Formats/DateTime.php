@@ -2,42 +2,70 @@
 
 namespace Phramework\Validate\Formats;
 
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Validate\ValidateResult;
+
+/**
+ * Class DateTime
+ *
+ * @author Alex Kalliontzis <alkallio@gmail.com>
+ * @internal Helper class for internal use
+ * @since 0.11.0
+ */
 class DateTime
 {
-    const REGEX = '/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])' .
+    const REGEX = '/^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])-(?<day>0[1-9]|[12][0-9]|3[01])' .
         'T([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]|60)' .
         '(Z|(\+|-)([01][0-9]|2[0-3]):([0-5][0-9]))$/i';
 
-    protected $isValid = true;
-    protected $failure = '';
-
-    /**
-     * @return bool
-     */
-    public function isValid(): bool
-    {
-        return $this->isValid;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFailure()
-    {
-        return $this->failure;
-    }
-
     public function validateFormat(
         string $data,
+        string $type,
         \stdClass $formatProperties
-    ): self {
-        if (!preg_match(self::REGEX, $data)) {
-            $this->isValid = false;
-            $this->failure = 'pattern';
-            return $this;
+    ): ValidateResult {
+        $matches = [];
+        if (!preg_match(self::REGEX, $data, $matches)) {
+            return new ValidateResult(
+                $data,
+                false,
+                new IncorrectParametersException([
+                    [
+                        'type' => $type,
+                        'failure' => 'date-time',
+                    ],
+                ])
+            );
         }
 
-        $date = (new \DateTime($data))->getTimestamp();
+        //Check if date is valid. This is needed because DateTime
+        //will parse an invalid date like 2019-02-31
+        if (!checkdate((int)$matches ['month'], (int) $matches['day'], (int) $matches['year'])) {
+            return new ValidateResult(
+                $data,
+                false,
+                new IncorrectParametersException([
+                    [
+                        'type' => $type,
+                        'failure' => 'date-time',
+                    ],
+                ])
+            );
+        }
+
+        try {
+            $date = (new \DateTime($data))->getTimestamp();
+        } catch (\Exception $e) {
+            return new ValidateResult(
+                $data,
+                false,
+                new IncorrectParametersException(
+                    [
+                        'type' => $type,
+                        'failure' => 'date-time',
+                    ]
+                )
+            );
+        }
 
         if ($formatProperties->formatMinimum !== null) {
             $formatMinimum = (new \DateTime(
@@ -45,9 +73,16 @@ class DateTime
             ))->getTimestamp();
 
             if ($date < $formatMinimum) {
-                $this->isValid = false;
-                $this->failure = 'Lower than minimum';
-                return $this;
+                return new ValidateResult(
+                    $data,
+                    false,
+                    new IncorrectParametersException(
+                        [
+                            'type' => $type,
+                            'failure' => 'formatMinimum',
+                        ]
+                    )
+                );
             }
         }
 
@@ -57,12 +92,22 @@ class DateTime
             ))->getTimestamp();
 
             if ($date > $formatMaximum) {
-                $this->isValid = false;
-                $this->failure = 'Higher than maximum';
-                return $this;
+                return new ValidateResult(
+                    $data,
+                    false,
+                    new IncorrectParametersException(
+                        [
+                            'type' => $type,
+                            'failure' => 'formatMaximum',
+                        ]
+                    )
+                );
             }
         }
 
-        return $this;
+        return new ValidateResult(
+            $data,
+            true
+        );
     }
 }

@@ -29,6 +29,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  * @see ECMA 262 regular expression dialect for regular expression pattern
+ * @version 0.11.0 Added support for date-time format
  */
 class StringValidator extends \Phramework\Validate\BaseValidator
 {
@@ -116,37 +117,47 @@ class StringValidator extends \Phramework\Validate\BaseValidator
     public function validate($value)
     {
         $return = new ValidateResult($value, false);
-        $errors = [];
+
+        $formatValidator = new Formats\StringFormatValidatorValidator();
+
+        if ($this->format !== null) {
+            $formatValidatorResult = $formatValidator
+                ->validateFormat(
+                    $value,
+                    $this->format,
+                    (object)[
+                        'formatMinimum' => $this->formatMinimum,
+                        'formatMaximum' => $this->formatMaximum,
+                    ]
+                );
+        }
 
         if (!is_string($value)) {
             //error
-            array_push(
-                $errors,
+            $return->errorObject = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'type'
                 ]
-            );
+            ]);
         } elseif (mb_strlen($value) < $this->minLength) {
             //error
-            array_push(
-                $errors,
+            $return->errorObject = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'minLength'
                 ]
-            );
+            ]);
         } elseif ($this->maxLength !== null
             && mb_strlen($value) > $this->maxLength
         ) {
             //error
-            array_push(
-                $errors,
+            $return->errorObject = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'maxLength'
                 ]
-            );
+            ]);
         } elseif ($this->pattern !== null
             && filter_var(
                 $value,
@@ -157,13 +168,17 @@ class StringValidator extends \Phramework\Validate\BaseValidator
             ) === false
         ) {
             //error
-            array_push(
-                $errors,
+            $return->errorObject = new IncorrectParametersException([
                 [
                     'type' => static::getType(),
                     'failure' => 'pattern'
                 ]
-            );
+            ]);
+        } elseif ($this->format !== null
+            && $formatValidatorResult->status === false
+        ) {
+            $return->errorObject =
+                $formatValidatorResult->errorObject;
         } else {
             $return->errorObject = null;
             //Set status to success
@@ -178,37 +193,6 @@ class StringValidator extends \Phramework\Validate\BaseValidator
                     filter_var($value, FILTER_SANITIZE_STRING)
                 );
             }
-        }
-
-        if ($this->format !== null) {
-            $formatValidator = new Formats\FormatValidator();
-
-            $formatValidator
-                ->validateFormat(
-                    $value,
-                    $this->format,
-                    (object) [
-                        'formatMinimum' => $this->formatMinimum,
-                        'formatMaximum' => $this->formatMaximum,
-                    ]
-                );
-
-            if (!$formatValidator->isValid()) {
-                array_push(
-                    $errors,
-                    [
-                        'type' => static::getType(),
-                        'failure' => $formatValidator->getFailureReason(),
-                    ]
-                );
-            }
-        }
-
-        if (!empty($errors)) {
-            $return->status = false;
-            $return->errorObject = new IncorrectParametersException(
-                $errors
-            );
         }
 
         return $this->validateCommon($value, $return);

@@ -52,20 +52,7 @@ class DateTime
             );
         }
 
-        try {
-            $date = (new \DateTime($data))->getTimestamp();
-        } catch (\Exception $e) {
-            return new ValidateResult(
-                $data,
-                false,
-                new IncorrectParametersException(
-                    [
-                        'type' => $type,
-                        'failure' => 'date-time',
-                    ]
-                )
-            );
-        }
+        $date = (new \DateTime($data))->getTimestamp();
 
         if ($formatProperties->formatMinimum !== null) {
             $formatMinimum = (new \DateTime(

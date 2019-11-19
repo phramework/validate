@@ -56,6 +56,7 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
             ['asdfasdf', 'minLength'],
             ['a708465e-8fec-4508-b159-46d545de3b', 'date-time'],
             ['2019-11-14T00:00:00-99:00', 'date-time'],
+            ['2019-11-14T00:80:00-00:00', 'date-time'],
             ['2017-11-14T14:30:26+02:00', 'formatMinimum'],
             ['2023-11-14T14:30:26+02:00', 'formatMaximum'],
         ];

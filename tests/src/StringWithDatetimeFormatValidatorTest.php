@@ -92,6 +92,65 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
         $this->assertAttributeContains($expectedError, 'parameters', $return->errorObject);
     }
 
+    public function testCreateFromJSON()
+    {
+        $json = '{
+          "type": "string",
+          "order": "5",
+          "format": "date-time",
+          "formatMinimum": "2019-10-14T22:35:38+00:00",
+          "formatMaximum": "2019-12-12T22:25:38+00:00"
+        }';
+
+        $validator = StringValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(StringValidator::class, $validator);
+
+        $this->assertSame(
+            '2019-10-14T22:35:38+00:00',
+            $validator->formatMinimum
+        );
+
+        $this->assertSame(
+            '2019-12-12T22:25:38+00:00',
+            $validator->formatMaximum
+        );
+
+        $return = $validator->validate('2019-09-14T22:35:38+00:00');
+
+        $this->assertFalse($return->status);
+
+        $expectedError =
+            [
+                'type' => 'string',
+                'failure' => 'formatMinimum'
+            ];
+
+        $this->assertAttributeContains($expectedError, 'parameters', $return->errorObject);
+
+        $return = $validator->validate('2019-12-14T22:45:38+00:00');
+
+        $this->assertFalse($return->status);
+
+        $expectedError =
+            [
+                'type' => 'string',
+                'failure' => 'formatMaximum'
+            ];
+
+        $this->assertAttributeContains($expectedError, 'parameters', $return->errorObject);
+
+        $return = $validator->validate('2019-12-12T22:25:38+00:00');
+
+        $this->assertTrue($return->status);
+        $this->assertSame('2019-12-12T22:25:38+00:00', $return->value);
+
+        $return = $validator->validate('2019-12-11T22:25:38+00:00');
+
+        $this->assertTrue($return->status);
+        $this->assertSame('2019-12-11T22:25:38+00:00', $return->value);
+    }
+
     public function testGetType()
     {
         $this->assertEquals('string', $this->object->getType());

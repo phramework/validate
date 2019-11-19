@@ -8,7 +8,7 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
 {
 
     /**
-     * @var String
+     * @var StringValidator
      */
     protected $object;
 
@@ -26,7 +26,7 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
         $this->object->setFormatMaximum('2020-11-14T14:30:26+02:00');
     }
 
-    public function validateSuccessProvider()
+    public function validateSuccessProvider(): array
     {
         //input, expected
         return [
@@ -42,7 +42,7 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
         ];
     }
 
-    public function validateFailureProvider()
+    public function validateFailureProvider(): array
     {
         //input
         return [
@@ -65,8 +65,10 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
     /**
      * @dataProvider validateSuccessProvider
      */
-    public function testValidateSuccess($input, $expected)
-    {
+    public function testValidateSuccess(
+        string $input,
+        string $expected
+    ): void {
         $return = $this->object->validate($input);
 
         $this->assertInternalType('string', $return->value);
@@ -77,8 +79,10 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
     /**
      * @dataProvider validateFailureProvider
      */
-    public function testValidateFailure($input, $failure)
-    {
+    public function testValidateFailure(
+        string $input,
+        string $failure
+    ): void {
         $return = $this->object->validate($input);
 
         $this->assertFalse($return->status);
@@ -92,7 +96,7 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
         $this->assertAttributeContains($expectedError, 'parameters', $return->errorObject);
     }
 
-    public function testCreateFromJSON()
+    public function testCreateFromJSON(): void
     {
         $json = '{
           "type": "string",
@@ -151,7 +155,7 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
         $this->assertSame('2019-12-11T22:25:38+00:00', $return->value);
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals('string', $this->object->getType());
     }

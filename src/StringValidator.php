@@ -29,6 +29,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  * @see ECMA 262 regular expression dialect for regular expression pattern
+ * @version 0.11.0 Added support for date-time format
  */
 class StringValidator extends \Phramework\Validate\BaseValidator
 {
@@ -42,8 +43,29 @@ class StringValidator extends \Phramework\Validate\BaseValidator
         'minLength',
         'maxLength',
         'pattern',
-        'raw' //non standard
+        'raw', //non standard,
+        'format',
+        'formatMaximum', //proposed
+        'formatMinimum' //proposed
     ];
+
+    /**
+     * @param string|null $formatMaximum
+     * Maximum allowed value for specified format
+     */
+    public function setFormatMaximum(string $formatMaximum)
+    {
+        $this->formatMaximum = $formatMaximum;
+    }
+
+    /**
+     * @param string|null $formatMinimum
+     * Minimum allowed value for specified format
+     */
+    public function setFormatMinimum(string $formatMinimum)
+    {
+        $this->formatMinimum = $formatMinimum;
+    }
 
     /**
      * @param integer       $minLength *[Optional]*
@@ -54,13 +76,16 @@ class StringValidator extends \Phramework\Validate\BaseValidator
      *     Regular expression pattern for validating, default is null
      * @param boolean       $raw       *[Optional]*
      *     Keep raw value, don't sanitize value after validation, default is false
+     * @param string        $format    *[Optional]*
+     *     Validate if string is formatted according to specified format
      * @throws \Exception
      */
     public function __construct(
         $minLength = 0,
         $maxLength = null,
         $pattern = null,
-        $raw = false
+        $raw = false,
+        $format = null
     ) {
         parent::__construct();
 
@@ -76,6 +101,9 @@ class StringValidator extends \Phramework\Validate\BaseValidator
         $this->maxLength = $maxLength;
         $this->pattern = $pattern;
         $this->raw = $raw;
+        $this->format = $format;
+        $this->formatMinimum = null;
+        $this->formatMaximum = null;
     }
 
     /**
@@ -89,6 +117,20 @@ class StringValidator extends \Phramework\Validate\BaseValidator
     public function validate($value)
     {
         $return = new ValidateResult($value, false);
+
+        $formatValidator = new Formats\StringFormatValidatorValidator();
+
+        if ($this->format !== null) {
+            $formatValidatorResult = $formatValidator
+                ->validateFormat(
+                    $value,
+                    $this->format,
+                    (object)[
+                        'formatMinimum' => $this->formatMinimum,
+                        'formatMaximum' => $this->formatMaximum,
+                    ]
+                );
+        }
 
         if (!is_string($value)) {
             //error
@@ -132,6 +174,11 @@ class StringValidator extends \Phramework\Validate\BaseValidator
                     'failure' => 'pattern'
                 ]
             ]);
+        } elseif ($this->format !== null
+            && $formatValidatorResult->status === false
+        ) {
+            $return->errorObject =
+                $formatValidatorResult->errorObject;
         } else {
             $return->errorObject = null;
             //Set status to success

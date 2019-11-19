@@ -21,6 +21,9 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
             false,
             'date-time'
         );
+
+        $this->object->setFormatMinimum('2018-11-14T14:30:26+02:00');
+        $this->object->setFormatMaximum('2020-11-14T14:30:26+02:00');
     }
 
     public function validateSuccessProvider()
@@ -33,6 +36,9 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
             ['2019-11-14T14:30:45-05:00', '2019-11-14T14:30:45-05:00'],
             ['2019-11-14T00:00:00-05:00', '2019-11-14T00:00:00-05:00'],
             ['2019-11-14T14:30:26Z', '2019-11-14T14:30:26Z'],
+            ['2018-11-14T14:30:26+02:00', '2018-11-14T14:30:26+02:00'],
+            ['2020-11-14T14:30:26+02:00', '2020-11-14T14:30:26+02:00'],
+            ['2020-02-28T00:30:26+02:00', '2020-02-28T00:30:26+02:00'],
         ];
     }
 
@@ -50,6 +56,8 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
             ['asdfasdf', 'minLength'],
             ['a708465e-8fec-4508-b159-46d545de3b', 'date-time'],
             ['2019-11-14T00:00:00-99:00', 'date-time'],
+            ['2017-11-14T14:30:26+02:00', 'formatMinimum'],
+            ['2023-11-14T14:30:26+02:00', 'formatMaximum'],
         ];
     }
 

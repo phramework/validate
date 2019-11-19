@@ -76,12 +76,12 @@ class DateTime
                 return new ValidateResult(
                     $data,
                     false,
-                    new IncorrectParametersException(
+                    new IncorrectParametersException([
                         [
                             'type' => $type,
                             'failure' => 'formatMinimum',
                         ]
-                    )
+                    ])
                 );
             }
         }
@@ -95,12 +95,12 @@ class DateTime
                 return new ValidateResult(
                     $data,
                     false,
-                    new IncorrectParametersException(
+                    new IncorrectParametersException([
                         [
                             'type' => $type,
                             'failure' => 'formatMaximum',
                         ]
-                    )
+                    ])
                 );
             }
         }

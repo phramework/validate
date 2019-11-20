@@ -40,6 +40,7 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
             ['2018-11-14T14:30:26+02:00', '2018-11-14T14:30:26+02:00'],
             ['2020-11-14T14:30:26+02:00', '2020-11-14T14:30:26+02:00'],
             ['2020-02-28T00:30:26+02:00', '2020-02-28T00:30:26+02:00'],
+            ['2020-02-28T00:30:26+02', '2020-02-28T00:30:26+02'],
         ];
     }
 
@@ -61,6 +62,7 @@ class StringWithDatetimeFormatValidatorTest extends TestCase
             ['2017-11-14T14:30:26+02:00', 'formatMinimum'],
             ['2023-11-14T14:30:26+02:00', 'formatMaximum'],
             ['2019-11-14T14:30:45-05::00', 'date-time'],
+            ['2020-02-28T00:30:26+02:', 'date-time'],
         ];
     }
 

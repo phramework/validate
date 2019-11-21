@@ -4,11 +4,17 @@
   "license": "Apache-2.0",
   "homepage": "https://phramework.github.io/",
   "type": "library",
-  "authors": [{
+  "authors": [
+    {
     "name": "Xenofon Spafaridis",
     "email": "nohponex@gmail.com",
     "homepage": "https://nohponex.gr"
-  }],
+    },
+    {
+      "name": "Alex Kalliontzis",
+      "email": "alkallio@gmail.com"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Phramework\\Validate\\": "src/"

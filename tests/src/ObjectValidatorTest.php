@@ -66,6 +66,8 @@ class ObjectValidatorTest extends TestCase
     public function testConstruct()
     {
         $validator = new ObjectValidator();
+
+        $this->assertInstanceOf('\Phramework\Validate\ObjectValidator', $validator);
     }
 
     /**
@@ -656,6 +658,16 @@ class ObjectValidatorTest extends TestCase
             'field1' => 'no'
         ]);
 
+        $this->assertEquals('no', $result->field1);
+        $this->assertNull($result->field2);
+
+        $result = $validator->parse((object) [
+            'field1' => 'yes',
+            'field2' => 'abcd'
+        ]);
+
+        $this->assertEquals('yes', $result->field1);
+        $this->assertEquals('abcd', $result->field2);
         //Expect exception
         $this->expectException(
             IncorrectParametersException::class
@@ -665,8 +677,6 @@ class ObjectValidatorTest extends TestCase
             'field1' => 'no',
             'field2' => 'abcd'
         ]);
-
-        $this->markTestIncomplete();
     }
 
     public function testXVisibilityOR()

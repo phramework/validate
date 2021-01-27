@@ -29,7 +29,7 @@ class ArrayValidatorTest extends TestCase
     }
 
     /**
-     * @expectedException \Exception
+     * @expectedException \TypeError
      */
     public function testConstructFailure1()
     {
@@ -52,7 +52,7 @@ class ArrayValidatorTest extends TestCase
     }
 
     /**
-     * @expectedException \Exception
+     * @expectedException \TypeError
      */
     public function testConstructFailure4()
     {

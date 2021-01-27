@@ -51,8 +51,8 @@ class DateValidator extends \Phramework\Validate\StringValidator
      * ```
      */
     public function __construct(
-        string $formatMinimum = null,
-        string $formatMaximum = null
+        ?string $formatMinimum = null,
+        ?string $formatMaximum = null
     ) {
         parent::__construct();
 

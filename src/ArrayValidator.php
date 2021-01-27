@@ -74,8 +74,8 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
      */
     public function __construct(
         int $minItems = 0,
-        int $maxItems = null,
-        $items = null,
+        ?int $maxItems = null,
+        ?BaseValidator $items = null,
         bool $uniqueItems = false
     ) {
         parent::__construct();
@@ -98,7 +98,6 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         $return = new Result($value, false);
 
         if (!is_array($value)) {
-            $return->exception = 'properties validation';
             //error
             $return->exception = new IncorrectParameterException(
                 'type',

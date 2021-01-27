@@ -59,8 +59,8 @@ class StringValidator extends \Phramework\Validate\BaseValidator
      */
     public function __construct(
         int $minLength = 0,
-        int $maxLength = null,
-        string $pattern = null,
+        ?int $maxLength = null,
+        ?string $pattern = null,
         bool $raw = false
     ) {
         parent::__construct();

@@ -64,7 +64,7 @@ class UsernameValidator extends \Phramework\Validate\StringValidator
      */
     public function __construct(
         int $minLength = 0,
-        int $maxLength = null
+        ?int $maxLength = null
     ) {
         parent::__construct(
             $minLength,

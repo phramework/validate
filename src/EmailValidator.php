@@ -41,8 +41,8 @@ class EmailValidator extends \Phramework\Validate\StringValidator
     protected static $type = 'email';
 
     public function __construct(
-        $minLength = 0,
-        $maxLength = null
+        int $minLength = 0,
+        ?int $maxLength = null
     ) {
         parent::__construct(
             $minLength,
@@ -62,7 +62,7 @@ class EmailValidator extends \Phramework\Validate\StringValidator
         $return = parent::validate($value);
 
         //Apply additional rules
-        if ($return->status == true) {
+        if ($return->status === true) {
             if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
                 //error
                 $return->exception = new IncorrectParameterException(

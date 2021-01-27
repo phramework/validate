@@ -53,44 +53,23 @@ class NumberValidator extends \Phramework\Validate\BaseValidator
     protected static $type = 'number';
 
     /**
-     * @param float|null $minimum
-     * @param float|null $maximum
-     * @param bool|null  $exclusiveMinimum
-     * @param bool|null  $exclusiveMaximum
-     * @param float|null $multipleOf
-     * @throws \Exception
+     * @throws \DomainException When minimum is not less than the maximum
      */
     public function __construct(
-        float $minimum = null,
-        float $maximum = null,
-        bool $exclusiveMinimum = null,
-        bool $exclusiveMaximum = null,
-        float $multipleOf = null
+        ?float $minimum = null,
+        ?float $maximum = null,
+        ?bool $exclusiveMinimum = null,
+        ?bool $exclusiveMaximum = null,
+        ?float $multipleOf = null
     ) {
         parent::__construct();
 
-        if ($minimum !== null && !is_numeric($minimum)) {
-            throw new \Exception('Minimum must be numeric');
-        }
-
-        if ($maximum !== null && !is_numeric($maximum)) {
-            throw new \Exception('Maximum must be numeric');
-        }
-
         if ($maximum !== null && $minimum !== null && $maximum < $minimum) {
-            throw new \Exception('maximum cant be less than minimum');
+            throw new \DomainException('maximum cant be less than minimum');
         }
 
-        if ($exclusiveMinimum !== null && !is_bool($exclusiveMinimum)) {
-            throw new \Exception('exclusiveMinimum must be boolean');
-        }
-
-        if ($exclusiveMaximum !== null && !is_bool($exclusiveMaximum)) {
-            throw new \Exception('exclusiveMaximum must be boolean');
-        }
-
-        if ($multipleOf !== null && !is_numeric($multipleOf)) {
-            throw new \Exception('multipleOf must be numeric');
+        if ($multipleOf !== null && $multipleOf <= 0) {
+            throw new \InvalidArgumentException('multipleOf must be a positive number');
         }
 
         $this->minimum = $minimum;

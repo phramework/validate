@@ -43,22 +43,18 @@ class UnsignedIntegerValidator extends \Phramework\Validate\IntegerValidator
     protected static $type = 'unsignedinteger';
 
     /**
-     * @param int $minimum
-     * @param int|null $maximum
-     * @param int|null $exclusiveMinimum
-     * @param bool|null $exclusiveMaximum
-     * @param int $multipleOf
-     * @throws \Exception
+     * @throws \InvalidArgumentException
+     * @throws \DomainException
      */
     public function __construct(
         int $minimum = 0,
-        int $maximum = null,
+        ?int $maximum = null,
         bool $exclusiveMinimum = null,
         bool $exclusiveMaximum = null,
-        int $multipleOf = 1
+        ?int $multipleOf = 1
     ) {
         if ($minimum < 0) {
-            throw new \Exception('Minimum cannot be negative');
+            throw new \InvalidArgumentException('Minimum cannot be negative');
         }
 
         parent::__construct(

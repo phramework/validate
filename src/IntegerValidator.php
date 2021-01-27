@@ -23,7 +23,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * Integer validator
  * @uses \Phramework\Validate\Number As base implementation's rules to
  * validate that the value is a number and then applies additional rules
- * to validate that this is a interger
+ * to validate that this is a integer
  * @property integer|null minimum
  * @property integer|null maximum
  * @property boolean|null exclusiveMinimum
@@ -44,30 +44,18 @@ class IntegerValidator extends \Phramework\Validate\NumberValidator
     protected static $type = 'integer';
 
     /**
-     * @param integer|null $minimum
-     * @param integer|null $maximum
-     * @param boolean|null $exclusiveMinimum
-     * @param boolean|null $exclusiveMaximum
-     * @param integer|null $multipleOf
-     * @throws \Exception
+     * @throws \InvalidArgumentException When multipleOf is not positive integer
+     * @throws \DomainException
      */
     public function __construct(
-        int $minimum = null,
-        int $maximum = null,
+        ?int $minimum = null,
+        ?int $maximum = null,
         bool $exclusiveMinimum = null,
         bool $exclusiveMaximum = null,
         int $multipleOf = 1
     ) {
-        if ($minimum !== null && !is_int($minimum)) {
-            throw new \Exception('Minimum must be integer');
-        }
-
-        if ($maximum !== null && !is_int($maximum)) {
-            throw new \Exception('Maximum must be integer');
-        }
-
-        if (!is_int($multipleOf) || $multipleOf < 0) {
-            throw new \Exception('multipleOf must be a positive integer');
+        if ($multipleOf !== null && $multipleOf <= 0) {
+            throw new \InvalidArgumentException('multipleOf must be a positive integer');
         }
 
         parent::__construct(

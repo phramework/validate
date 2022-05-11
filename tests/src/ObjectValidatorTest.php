@@ -365,7 +365,7 @@ class ObjectValidatorTest extends TestCase
         ]);
 
         $this->assertFalse($return->status);
-        
+
         $this->assertInstanceOf(
             'Phramework\\Exceptions\\IncorrectParametersException',
             $return->errorObject
@@ -419,7 +419,7 @@ class ObjectValidatorTest extends TestCase
         $this->object->addProperty($key, $property);
 
         $this->assertTrue(
-            array_key_exists($key, $this->object->properties)
+            property_exists($this->object->properties, $key )
         );
     }
 
@@ -660,7 +660,7 @@ class ObjectValidatorTest extends TestCase
         $this->expectException(
             IncorrectParametersException::class
         );
-            
+
         $result = $validator->parse((object) [
             'field1' => 'no',
             'field2' => 'abcd'

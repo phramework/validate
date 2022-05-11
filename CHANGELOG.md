@@ -1,3 +1,7 @@
+## 0.12.0
+### Added
+- PHP 8.0 as required php version
+
 ## 0.11.1
 ### Fixed
 - Optional semicolon in offset
